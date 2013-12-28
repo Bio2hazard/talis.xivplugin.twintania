@@ -140,6 +140,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Resource Include="Defaults\Settings.xml" />
     <Content Include="FodyWeavers.xml" />
     <Content Include="PluginInfo.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
