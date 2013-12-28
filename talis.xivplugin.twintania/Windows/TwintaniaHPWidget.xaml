@@ -1,0 +1,278 @@
+﻿<Window x:Class="talis.xivplugin.twintania.Windows.TwintaniaHPWidget"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:PluginProperties="clr-namespace:talis.xivplugin.twintania.Properties"
+        xmlns:ViewModels="clr-namespace:talis.xivplugin.twintania.Windows"
+        xmlns:customConverters="clr-namespace:talis.xivplugin.twintania.Converters"
+        xmlns:converters="clr-namespace:FFXIVAPP.Common.Converters;assembly=FFXIVAPP.Common"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="TwintaniaHPWidget"
+        Width="{Binding TwintaniaHPWidgetWidth,
+                        Source={x:Static PluginProperties:Settings.Default},
+                        Mode=TwoWay}"
+        Height="{Binding TwintaniaHPWidgetHeight,
+                         Source={x:Static PluginProperties:Settings.Default},
+                         Mode=TwoWay}"
+        MinWidth="200"
+        MinHeight="360"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Closing="TalisWidget_OnClosing"
+        Left="{Binding TwintaniaHPWidgetLeft,
+                       Mode=TwoWay,
+                       Source={x:Static PluginProperties:Settings.Default}}"
+        Opacity="{Binding TwintaniaHPWidgetOpacity,
+                          Source={x:Static PluginProperties:Settings.Default}}"
+        ShowInTaskbar="False"
+        Top="{Binding TwintaniaHPWidgetTop,
+                      Mode=TwoWay,
+                      Source={x:Static PluginProperties:Settings.Default}}"
+        WindowStyle="None">
+    <Window.Resources>
+        <ResourceDictionary>
+            <x:Static x:Key="Settings"
+                      Member="PluginProperties:Settings.Default" />
+            <customConverters:TimerConverter x:Key="TimerConverter" />
+            <converters:VisibilityConverter x:Key="VisibilityConverter" />
+            <x:Static x:Key="TwintaniaHPWidgetViewModel"
+                      Member="ViewModels:TwintaniaHPWidgetViewModel.Instance" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/talis.xivplugin.twintania;component/Resources/WidgetStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.LayoutTransform>
+            <ScaleTransform ScaleX="{Binding TwintaniaHPWidgetUIScale,
+                                             Source={StaticResource Settings}}"
+                            ScaleY="{Binding TwintaniaHPWidgetUIScale,
+                                             Source={StaticResource Settings}}" />
+        </Grid.LayoutTransform>
+        <StackPanel>
+            <DockPanel LastChildFill="True">
+                <Border Margin="5"
+                        Background="WhiteSmoke"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        CornerRadius="2">
+                    <DockPanel LastChildFill="True">
+                        <Button x:Name="WidgetClose"
+                                Width="15"
+                                Height="15"
+                                Margin="2"
+                                Click="WidgetClose_OnClick"
+                                DockPanel.Dock="Right"
+                                Padding="0"
+                                ToolTip="Close">
+                            <Path Data="M0,0 L5,5 M0,5 L5,0"
+                                  Stretch="None"
+                                  Stroke="Black" />
+                        </Button>
+                        <DockPanel Background="WhiteSmoke"
+                                   PreviewMouseDown="TitleBar_OnPreviewMouseDown">
+                            <Label Grid.Row="0"
+                                   Margin="5 -1"
+                                   HorizontalAlignment="Center"
+                                   Content="[ Twintania Tracker ]"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Foreground="Black"
+                                   Padding="0" />
+                        </DockPanel>
+                    </DockPanel>
+                </Border>
+            </DockPanel>
+            
+            <StackPanel x:Name="TwintaniaHPWidgetTwintaniaInfo"
+                        Margin="5 1"
+                        DataContext="{Binding TwintaniaEntity,
+                                              Source={StaticResource TwintaniaHPWidgetViewModel}}"
+                        Visibility="{Binding TwintaniaIsValid,
+                                             Source={StaticResource TwintaniaHPWidgetViewModel},
+                                             Converter={StaticResource VisibilityConverter}}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <ProgressBar Grid.Row="0"
+                                 Grid.RowSpan="2"
+                                 Height="18"
+                                 VerticalAlignment="Top"
+                                 BorderBrush="Black"
+                                 Maximum="1"
+                                 Minimum="0"
+                                 Style="{StaticResource ProgressBarStyleStopAnimation}"
+                                 Value="{Binding TwintaniaHPPercent,
+                                                 Source={StaticResource TwintaniaHPWidgetViewModel}}" />
+                    <Label Grid.Row="0"
+                           Margin="5 0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Content="{Binding HPCurrent}"
+                           FontWeight="Bold"
+                           Foreground="Black"
+                           Style="{StaticResource CommaNumberStyle}" />
+                    <Label Grid.Row="0"
+                           Margin="5 0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Content="{Binding Name}"
+                           FontWeight="Bold"
+                           Foreground="Black"
+                           Style="{StaticResource StatLabelStyle}" />
+                    <Label Grid.Row="0"
+                           Margin="5 0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Content="{Binding HPPercent}"
+                           FontWeight="Bold"
+                           Foreground="Black"
+                           Style="{StaticResource PercentStyle}" />
+                </Grid>
+            </StackPanel>
+            
+            <StackPanel x:Name="TwintaniaHPWidgetDreadknightInfo"
+                        Margin="5 1"
+                        DataContext="{Binding DreadknightEntity,
+                                              Source={StaticResource TwintaniaHPWidgetViewModel}}"
+                        Visibility="{Binding DreadknightIsValid,
+                                             Source={StaticResource TwintaniaHPWidgetViewModel},
+                                             Converter={StaticResource VisibilityConverter}}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <ProgressBar Grid.Row="0"
+                                 Grid.RowSpan="2"
+                                 Height="18"
+                                 VerticalAlignment="Top"
+                                 BorderBrush="Black"
+                                 Maximum="1"
+                                 Minimum="0"
+                                 Style="{StaticResource ProgressBarStyleStopAnimation}"
+                                 Value="{Binding DreadknightHPPercent,
+                                                 Source={StaticResource TwintaniaHPWidgetViewModel}}" />
+                    <Label Grid.Row="0"
+                           Margin="5 0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Content="{Binding HPCurrent}"
+                           FontWeight="Bold"
+                           Foreground="Black"
+                           Style="{StaticResource CommaNumberStyle}" />
+                    <Label Grid.Row="0"
+                           Margin="5 0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Content="{Binding Name}"
+                           FontWeight="Bold"
+                           Foreground="Black"
+                           Style="{StaticResource StatLabelStyle}" />
+                    <Label Grid.Row="0"
+                           Margin="5 0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Content="{Binding HPPercent}"
+                           FontWeight="Bold"
+                           Foreground="Black"
+                           Style="{StaticResource PercentStyle}" />
+                </Grid>
+            </StackPanel>
+
+            <StackPanel x:Name="TwintaniaHPWidgetTwintaniaEnrage"
+                    Margin="5 1"
+                    DataContext="{Binding TwintaniaEntity,
+                                            Source={StaticResource TwintaniaHPWidgetViewModel}}"
+                    Visibility="{Binding TwintaniaEnrageTimer.enabled,
+                                            Source={StaticResource TwintaniaHPWidgetViewModel},
+                                            Converter={StaticResource VisibilityConverter}}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <ProgressBar Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Height="18"
+                                    VerticalAlignment="Top"
+                                    BorderBrush="Black"
+                                    Maximum="{Binding TwintaniaHPWidgetEnrageTime,
+                                                    Source={StaticResource Settings}}"
+                                    Minimum="0"
+                                    Style="{StaticResource ProgressBarStyleStopAnimation}"
+                                    Value="{Binding TwintaniaEnrageTime,
+                                                    Source={StaticResource TwintaniaHPWidgetViewModel}}" />
+                    <Label Grid.Row="0"
+                        Margin="5 0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="Enrage Timer"
+                        FontWeight="Bold"
+                        Foreground="Black"
+                        Style="{StaticResource StatLabelStyle}"/>
+
+                    <Label Grid.Row="0"
+                        Margin="5 0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Content="{Binding TwintaniaEnrageTime,
+                                                Source={StaticResource TwintaniaHPWidgetViewModel},
+                                                Converter={StaticResource TimerConverter}}"
+                        FontWeight="Bold"
+                        Foreground="Black"
+                        Style="{StaticResource StatLabelStyle}" />
+                </Grid>
+            </StackPanel>
+
+            <StackPanel x:Name="TwintaniaHPWidgetTwintaniaDiveBomb"
+                    Margin="5 1"
+                    DataContext="{Binding TwintaniaEntity,
+                                            Source={StaticResource TwintaniaHPWidgetViewModel}}"
+                    Visibility="{Binding TwintaniaDivebombTimer.enabled,
+                                            Source={StaticResource TwintaniaHPWidgetViewModel},
+                                            Converter={StaticResource VisibilityConverter}}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <ProgressBar Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Height="18"
+                                    VerticalAlignment="Top"
+                                    BorderBrush="Black"
+                                    Maximum="{Binding TwintaniaDivebombTimeToNextMax,
+                                                    Source={StaticResource TwintaniaHPWidgetViewModel}}"
+                                    Minimum="0"
+                                    Style="{StaticResource ProgressBarStyleStopAnimation}"
+                                    Value="{Binding TwintaniaDivebombTimeToNextCur,
+                                                    Source={StaticResource TwintaniaHPWidgetViewModel}}" />
+                    <Label Grid.Row="0"
+                        Margin="5 0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Content="{Binding TwintaniaDivebombCount,
+                                                Source={StaticResource TwintaniaHPWidgetViewModel}}"
+                        FontWeight="Bold"
+                        Foreground="Black"
+                        Style="{StaticResource DivebombLabelStyle}"/>
+
+                    <Label Grid.Row="0"
+                        Margin="5 0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Content="{Binding TwintaniaDivebombTimeToNextCur,
+                                                Source={StaticResource TwintaniaHPWidgetViewModel},
+                                                Converter={StaticResource TimerConverter}}"
+                        FontWeight="Bold"
+                        Foreground="Black"
+                        Style="{StaticResource StatLabelStyle}" />
+                </Grid>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
