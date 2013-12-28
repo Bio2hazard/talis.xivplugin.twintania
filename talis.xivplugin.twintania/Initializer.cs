@@ -55,12 +55,16 @@ namespace talis.xivplugin.twintania
             else
                 regexString = @"^.+\.(wav)$";
 
-            var files = Directory.GetFiles(Constants.BaseDirectory + @"\AlertSounds\")
+            var alertsDirectory = Path.Combine(Constants.BaseDirectory, "AlertSounds");
+            if (Directory.Exists(alertsDirectory))
+            {
+                var files = Directory.GetFiles(Constants.BaseDirectory + "AlertSounds")
                                  .Where(file => Regex.IsMatch(file, regexString))
                                  .Select(file => new FileInfo(file));
-            foreach (var file in files)
-            {
-                PluginViewModel.Instance.SoundFiles.Add(file.Name);
+                foreach (var file in files)
+                {
+                    PluginViewModel.Instance.SoundFiles.Add(file.Name);
+                }
             }
         }
 
