@@ -17,6 +17,7 @@ Twintania Boss Mod Plugin for **[FFXIVAPP](http://ffxiv-app.com/)**.
 * Voiced Countdown
 * Twister Alert
 * Individual Volume Control
+* Test mode to adjust volume etc. outside of encounters
 * MP3 & WAV Support
 
 ###Coming Soon:
