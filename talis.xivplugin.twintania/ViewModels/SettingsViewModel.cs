@@ -1,25 +1,24 @@
 ﻿// talis.xivplugin.twintania
 // SettingsViewModel.cs
 
-using FFXIVAPP.Common.Events;
+using System.Globalization;
 using FFXIVAPP.Common.Models;
-using FFXIVAPP.Common.Utilities;
 using FFXIVAPP.Common.ViewModelBase;
 using NLog;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Input;
+using talis.xivplugin.twintania.Helpers;
 using talis.xivplugin.twintania.Properties;
 using talis.xivplugin.twintania.Views;
 using talis.xivplugin.twintania.Windows;
-
 
 namespace talis.xivplugin.twintania.ViewModels
 {
     internal sealed class SettingsViewModel : INotifyPropertyChanged
     {
+
         #region Property Bindings
 
         private static SettingsViewModel _instance;
@@ -41,8 +40,8 @@ namespace talis.xivplugin.twintania.ViewModels
         public ICommand LoadEnrageTimersCommand { get; private set; }
         public ICommand ResetEnrageTimersCommand { get; private set; }
 
-        public ICommand TwintaniaHPWidgetTestStartCommand { get; private set; }
-        public ICommand TwintaniaHPWidgetTestStopCommand { get; private set; }
+        public ICommand TwintaniaWidgetTestStartCommand { get; private set; }
+        public ICommand TwintaniaWidgetTestStopCommand { get; private set; }
 
         public ICommand RefreshSoundListCommand { get; private set; }
 
@@ -58,8 +57,8 @@ namespace talis.xivplugin.twintania.ViewModels
             LoadEnrageTimersCommand = new DelegateCommand(LoadEnrageTimers);
             ResetEnrageTimersCommand = new DelegateCommand(ResetEnrageTimers);
 
-            TwintaniaHPWidgetTestStartCommand = new DelegateCommand(TwintaniaHPWidgetTestStart);
-            TwintaniaHPWidgetTestStopCommand = new DelegateCommand(TwintaniaHPWidgetTestStop);
+            TwintaniaWidgetTestStartCommand = new DelegateCommand(TwintaniaWidgetTestStart);
+            TwintaniaWidgetTestStopCommand = new DelegateCommand(TwintaniaWidgetTestStop);
 
             RefreshSoundListCommand = new DelegateCommand(RefreshSoundList);
         }
@@ -84,42 +83,55 @@ namespace talis.xivplugin.twintania.ViewModels
             double result;
             string message = "";
 
-            if(Double.TryParse(SettingsView.View.TwintaniaHPWidgetDivebombTimeFastBox.Text, out result))
+            if(Double.TryParse(SettingsView.View.TwintaniaWidgetDivebombTimeFastBox.Text, out result))
             {
-                Settings.Default.TwintaniaHPWidgetDivebombTimeFast = result;
+                Settings.Default.TwintaniaWidgetDivebombTimeFast = result;
             }
             else
             {
-                message += "Delay for Fast Divebombs is invalid ( " + SettingsView.View.TwintaniaHPWidgetDivebombTimeFastBox.Text.ToString() + " )";
-                SettingsView.View.TwintaniaHPWidgetDivebombTimeFastBox.Text = Settings.Default.TwintaniaHPWidgetDivebombTimeFast.ToString();
+                message += "Delay for Fast Divebombs is invalid ( " + SettingsView.View.TwintaniaWidgetDivebombTimeFastBox.Text + " )";
+                SettingsView.View.TwintaniaWidgetDivebombTimeFastBox.Text = Settings.Default.TwintaniaWidgetDivebombTimeFast.ToString(CultureInfo.InvariantCulture);
             }
 
-            if (Double.TryParse(SettingsView.View.TwintaniaHPWidgetDivebombTimeSlowBox.Text, out result))
+            if (Double.TryParse(SettingsView.View.TwintaniaWidgetDivebombTimeSlowBox.Text, out result))
             {
-                Settings.Default.TwintaniaHPWidgetDivebombTimeSlow = result;
+                Settings.Default.TwintaniaWidgetDivebombTimeSlow = result;
             }
             else
             {
-                message += "Delay for Slow Divebombs is invalid ( " + SettingsView.View.TwintaniaHPWidgetDivebombTimeSlowBox.Text.ToString() + " )";
-                SettingsView.View.TwintaniaHPWidgetDivebombTimeSlowBox.Text = Settings.Default.TwintaniaHPWidgetDivebombTimeSlow.ToString();
+                message += "Delay for Slow Divebombs is invalid ( " + SettingsView.View.TwintaniaWidgetDivebombTimeSlowBox.Text + " )";
+                SettingsView.View.TwintaniaWidgetDivebombTimeSlowBox.Text = Settings.Default.TwintaniaWidgetDivebombTimeSlow.ToString(CultureInfo.InvariantCulture);
             }
 
             if (message.Length > 0)
             {
-                MessageBox.Show(message, "Invalid Time Specified");
+                var popupContent = new PopupContent
+                {
+                    Title = PluginViewModel.Instance.Locale["app_WarningMessage"],
+                    Message = message
+                };
+                Plugin.PHost.PopupMessage(Plugin.PName, popupContent);
             }
         }
 
         public void LoadDivebombTimers()
         {
-            SettingsView.View.TwintaniaHPWidgetDivebombTimeFastBox.Text = Settings.Default.TwintaniaHPWidgetDivebombTimeFast.ToString();
-            SettingsView.View.TwintaniaHPWidgetDivebombTimeSlowBox.Text = Settings.Default.TwintaniaHPWidgetDivebombTimeSlow.ToString();
+            SettingsView.View.TwintaniaWidgetDivebombTimeFastBox.Text = Settings.Default.TwintaniaWidgetDivebombTimeFast.ToString(CultureInfo.InvariantCulture);
+            SettingsView.View.TwintaniaWidgetDivebombTimeSlowBox.Text = Settings.Default.TwintaniaWidgetDivebombTimeSlow.ToString(CultureInfo.InvariantCulture);
         }
 
         public void ResetDivebombTimers()
         {
-            SettingsView.View.TwintaniaHPWidgetDivebombTimeFastBox.Text = Settings.Default.Properties["TwintaniaHPWidgetDivebombTimeFast"].DefaultValue.ToString();
-            SettingsView.View.TwintaniaHPWidgetDivebombTimeSlowBox.Text = Settings.Default.Properties["TwintaniaHPWidgetDivebombTimeSlow"].DefaultValue.ToString();
+            var settingsProperty = Settings.Default.Properties["TwintaniaWidgetDivebombTimeFast"];
+            if (settingsProperty != null)
+            {
+                SettingsView.View.TwintaniaWidgetDivebombTimeFastBox.Text = settingsProperty.DefaultValue.ToString();
+            }
+            var property = Settings.Default.Properties["TwintaniaWidgetDivebombTimeSlow"];
+            if (property != null)
+            {
+                SettingsView.View.TwintaniaWidgetDivebombTimeSlowBox.Text = property.DefaultValue.ToString();
+            }
         }
 
         public void SaveEnrageTimers()
@@ -127,40 +139,49 @@ namespace talis.xivplugin.twintania.ViewModels
             double result;
             string message = "";
 
-            if (Double.TryParse(SettingsView.View.TwintaniaHPWidgetEnrageTimeBox.Text, out result))
+            if (Double.TryParse(SettingsView.View.TwintaniaWidgetEnrageTimeBox.Text, out result))
             {
-                Settings.Default.TwintaniaHPWidgetEnrageTime = result;
+                Settings.Default.TwintaniaWidgetEnrageTime = result;
             }
             else
             {
-                message += "Time for Enrage is invalid ( " + SettingsView.View.TwintaniaHPWidgetEnrageTimeBox.Text.ToString() + " )";
-                SettingsView.View.TwintaniaHPWidgetEnrageTimeBox.Text = Settings.Default.TwintaniaHPWidgetEnrageTime.ToString();
+                message += "Time for Enrage is invalid ( " + SettingsView.View.TwintaniaWidgetEnrageTimeBox.Text + " )";
+                SettingsView.View.TwintaniaWidgetEnrageTimeBox.Text = Settings.Default.TwintaniaWidgetEnrageTime.ToString(CultureInfo.InvariantCulture);
             }
 
             if (message.Length > 0)
             {
-                MessageBox.Show(message, "Invalid Time Specified");
+                var popupContent = new PopupContent
+                {
+                    Title = PluginViewModel.Instance.Locale["app_WarningMessage"],
+                    Message = message
+                };
+                Plugin.PHost.PopupMessage(Plugin.PName, popupContent);
             }
         }
 
         public void LoadEnrageTimers()
         {
-            SettingsView.View.TwintaniaHPWidgetEnrageTimeBox.Text = Settings.Default.TwintaniaHPWidgetEnrageTime.ToString();
+            SettingsView.View.TwintaniaWidgetEnrageTimeBox.Text = Settings.Default.TwintaniaWidgetEnrageTime.ToString(CultureInfo.InvariantCulture);
         }
 
         public void ResetEnrageTimers()
         {
-            SettingsView.View.TwintaniaHPWidgetEnrageTimeBox.Text = Settings.Default.Properties["TwintaniaHPWidgetEnrageTime"].DefaultValue.ToString();
+            var settingsProperty = Settings.Default.Properties["TwintaniaWidgetEnrageTime"];
+            if (settingsProperty != null)
+            {
+                SettingsView.View.TwintaniaWidgetEnrageTimeBox.Text = settingsProperty.DefaultValue.ToString();
+            }
         }
 
-        public void TwintaniaHPWidgetTestStart()
+        public void TwintaniaWidgetTestStart()
         {
-            TwintaniaHPWidgetViewModel.Instance.TestModeStart();
+            TwintaniaWidgetViewModel.Instance.TestModeStart();
         }
 
-        public void TwintaniaHPWidgetTestStop()
+        public void TwintaniaWidgetTestStop()
         {
-            TwintaniaHPWidgetViewModel.Instance.TestModeStop();
+            TwintaniaWidgetViewModel.Instance.TestModeStop();
         }
 
         #endregion
@@ -168,11 +189,6 @@ namespace talis.xivplugin.twintania.ViewModels
         #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
-        private void RaisePropertyChanged([CallerMemberName] string caller = "")
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(caller));
-        }
 
         #endregion
     }

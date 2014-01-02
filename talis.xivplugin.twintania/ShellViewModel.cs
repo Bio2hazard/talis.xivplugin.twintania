@@ -1,12 +1,11 @@
 ﻿// talis.xivplugin.twintania
 // ShellViewModel.cs
 
-using FFXIVAPP.Common.Utilities;
 using NLog;
 using System;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
+using talis.xivplugin.twintania.Helpers;
 using talis.xivplugin.twintania.Interop;
 using talis.xivplugin.twintania.Properties;
 
@@ -14,6 +13,21 @@ namespace talis.xivplugin.twintania
 {
     public sealed class ShellViewModel : INotifyPropertyChanged
     {
+        #region Logger
+        private static Logger _logger;
+        private static Logger Logger
+        {
+            get
+            {
+                if (FFXIVAPP.Common.Constants.EnableNLog)
+                {
+                    return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
+                }
+                return null;
+            }
+        }
+        #endregion
+
         #region Property Bindings
 
         private static ShellViewModel _instance;
@@ -47,21 +61,22 @@ namespace talis.xivplugin.twintania
             var propertyName = propertyChangedEventArgs.PropertyName;
             switch (propertyName)
             {
-                case "TwintaniaHPWidgetUIScale":
+                case "TwintaniaWidgetUIScale":
                     try
                     {
-                        Settings.Default.TwintaniaHPWidgetWidth = (int) (250 * Double.Parse(Settings.Default.TwintaniaHPWidgetUIScale));
-                        Settings.Default.TwintaniaHPWidgetHeight = (int) (450 * Double.Parse(Settings.Default.TwintaniaHPWidgetUIScale));
+                        Settings.Default.TwintaniaWidgetWidth = (int) (250 * Double.Parse(Settings.Default.TwintaniaWidgetUIScale));
+                        Settings.Default.TwintaniaWidgetHeight = (int) (450 * Double.Parse(Settings.Default.TwintaniaWidgetUIScale));
                     }
                     catch(Exception ex)
                     {
-                        Settings.Default.TwintaniaHPWidgetWidth = 250;
-                        Settings.Default.TwintaniaHPWidgetHeight = 450;
+                        LogHelper.Log(Logger, ex, LogLevel.Error);
+                        Settings.Default.TwintaniaWidgetWidth = 250;
+                        Settings.Default.TwintaniaWidgetHeight = 450;
                     }
                     break;
 
-                case "TwintaniaHPWidgetClickThroughEnabled":
-                    WinAPI.ToggleClickThrough(Widgets.Instance.TwintaniaHPWidget);
+                case "TwintaniaWidgetClickThroughEnabled":
+                    WinAPI.ToggleClickThrough(Widgets.Instance.TwintaniaWidget);
                     break;
             }
         }
@@ -81,11 +96,6 @@ namespace talis.xivplugin.twintania
         #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
-        private void RaisePropertyChanged([CallerMemberName] string caller = "")
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(caller));
-        }
 
         #endregion
     }

@@ -2,14 +2,12 @@
 // Initializer.cs
 
 using System;
-using System.Linq;
 using System.IO;
-using System.Xml.Linq;
-using talis.xivplugin.twintania.Properties;
+using System.Linq;
 using System.Text.RegularExpressions;
-using NLog;
-using FFXIVAPP.Common.Utilities;
+using System.Xml.Linq;
 using talis.xivplugin.twintania.Helpers;
+using talis.xivplugin.twintania.Properties;
 
 namespace talis.xivplugin.twintania
 {
@@ -28,8 +26,8 @@ namespace talis.xivplugin.twintania
                 foreach (var xElement in Constants.XSettings.Descendants()
                                                   .Elements("Setting"))
                 {
-                    var xKey = (string) xElement.Attribute("Key");
-                    var xValue = (string) xElement.Element("Value");
+                    var xKey = (string)xElement.Attribute("Key");
+                    var xValue = (string)xElement.Element("Value");
                     if (String.IsNullOrWhiteSpace(xKey) || String.IsNullOrWhiteSpace(xValue))
                     {
                         return;
@@ -50,10 +48,7 @@ namespace talis.xivplugin.twintania
 
             string regexString;
 
-            if(Settings.Default.TwintaniaHPWidgetUseNAudio)
-                regexString = @"^.+\.(wav|mp3)$";
-            else
-                regexString = @"^.+\.(wav)$";
+            regexString = Settings.Default.TwintaniaWidgetUseNAudio ? @"^.+\.(wav|mp3)$" : @"^.+\.(wav)$";
 
             var alertsDirectory = Path.Combine(Constants.BaseDirectory, "AlertSounds");
             if (Directory.Exists(alertsDirectory))

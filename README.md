@@ -5,8 +5,9 @@ Twintania Boss Mod Plugin for **[FFXIVAPP](http://ffxiv-app.com/)**.
 
 ###Installation:
 * Download the latest compiled revision @ http://www.chapterfain.com/files/Talis.XIVPlugin.Twintania.zip
-* Extract the contents into the PLUGINS folder of your FFXIVAPP.
-* Restart FFXIV-APP
+* Right click the zip file in your downloads folder -> Unblock
+* Extract the ZIP file
+* Place the "Talis.XIVPlugin.Twintania"-folder into FFXIV-APP's "Plugins"-folder and restart FFXIV-APP.
 
 **Note:** The first divebomb must be dodged manually. The timer & warning sound will help from that point on!
 

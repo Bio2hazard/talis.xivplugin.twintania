@@ -114,6 +114,7 @@
                   <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                   </Grid.RowDefinitions>
                   <Rectangle x:Name="LeftDark"
                              Grid.RowSpan="2"
@@ -122,7 +123,7 @@
                              RadiusX="1"
                              RadiusY="1" />
                   <Rectangle x:Name="RightDark"
-                             Grid.RowSpan="2"
+                             Grid.Row="0" Grid.RowSpan="2"
                              Grid.Column="2"
                              Margin="0,1,1,1"
                              Fill="{StaticResource ProgressBarIndicatorDarkEdgeRight}"
@@ -141,12 +142,12 @@
                              Grid.Column="2"
                              Fill="{StaticResource ProgressBarIndicatorLightingEffectRight}" />
                   <Border x:Name="Highlight1"
-                          Grid.RowSpan="2"
-                          Grid.ColumnSpan="3"
+                          Grid.Row="0" Grid.RowSpan="2"
+                          Grid.ColumnSpan="3" Grid.Column="0"
                           Background="{StaticResource ProgressBarIndicatorGlassyHighlight}" />
                   <Border x:Name="Highlight2"
-                          Grid.RowSpan="2"
-                          Grid.ColumnSpan="3"
+                          Grid.Row="0" Grid.RowSpan="2"
+                          Grid.ColumnSpan="3" Grid.Column="0"
                           Background="{StaticResource ProgressBarTopHighlight}" />
                 </Grid>
               </Grid>
