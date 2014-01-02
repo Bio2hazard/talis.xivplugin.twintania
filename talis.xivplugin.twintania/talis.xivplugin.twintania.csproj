@@ -92,6 +92,7 @@
     <Compile Include="Converters\TimerConverter.cs" />
     <Compile Include="EventSubscriber.cs" />
     <Compile Include="Events\TimerUpdateEventArgs.cs" />
+    <Compile Include="Helpers\LogHelper.cs" />
     <Compile Include="Helpers\MicroTimer.cs" />
     <Compile Include="Helpers\SoundHelper.cs" />
     <Compile Include="Helpers\TimerHelper.cs" />
@@ -116,7 +117,6 @@
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\SampleViewModel.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
@@ -126,14 +126,11 @@
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SampleView.xaml.cs">
-      <DependentUpon>SampleView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Widgets.cs" />
-    <Compile Include="Windows\TwintaniaHPWidget.xaml.cs">
-      <DependentUpon>TwintaniaHPWidget.xaml</DependentUpon>
+    <Compile Include="Windows\TwintaniaWidget.xaml.cs">
+      <DependentUpon>TwintaniaWidget.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\TwintaniaHPWidgetViewModel.cs" />
+    <Compile Include="Windows\TwintaniaWidgetViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Resources\WidgetStyle.xaml">
@@ -141,6 +138,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Resource Include="Defaults\Settings.xml" />
+    <Resource Include="Defaults\Settings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Content Include="FodyWeavers.xml" />
     <Content Include="PluginInfo.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -182,11 +182,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\SampleView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\TwintaniaHPWidget.xaml">
+    <Page Include="Windows\TwintaniaWidget.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -194,6 +190,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Import Project="Fody.targets" />

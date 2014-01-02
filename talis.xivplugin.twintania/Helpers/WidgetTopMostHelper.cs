@@ -3,12 +3,16 @@
 //
 // © 2013 ZAM Network LLC
 
+using System.Linq;
+using FFXIVAPP.Common.RegularExpressions;
 using FFXIVAPP.Common.Helpers;
 using System;
+using System.Text.RegularExpressions;
 using System.Timers;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
+using NLog;
 using talis.xivplugin.twintania.Interop;
 using talis.xivplugin.twintania.Properties;
 using talis.xivplugin.twintania.Windows;
@@ -17,8 +21,30 @@ namespace talis.xivplugin.twintania.Helpers
 {
     public static class WidgetTopMostHelper
     {
+        #region Logger
+        private static Logger _logger;
+        private static Logger Logger
+        {
+            get
+            {
+                if (FFXIVAPP.Common.Constants.EnableNLog)
+                {
+                    return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
+                }
+                return null;
+            }
+        }
+        #endregion
+
         private static WinAPI.WinEventDelegate _delegate;
         private static IntPtr _mainHandleHook;
+
+        private static WindowInteropHelper _twintaniaInteropHelper;
+
+        private static WindowInteropHelper TwintaniaInteropHelper
+        {
+            get { return _twintaniaInteropHelper ?? (_twintaniaInteropHelper = new WindowInteropHelper(Widgets.Instance.TwintaniaWidget)); }
+        }
 
         private static Timer SetWindowTimer { get; set; }
 
@@ -27,10 +53,11 @@ namespace talis.xivplugin.twintania.Helpers
             try
             {
                 _delegate = BringWidgetsIntoFocus;
-                _mainHandleHook = WinAPI.SetWinEventHook(WinAPI.EVENT_SYSTEM_FOREGROUND, WinAPI.EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, _delegate, 0, 0, WinAPI.WINEVENT_OUTOFCONTEXT);
+                _mainHandleHook = WinAPI.SetWinEventHook(WinAPI.EventSystemForeground, WinAPI.EventSystemForeground, IntPtr.Zero, _delegate, 0, 0, WinAPI.WineventOutofcontext);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                LogHelper.Log(Logger, ex, LogLevel.Error);
             }
             SetWindowTimer = new Timer(1000);
             SetWindowTimer.Elapsed += SetWindowTimerOnElapsed;
@@ -52,25 +79,28 @@ namespace talis.xivplugin.twintania.Helpers
             try
             {
                 var handle = WinAPI.GetForegroundWindow();
-                var stayOnTop = WinAPI.GetActiveWindowTitle()
-                                      .ToUpper()
-                                      .StartsWith("FINAL FANTASY XIV");
+                var activeTitle = WinAPI.GetActiveWindowTitle();
+
+                bool stayOnTop = System.Windows.Application.Current.Windows.OfType<Window>().Any(w => w.Title == activeTitle) 
+                                 || Regex.IsMatch(activeTitle.ToUpper(), @"^(FINAL FANTASY XIV)", SharedRegEx.DefaultOptions);
+
                 // If any of the widgets are focused, don't try to hide any of them, or it'll prevent us from moving/closing them
-                if (handle == new WindowInteropHelper(Widgets.Instance.TwintaniaHPWidget).Handle)
+                if (handle == TwintaniaInteropHelper.Handle)
                 {
                     return;
                 }
-                if (Settings.Default.ShowTwintaniaHPWidgetOnLoad)
+                if (Settings.Default.ShowTwintaniaWidgetOnLoad)
                 {
                     // Override to keep the Widget on top during test mode
-                    if (TwintaniaHPWidgetViewModel.Instance.ForceTop)
+                    if (TwintaniaWidgetViewModel.Instance.ForceTop)
                         stayOnTop = true;
 
-                    ToggleTopMost(Widgets.Instance.TwintaniaHPWidget, stayOnTop, force);
+                    ToggleTopMost(Widgets.Instance.TwintaniaWidget, stayOnTop, force);
                 }
             }
             catch (Exception ex)
             {
+                LogHelper.Log(Logger, ex, LogLevel.Error);
             }
         }
 

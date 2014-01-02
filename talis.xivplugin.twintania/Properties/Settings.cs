@@ -12,8 +12,11 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
+using System.Xml.Linq;
+using talis.xivplugin.twintania.Helpers;
 using Color = System.Windows.Media.Color;
 using ColorConverter = System.Windows.Media.ColorConverter;
 using FontFamily = System.Drawing.FontFamily;
@@ -22,6 +25,21 @@ namespace talis.xivplugin.twintania.Properties
 {
     internal class Settings : ApplicationSettingsBase, INotifyPropertyChanged
     {
+        #region Logger
+        private static Logger _logger;
+        private static Logger Logger
+        {
+            get
+            {
+                if (FFXIVAPP.Common.Constants.EnableNLog)
+                {
+                    return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
+                }
+                return null;
+            }
+        }
+        #endregion
+
         private static Settings _default;
 
         public static Settings Default
@@ -31,67 +49,42 @@ namespace talis.xivplugin.twintania.Properties
 
         public override void Save()
         {
-            XmlHelper.DeleteXmlNode(Constants.XSettings, "Setting");
-            if (Constants.Settings.Count == 0)
-            {
-            }
+            // this call to default settings only ensures we keep the settings we want and delete the ones we don't (old)
             DefaultSettings();
-            foreach (var item in Constants.Settings)
-            {
-                try
-                {
-                    var xKey = item;
-                    var xValue = Default[xKey].ToString();
-                    var keyPairList = new List<XValuePair>
-                    {
-                        new XValuePair
-                        {
-                            Key = "Value",
-                            Value = xValue
-                        }
-                    };
-                    XmlHelper.SaveXmlNode(Constants.XSettings, "Settings", "Setting", xKey, keyPairList);
-                }
-                catch (Exception ex)
-                {
-                    Logging.Log(LogManager.GetCurrentClassLogger(), "", ex);
-                }
-            }
+            SaveSettingsNode();
             Constants.XSettings.Save(Constants.BaseDirectory + "Settings.xml");
         }
 
         private void DefaultSettings()
         {
             Constants.Settings.Clear();
-            Constants.Settings.Add("ShowTwintaniaHPWidgetOnLoad");
 
-            Constants.Settings.Add("TwintaniaHPWidgetUseNAudio");
-            Constants.Settings.Add("TwintaniaHPWidgetUseSoundCaching");
+            Constants.Settings.Add("ShowTwintaniaWidgetOnLoad");
 
-            Constants.Settings.Add("TwintaniaHPWidgetTop");
-            Constants.Settings.Add("TwintaniaHPWidgetLeft");
+            Constants.Settings.Add("TwintaniaWidgetUseNAudio");
+            Constants.Settings.Add("TwintaniaWidgetUseSoundCaching");
 
-            Constants.Settings.Add("TwintaniaHPWidgetWidth");
-            Constants.Settings.Add("TwintaniaHPWidgetHeight");
+            Constants.Settings.Add("TwintaniaWidgetTop");
+            Constants.Settings.Add("TwintaniaWidgetLeft");
+            Constants.Settings.Add("TwintaniaWidgetWidth");
+            Constants.Settings.Add("TwintaniaWidgetHeight");
+            Constants.Settings.Add("TwintaniaWidgetUIScale");
 
-            Constants.Settings.Add("TwintaniaHPWidgetUIScale");
+            Constants.Settings.Add("TwintaniaWidgetEnrageTime");
+            Constants.Settings.Add("TwintaniaWidgetEnrageVolume");
+            Constants.Settings.Add("TwintaniaWidgetEnrageCounting");
+            Constants.Settings.Add("TwintaniaWidgetEnrageAlertFile");
 
-            Constants.Settings.Add("TwintaniaHPWidgetEnrageTime");
-            Constants.Settings.Add("TwintaniaHPWidgetEnrageVolume");
-            Constants.Settings.Add("TwintaniaHPWidgetEnrageCounting");
-            Constants.Settings.Add("TwintaniaHPWidgetEnrageAlertFile");
+            Constants.Settings.Add("TwintaniaWidgetDivebombTimeFast");
+            Constants.Settings.Add("TwintaniaWidgetDivebombTimeSlow");
+            Constants.Settings.Add("TwintaniaWidgetDivebombCounting");
+            Constants.Settings.Add("TwintaniaWidgetDivebombVolume");
+            Constants.Settings.Add("TwintaniaWidgetDivebombAlertFile");
 
-            Constants.Settings.Add("TwintaniaHPWidgetDivebombTimeFast");
-            Constants.Settings.Add("TwintaniaHPWidgetDivebombTimeSlow");
+            Constants.Settings.Add("TwintaniaWidgetTwisterVolume");
 
-            Constants.Settings.Add("TwintaniaHPWidgetDivebombCounting");
-            Constants.Settings.Add("TwintaniaHPWidgetDivebombVolume");
-            Constants.Settings.Add("TwintaniaHPWidgetDivebombAlertFile");
-
-            Constants.Settings.Add("TwintaniaHPWidgetTwisterVolume");
-
-            Constants.Settings.Add("TwintaniaHPWidgetClickThroughEnabled");
-            Constants.Settings.Add("TwintaniaHPWidgetOpacity");
+            Constants.Settings.Add("TwintaniaWidgetClickThroughEnabled");
+            Constants.Settings.Add("TwintaniaWidgetOpacity");
         }
 
         public new void Reset()
@@ -143,11 +136,11 @@ namespace talis.xivplugin.twintania.Properties
             }
             catch (SettingsPropertyNotFoundException ex)
             {
-                Logging.Log(LogManager.GetCurrentClassLogger(), "", ex);
+                LogHelper.Log(Logger, ex, LogLevel.Error);
             }
             catch (SettingsPropertyWrongTypeException ex)
             {
-                Logging.Log(LogManager.GetCurrentClassLogger(), "", ex);
+                LogHelper.Log(Logger, ex, LogLevel.Error);
             }
         }
 
@@ -208,12 +201,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("True")]
-        public bool ShowTwintaniaHPWidgetOnLoad
+        public bool ShowTwintaniaWidgetOnLoad
         {
-            get { return ((bool) (this["ShowTwintaniaHPWidgetOnLoad"])); }
+            get { return ((bool) (this["ShowTwintaniaWidgetOnLoad"])); }
             set
             {
-                this["ShowTwintaniaHPWidgetOnLoad"] = value;
+                this["ShowTwintaniaWidgetOnLoad"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -221,12 +214,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("100")]
-        public int TwintaniaHPWidgetTop
+        public int TwintaniaWidgetTop
         {
-            get { return ((int) (this["TwintaniaHPWidgetTop"])); }
+            get { return ((int) (this["TwintaniaWidgetTop"])); }
             set
             {
-                this["TwintaniaHPWidgetTop"] = value;
+                this["TwintaniaWidgetTop"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -234,12 +227,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("500")]
-        public int TwintaniaHPWidgetLeft
+        public int TwintaniaWidgetLeft
         {
-            get { return ((int) (this["TwintaniaHPWidgetLeft"])); }
+            get { return ((int) (this["TwintaniaWidgetLeft"])); }
             set
             {
-                this["TwintaniaHPWidgetLeft"] = value;
+                this["TwintaniaWidgetLeft"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -247,12 +240,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("250")]
-        public int TwintaniaHPWidgetWidth
+        public int TwintaniaWidgetWidth
         {
-            get { return ((int) (this["TwintaniaHPWidgetWidth"])); }
+            get { return ((int) (this["TwintaniaWidgetWidth"])); }
             set
             {
-                this["TwintaniaHPWidgetWidth"] = value;
+                this["TwintaniaWidgetWidth"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -260,12 +253,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("450")]
-        public int TwintaniaHPWidgetHeight
+        public int TwintaniaWidgetHeight
         {
-            get { return ((int) (this["TwintaniaHPWidgetHeight"])); }
+            get { return ((int) (this["TwintaniaWidgetHeight"])); }
             set
             {
-                this["TwintaniaHPWidgetHeight"] = value;
+                this["TwintaniaWidgetHeight"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -273,12 +266,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("1.0")]
-        public string TwintaniaHPWidgetUIScale
+        public string TwintaniaWidgetUIScale
         {
-            get { return ((string) (this["TwintaniaHPWidgetUIScale"])); }
+            get { return ((string) (this["TwintaniaWidgetUIScale"])); }
             set
             {
-                this["TwintaniaHPWidgetUIScale"] = value;
+                this["TwintaniaWidgetUIScale"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -296,20 +289,20 @@ namespace talis.xivplugin.twintania.Properties
     <string>1.4</string>
     <string>1.5</string>
 </ArrayOfString>")]
-        public StringCollection TwintaniaHPWidgetUIScaleList
+        public StringCollection TwintaniaWidgetUIScaleList
         {
-            get { return ((StringCollection) (this["TwintaniaHPWidgetUIScaleList"])); }
+            get { return ((StringCollection) (this["TwintaniaWidgetUIScaleList"])); }
         }
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("780")]
-        public Double TwintaniaHPWidgetEnrageTime
+        public Double TwintaniaWidgetEnrageTime
         {
-            get { return ((Double) (this["TwintaniaHPWidgetEnrageTime"])); }
+            get { return ((Double) (this["TwintaniaWidgetEnrageTime"])); }
             set
             {
-                this["TwintaniaHPWidgetEnrageTime"] = value;
+                this["TwintaniaWidgetEnrageTime"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -317,12 +310,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("100")]
-        public int TwintaniaHPWidgetEnrageVolume
+        public int TwintaniaWidgetEnrageVolume
         {
-            get { return ((int)(this["TwintaniaHPWidgetEnrageVolume"])); }
+            get { return ((int)(this["TwintaniaWidgetEnrageVolume"])); }
             set
             {
-                this["TwintaniaHPWidgetEnrageVolume"] = value;
+                this["TwintaniaWidgetEnrageVolume"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -330,12 +323,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("True")]
-        public bool TwintaniaHPWidgetEnrageCounting
+        public bool TwintaniaWidgetEnrageCounting
         {
-            get { return ((bool)(this["TwintaniaHPWidgetEnrageCounting"])); }
+            get { return ((bool)(this["TwintaniaWidgetEnrageCounting"])); }
             set
             {
-                this["TwintaniaHPWidgetEnrageCounting"] = value;
+                this["TwintaniaWidgetEnrageCounting"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -343,12 +336,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue(@"\AlertSounds\LowHealth.wav")]
-        public string TwintaniaHPWidgetEnrageAlertFile
+        public string TwintaniaWidgetEnrageAlertFile
         {
-            get { return ((string)(this["TwintaniaHPWidgetEnrageAlertFile"])); }
+            get { return ((string)(this["TwintaniaWidgetEnrageAlertFile"])); }
             set
             {
-                this["TwintaniaHPWidgetEnrageAlertFile"] = value;
+                this["TwintaniaWidgetEnrageAlertFile"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -356,12 +349,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("6.8")]
-        public Double TwintaniaHPWidgetDivebombTimeFast
+        public Double TwintaniaWidgetDivebombTimeFast
         {
-            get { return ((Double) (this["TwintaniaHPWidgetDivebombTimeFast"])); }
+            get { return ((Double) (this["TwintaniaWidgetDivebombTimeFast"])); }
             set
             {
-                this["TwintaniaHPWidgetDivebombTimeFast"] = value;
+                this["TwintaniaWidgetDivebombTimeFast"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -369,12 +362,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("47.7")]
-        public Double TwintaniaHPWidgetDivebombTimeSlow
+        public Double TwintaniaWidgetDivebombTimeSlow
         {
-            get { return ((Double) (this["TwintaniaHPWidgetDivebombTimeSlow"])); }
+            get { return ((Double) (this["TwintaniaWidgetDivebombTimeSlow"])); }
             set
             {
-                this["TwintaniaHPWidgetDivebombTimeSlow"] = value;
+                this["TwintaniaWidgetDivebombTimeSlow"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -382,12 +375,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("True")]
-        public bool TwintaniaHPWidgetUseNAudio
+        public bool TwintaniaWidgetUseNAudio
         {
-            get { return ((bool) (this["TwintaniaHPWidgetUseNAudio"])); }
+            get { return ((bool) (this["TwintaniaWidgetUseNAudio"])); }
             set
             {
-                this["TwintaniaHPWidgetUseNAudio"] = value;
+                this["TwintaniaWidgetUseNAudio"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -395,12 +388,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("True")]
-        public bool TwintaniaHPWidgetUseSoundCaching
+        public bool TwintaniaWidgetUseSoundCaching
         {
-            get { return ((bool) (this["TwintaniaHPWidgetUseSoundCaching"])); }
+            get { return ((bool) (this["TwintaniaWidgetUseSoundCaching"])); }
             set
             {
-                this["TwintaniaHPWidgetUseSoundCaching"] = value;
+                this["TwintaniaWidgetUseSoundCaching"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -408,12 +401,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("True")]
-        public bool TwintaniaHPWidgetDivebombCounting
+        public bool TwintaniaWidgetDivebombCounting
         {
-            get { return ((bool) (this["TwintaniaHPWidgetDivebombCounting"])); }
+            get { return ((bool) (this["TwintaniaWidgetDivebombCounting"])); }
             set
             {
-                this["TwintaniaHPWidgetDivebombCounting"] = value;
+                this["TwintaniaWidgetDivebombCounting"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -421,12 +414,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("100")]
-        public int TwintaniaHPWidgetDivebombVolume
+        public int TwintaniaWidgetDivebombVolume
         {
-            get { return ((int) (this["TwintaniaHPWidgetDivebombVolume"])); }
+            get { return ((int) (this["TwintaniaWidgetDivebombVolume"])); }
             set
             {
-                this["TwintaniaHPWidgetDivebombVolume"] = value;
+                this["TwintaniaWidgetDivebombVolume"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -434,12 +427,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue(@"\AlertSounds\LowHealth.wav")]
-        public string TwintaniaHPWidgetDivebombAlertFile
+        public string TwintaniaWidgetDivebombAlertFile
         {
-            get { return ((string) (this["TwintaniaHPWidgetDivebombAlertFile"])); }
+            get { return ((string) (this["TwintaniaWidgetDivebombAlertFile"])); }
             set
             {
-                this["TwintaniaHPWidgetDivebombAlertFile"] = value;
+                this["TwintaniaWidgetDivebombAlertFile"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -447,12 +440,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("100")]
-        public int TwintaniaHPWidgetTwisterVolume
+        public int TwintaniaWidgetTwisterVolume
         {
-            get { return ((int) (this["TwintaniaHPWidgetTwisterVolume"])); }
+            get { return ((int) (this["TwintaniaWidgetTwisterVolume"])); }
             set
             {
-                this["TwintaniaHPWidgetTwisterVolume"] = value;
+                this["TwintaniaWidgetTwisterVolume"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -460,12 +453,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("0.7")]
-        public string TwintaniaHPWidgetOpacity
+        public string TwintaniaWidgetOpacity
         {
-            get { return ((string) (this["TwintaniaHPWidgetOpacity"])); }
+            get { return ((string) (this["TwintaniaWidgetOpacity"])); }
             set
             {
-                this["TwintaniaHPWidgetOpacity"] = value;
+                this["TwintaniaWidgetOpacity"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -481,12 +474,12 @@ namespace talis.xivplugin.twintania.Properties
 <string>0.9</string>
 <string>1.0</string>
 </ArrayOfString>")]
-        public StringCollection TwintaniaHPWidgetOpacityList
+        public StringCollection TwintaniaWidgetOpacityList
         {
-            get { return ((StringCollection) (this["TwintaniaHPWidgetOpacityList"])); }
+            get { return ((StringCollection) (this["TwintaniaWidgetOpacityList"])); }
             set
             {
-                this["TwintaniaHPWidgetOpacityList"] = value;
+                this["TwintaniaWidgetOpacityList"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -494,12 +487,12 @@ namespace talis.xivplugin.twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("False")]
-        public bool TwintaniaHPWidgetClickThroughEnabled
+        public bool TwintaniaWidgetClickThroughEnabled
         {
-            get { return ((bool) (this["TwintaniaHPWidgetClickThroughEnabled"])); }
+            get { return ((bool) (this["TwintaniaWidgetClickThroughEnabled"])); }
             set
             {
-                this["TwintaniaHPWidgetClickThroughEnabled"] = value;
+                this["TwintaniaWidgetClickThroughEnabled"] = value;
                 RaisePropertyChanged();
             }
         }
@@ -513,6 +506,49 @@ namespace talis.xivplugin.twintania.Properties
         private void RaisePropertyChanged([CallerMemberName] string caller = "")
         {
             PropertyChanged(this, new PropertyChangedEventArgs(caller));
+        }
+
+        #endregion
+
+
+        #region Iterative Settings Saving
+
+        private void SaveSettingsNode()
+        {
+            if (Constants.XSettings == null)
+            {
+                return;
+            }
+            var xElements = Constants.XSettings.Descendants()
+                                     .Elements("Setting");
+            var enumerable = xElements as XElement[] ?? xElements.ToArray();
+            foreach (var setting in Constants.Settings)
+            {
+                var element = enumerable.FirstOrDefault(e => e.Attribute("Key")
+                                                              .Value == setting);
+                if (element == null)
+                {
+                    var xKey = setting;
+                    var xValue = Default[xKey].ToString();
+                    var keyPairList = new List<XValuePair>
+                    {
+                        new XValuePair
+                        {
+                            Key = "Value",
+                            Value = xValue
+                        }
+                    };
+                    XmlHelper.SaveXmlNode(Constants.XSettings, "Settings", "Setting", xKey, keyPairList);
+                }
+                else
+                {
+                    var xElement = element.Element("Value");
+                    if (xElement != null)
+                    {
+                        xElement.Value = Default[setting].ToString();
+                    }
+                }
+            }
         }
 
         #endregion

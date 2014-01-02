@@ -8,7 +8,7 @@ namespace talis.xivplugin.twintania.Converters
     {
         #region IValueConverter Members
 
-        public object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             double d = System.Convert.ToDouble(value);
             Int32 ss = System.Convert.ToInt32(Math.Abs(d));
@@ -23,7 +23,7 @@ namespace talis.xivplugin.twintania.Converters
             return string.Format(@"{0:F2}", d);
         }
 
-        public object ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             return Binding.DoNothing;
         }

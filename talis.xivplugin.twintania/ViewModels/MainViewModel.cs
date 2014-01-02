@@ -1,10 +1,9 @@
 ﻿// talis.xivplugin.twintania
 // MainViewModel.cs
 
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
 using FFXIVAPP.Common.ViewModelBase;
+using System.ComponentModel;
+using System.Windows.Input;
 using talis.xivplugin.twintania.Properties;
 
 namespace talis.xivplugin.twintania.ViewModels
@@ -24,8 +23,8 @@ namespace talis.xivplugin.twintania.ViewModels
 
         #region Declarations
 
-        public ICommand ResetTwintaniaHPWidgetCommand { get; private set; }
-        public ICommand OpenTwintaniaHPWidgetCommand { get; private set; }
+        public ICommand ResetTwintaniaWidgetCommand { get; private set; }
+        public ICommand OpenTwintaniaWidgetCommand { get; private set; }
 
         #endregion
 
@@ -35,8 +34,8 @@ namespace talis.xivplugin.twintania.ViewModels
 
         public MainViewModel()
         {
-            ResetTwintaniaHPWidgetCommand = new DelegateCommand(ResetTwintaniaHPWidget);
-            OpenTwintaniaHPWidgetCommand = new DelegateCommand(OpenTwintaniaHPWidget);
+            ResetTwintaniaWidgetCommand = new DelegateCommand(ResetTwintaniaWidget);
+            OpenTwintaniaWidgetCommand = new DelegateCommand(OpenTwintaniaWidget);
         }
 
         #region Utility Functions
@@ -45,16 +44,16 @@ namespace talis.xivplugin.twintania.ViewModels
 
         #region Command Bindings
 
-        public void ResetTwintaniaHPWidget()
+        public void ResetTwintaniaWidget()
         {
-            Settings.Default.TwintaniaHPWidgetTop = 100;
-            Settings.Default.TwintaniaHPWidgetLeft = 100;
+            Settings.Default.TwintaniaWidgetTop = 100;
+            Settings.Default.TwintaniaWidgetLeft = 100;
         }
 
-        public void OpenTwintaniaHPWidget()
+        public void OpenTwintaniaWidget()
         {
-            Settings.Default.ShowTwintaniaHPWidgetOnLoad = true;
-            Widgets.Instance.ShowTwintaniaHPWidget();
+            Settings.Default.ShowTwintaniaWidgetOnLoad = true;
+            Widgets.Instance.ShowTwintaniaWidget();
         }
 
         #endregion
@@ -62,11 +61,6 @@ namespace talis.xivplugin.twintania.ViewModels
         #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
-        private void RaisePropertyChanged([CallerMemberName] string caller = "")
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(caller));
-        }
 
         #endregion
     }

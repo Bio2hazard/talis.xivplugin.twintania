@@ -5,7 +5,7 @@
 
 using System;
 
-namespace MicroTimerLib
+namespace talis.xivplugin.twintania.Helpers
 {
     /// <summary>
     /// MicroStopwatch class
@@ -13,11 +13,11 @@ namespace MicroTimerLib
     public class MicroStopwatch : System.Diagnostics.Stopwatch
     {
         readonly double _microSecPerTick =
-            1000000D / System.Diagnostics.Stopwatch.Frequency;
+            1000000D / Frequency;
 
         public MicroStopwatch()
         {
-            if (!System.Diagnostics.Stopwatch.IsHighResolution)
+            if (!IsHighResolution)
             {
                 throw new Exception("On this system the high-resolution " +
                                     "performance counter is not available");
@@ -43,9 +43,9 @@ namespace MicroTimerLib
                              MicroTimerEventArgs timerEventArgs);
         public event MicroTimerElapsedEventHandler MicroTimerElapsed;
 
-        System.Threading.Thread _threadTimer = null;
+        System.Threading.Thread _threadTimer;
         long _ignoreEventIfLateBy = long.MaxValue;
-        long _timerIntervalInMicroSec = 0;
+        long _timerIntervalInMicroSec;
         bool _stopTimer = true;
 
         public MicroTimer()
@@ -113,15 +113,12 @@ namespace MicroTimerLib
 
             _stopTimer = false;
 
-            System.Threading.ThreadStart threadStart = delegate()
-            {
-                NotificationTimer(ref _timerIntervalInMicroSec,
-                                  ref _ignoreEventIfLateBy,
-                                  ref _stopTimer);
-            };
+            System.Threading.ThreadStart threadStart = () => NotificationTimer(ref _timerIntervalInMicroSec, ref _ignoreEventIfLateBy, ref _stopTimer);
 
-            _threadTimer = new System.Threading.Thread(threadStart);
-            _threadTimer.Priority = System.Threading.ThreadPriority.Highest;
+            _threadTimer = new System.Threading.Thread(threadStart)
+            {
+                Priority = System.Threading.ThreadPriority.Highest
+            };
             _threadTimer.Start();
         }
 
@@ -165,7 +162,7 @@ namespace MicroTimerLib
             int timerCount = 0;
             long nextNotification = 0;
 
-            MicroStopwatch microStopwatch = new MicroStopwatch();
+            var microStopwatch = new MicroStopwatch();
             microStopwatch.Start();
 
             while (!stopTimer)
@@ -180,7 +177,7 @@ namespace MicroTimerLib
 
                 nextNotification += timerIntervalInMicroSecCurrent;
                 timerCount++;
-                long elapsedMicroseconds = 0;
+                long elapsedMicroseconds;
 
                 while ((elapsedMicroseconds = microStopwatch.ElapsedMicroseconds)
                         < nextNotification)
@@ -195,7 +192,7 @@ namespace MicroTimerLib
                     continue;
                 }
 
-                MicroTimerEventArgs microTimerEventArgs =
+                var microTimerEventArgs =
                      new MicroTimerEventArgs(timerCount,
                                              elapsedMicroseconds,
                                              timerLateBy,

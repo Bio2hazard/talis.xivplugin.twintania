@@ -1,5 +1,5 @@
 ﻿// talis.xivplugin.twintania
-// TwintaniaHPWidget.xaml.cs
+// TwintaniaWidget.xaml.cs
 
 using System.ComponentModel;
 using System.Windows;
@@ -10,13 +10,13 @@ using talis.xivplugin.twintania.Properties;
 namespace talis.xivplugin.twintania.Windows
 {
     /// <summary>
-    ///     Interaction logic for TwintaniaHPWidget.xaml
+    ///     Interaction logic for TwintaniaWidget.xaml
     /// </summary>
-    public partial class TwintaniaHPWidget
+    public partial class TwintaniaWidget
     {
-        public static TwintaniaHPWidget View;
+        public static TwintaniaWidget View;
 
-        public TwintaniaHPWidget()
+        public TwintaniaWidget()
         {
             View = this;
             InitializeComponent();
@@ -33,7 +33,7 @@ namespace talis.xivplugin.twintania.Windows
 
         private void WidgetClose_OnClick(object sender, RoutedEventArgs e)
         {
-            Settings.Default.ShowTwintaniaHPWidgetOnLoad = false;
+            Settings.Default.ShowTwintaniaWidgetOnLoad = false;
             Close();
         }
 

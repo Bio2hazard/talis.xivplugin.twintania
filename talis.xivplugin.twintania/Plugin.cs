@@ -21,6 +21,21 @@ namespace talis.xivplugin.twintania
     [Export(typeof (IPlugin))]
     public class Plugin : IPlugin, INotifyPropertyChanged
     {
+        #region Logger
+        private static Logger _logger;
+        private static Logger Logger
+        {
+            get
+            {
+                if (FFXIVAPP.Common.Constants.EnableNLog)
+                {
+                    return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
+                }
+                return null;
+            }
+        }
+        #endregion
+
         #region Property Bindings
 
         public static IPluginHost PHost { get; private set; }
@@ -69,7 +84,7 @@ namespace talis.xivplugin.twintania
                     }
                     catch (Exception ex)
                     {
-                        Logging.Log(LogManager.GetCurrentClassLogger(), "", ex);
+                        LogHelper.Log(Logger, ex, LogLevel.Error);
                     }
                 }
                 PluginViewModel.Instance.Locale = _locale;

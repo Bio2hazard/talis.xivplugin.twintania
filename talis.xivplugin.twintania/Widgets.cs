@@ -2,14 +2,31 @@
 // Widgets.cs
 
 using System;
+using NLog;
+using talis.xivplugin.twintania.Helpers;
 using talis.xivplugin.twintania.Windows;
 
 namespace talis.xivplugin.twintania
 {
     public class Widgets
     {
+        #region Logger
+        private static Logger _logger;
+        private static Logger Logger
+        {
+            get
+            {
+                if (FFXIVAPP.Common.Constants.EnableNLog)
+                {
+                    return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
+                }
+                return null;
+            }
+        }
+        #endregion
+
         private static Widgets _instance;
-        private TwintaniaHPWidget _twintaniaHPWidget;
+        private TwintaniaWidget _twintaniaWidget;
 
         public static Widgets Instance
         {
@@ -17,19 +34,20 @@ namespace talis.xivplugin.twintania
             set { _instance = value; }
         }
 
-        public TwintaniaHPWidget TwintaniaHPWidget
+        public TwintaniaWidget TwintaniaWidget
         {
-            get { return _twintaniaHPWidget ?? (_twintaniaHPWidget = new TwintaniaHPWidget()); }
+            get { return _twintaniaWidget ?? (_twintaniaWidget = new TwintaniaWidget()); }
         }
 
-        public void ShowTwintaniaHPWidget()
+        public void ShowTwintaniaWidget()
         {
             try
             {
-                TwintaniaHPWidget.Show();
+                TwintaniaWidget.Show();
             }
             catch (Exception ex)
             {
+                LogHelper.Log(Logger, ex, LogLevel.Error);
             }
         }
     }

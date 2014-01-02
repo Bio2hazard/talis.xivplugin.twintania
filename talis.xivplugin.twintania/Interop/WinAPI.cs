@@ -8,18 +8,35 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Interop;
+using NLog;
+using talis.xivplugin.twintania.Helpers;
 using talis.xivplugin.twintania.Properties;
 
 namespace talis.xivplugin.twintania.Interop
 {
     public static class WinAPI
     {
+        #region Logger
+        private static Logger _logger;
+        private static Logger Logger
+        {
+            get
+            {
+                if (FFXIVAPP.Common.Constants.EnableNLog)
+                {
+                    return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
+                }
+                return null;
+            }
+        }
+        #endregion
+
         public delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
 
-        private const int WS_EX_TRANSPARENT = 0x00000020;
-        private const int GWL_EXSTYLE = (-20);
-        public const uint WINEVENT_OUTOFCONTEXT = 0;
-        public const uint EVENT_SYSTEM_FOREGROUND = 3;
+        private const int WsExTransparent = 0x00000020;
+        private const int GwlExstyle = (-20);
+        public const uint WineventOutofcontext = 0;
+        public const uint EventSystemForeground = 3;
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern int GetWindowLong(IntPtr hwnd, int index);
@@ -39,23 +56,22 @@ namespace talis.xivplugin.twintania.Interop
         public static string GetActiveWindowTitle()
         {
             const int nChars = 256;
-            var handle = IntPtr.Zero;
-            var Buff = new StringBuilder(nChars);
-            handle = GetForegroundWindow();
-            return GetWindowText(handle, Buff, nChars) > 0 ? Buff.ToString() : "";
+            var buff = new StringBuilder(nChars);
+            IntPtr handle = GetForegroundWindow();
+            return GetWindowText(handle, buff, nChars) > 0 ? buff.ToString() : "";
         }
 
         private static void SetWindowTransparent(IntPtr hwnd)
         {
-            var extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
-            SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle | WS_EX_TRANSPARENT);
+            var extendedStyle = GetWindowLong(hwnd, GwlExstyle);
+            SetWindowLong(hwnd, GwlExstyle, extendedStyle | WsExTransparent);
         }
 
         private static void SetWindowLayered(IntPtr hwnd)
         {
-            var extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
-            extendedStyle &= ~WS_EX_TRANSPARENT;
-            SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle);
+            var extendedStyle = GetWindowLong(hwnd, GwlExstyle);
+            extendedStyle &= ~WsExTransparent;
+            SetWindowLong(hwnd, GwlExstyle, extendedStyle);
         }
 
         public static void ToggleClickThrough(Window window)
@@ -63,7 +79,7 @@ namespace talis.xivplugin.twintania.Interop
             try
             {
                 var hWnd = new WindowInteropHelper(window).Handle;
-                if (Settings.Default.TwintaniaHPWidgetClickThroughEnabled)
+                if (Settings.Default.TwintaniaWidgetClickThroughEnabled)
                 {
                     SetWindowTransparent(hWnd);
                 }
@@ -74,6 +90,7 @@ namespace talis.xivplugin.twintania.Interop
             }
             catch (Exception ex)
             {
+                LogHelper.Log(Logger, ex, LogLevel.Error);
             }
         }
     }

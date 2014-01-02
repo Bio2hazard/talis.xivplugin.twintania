@@ -17,7 +17,7 @@ namespace talis.xivplugin.twintania
 
         public const string LibraryPack = "pack://application:,,,/talis.xivplugin.twintania;component/";
 
-        public static readonly string[] Supported = new[]
+        public static readonly string[] Supported =
         {
             "en"
         };

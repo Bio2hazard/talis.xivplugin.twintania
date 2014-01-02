@@ -2,7 +2,6 @@
 // LogPublisher.cs
 
 using FFXIVAPP.Common.Core.Memory;
-using FFXIVAPP.Common.Helpers;
 using FFXIVAPP.Common.Utilities;
 using NLog;
 using System;
@@ -17,8 +16,22 @@ namespace talis.xivplugin.twintania.Utilities
 {
     public static class LogPublisher
     {
+        #region Logger
+        private static Logger _logger;
+        private static Logger Logger
+        {
+            get
+            {
+                if (FFXIVAPP.Common.Constants.EnableNLog)
+                {
+                    return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
+                }
+                return null;
+            }
+        }
+        #endregion
 
-        private static List<string> divebomb = new List<string>()
+        private static List<string> divebomb = new List<string>
         {
             "Divebomb",
             "Bombe plongeante",
@@ -26,7 +39,7 @@ namespace talis.xivplugin.twintania.Utilities
             "ダイブボム"
         };
 
-        private static List<string> twister = new List<string>()
+        private static List<string> twister = new List<string>
         {
             "Twister",
             "Tornade",
@@ -38,24 +51,24 @@ namespace talis.xivplugin.twintania.Utilities
         {
             try
             {
-                if(TwintaniaHPWidgetViewModel.Instance.TwintaniaIsValid && chatLogEntry.Code == "2AAB")
+                if(TwintaniaWidgetViewModel.Instance.TwintaniaIsValid && chatLogEntry.Code == "2AAB")
                 {
                     var line = chatLogEntry.Line.Replace("  ", " ");
-                    var name = TwintaniaHPWidgetViewModel.Instance.TwintaniaEntity.Name;
+                    var name = TwintaniaWidgetViewModel.Instance.TwintaniaEntity.Name;
 
                     if(Regex.IsMatch(line ,@"^\s*\b" + name + @"\b.*\b(" + string.Join("|", divebomb.Select(Regex.Escape).ToArray()) + @"\b)"))
                     {
-                        TwintaniaHPWidgetViewModel.Instance.TriggerDiveBomb();
+                        TwintaniaWidgetViewModel.Instance.TriggerDiveBomb();
                     } else if(Regex.IsMatch(line ,@"^\s*\b" + name + @"\b.*\b(" + string.Join("|", twister.Select(Regex.Escape).ToArray()) + @"\b)"))
                     {
-                        SoundHelper.Play(@"\AlertSounds\aruba.wav", Settings.Default.TwintaniaHPWidgetTwisterVolume);
-                        //DispatcherHelper.Invoke(() => SoundHelper.Play(@"\AlertSounds\aruba.wav", Settings.Default.TwintaniaHPWidgetTwisterVolume));
+                        SoundHelper.Play(@"\AlertSounds\aruba.wav", Settings.Default.TwintaniaWidgetTwisterVolume);
+                        //DispatcherHelper.Invoke(() => SoundHelper.Play(@"\AlertSounds\aruba.wav", Settings.Default.TwintaniaWidgetTwisterVolume));
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logging.Log(LogManager.GetCurrentClassLogger(), "", ex);
+                LogHelper.Log(Logger, ex, LogLevel.Error);
             }
         }
 

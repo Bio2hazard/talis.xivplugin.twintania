@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace talis.xivplugin.twintania.Events
 {
     public class TimerUpdateEventArgs
@@ -12,7 +7,7 @@ namespace talis.xivplugin.twintania.Events
 
         public TimerUpdateEventArgs(double timeToEvent)
         {
-            this.TimeToEvent = timeToEvent;
+            TimeToEvent = timeToEvent;
         }
     }
 }

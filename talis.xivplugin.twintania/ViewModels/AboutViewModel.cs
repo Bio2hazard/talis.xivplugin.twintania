@@ -1,12 +1,12 @@
 ﻿// talis.xivplugin.twintania
 // AboutViewModel.cs
 
+using FFXIVAPP.Common.Models;
+using FFXIVAPP.Common.ViewModelBase;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using FFXIVAPP.Common.Models;
-using FFXIVAPP.Common.ViewModelBase;
+using NLog;
 
 namespace talis.xivplugin.twintania.ViewModels
 {
@@ -54,9 +54,11 @@ namespace talis.xivplugin.twintania.ViewModels
             }
             catch (Exception ex)
             {
-                var popupContent = new PopupContent();
-                popupContent.Title = PluginViewModel.Instance.Locale["app_WarningMessage"];
-                popupContent.Message = ex.Message;
+                var popupContent = new PopupContent
+                {
+                    Title = PluginViewModel.Instance.Locale["app_WarningMessage"],
+                    Message = ex.Message
+                };
                 Plugin.PHost.PopupMessage(Plugin.PName, popupContent);
             }
         }
@@ -69,9 +71,11 @@ namespace talis.xivplugin.twintania.ViewModels
             }
             catch (Exception ex)
             {
-                var popupContent = new PopupContent();
-                popupContent.Title = PluginViewModel.Instance.Locale["app_WarningMessage"];
-                popupContent.Message = ex.Message;
+                var popupContent = new PopupContent
+                {
+                    Title = PluginViewModel.Instance.Locale["app_WarningMessage"],
+                    Message = ex.Message
+                };
                 Plugin.PHost.PopupMessage(Plugin.PName, popupContent);
             }
         }
@@ -81,11 +85,6 @@ namespace talis.xivplugin.twintania.ViewModels
         #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
-        private void RaisePropertyChanged([CallerMemberName] string caller = "")
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(caller));
-        }
 
         #endregion
     }
