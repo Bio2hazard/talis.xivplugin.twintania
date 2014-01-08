@@ -2,6 +2,7 @@
 // TwintaniaWidgetViewModel.cs
 
 using FFXIVAPP.Common.Core.Memory;
+using FFXIVAPP.Common.Core.Memory.Enums;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -41,11 +42,10 @@ namespace talis.xivplugin.twintania.Windows
         private ActorEntity _dreadknightEntity;
         private double _dreadknightHPPercent;
         private bool _dreadknightIsValid;
-        private ActorEntity _dreadknightTestActor;
         private bool _forceTop;
         private bool _testMode;
 
-        private int _twintaniaDivebombCount;
+        private int _twintaniaDivebombCount = 1;
         private int _twintaniaDivebombTimeFull;
         private double _twintaniaDivebombTimeToNextCur;
         private double _twintaniaDivebombTimeToNextMax;
@@ -58,7 +58,6 @@ namespace talis.xivplugin.twintania.Windows
         private double _twintaniaHPPercent;
         private bool _twintaniaIsValid;
 
-        private ActorEntity _twintaniaTestActor;
         private Queue<Tuple<string, double>> _twintaniaTestList;
         private double _twintaniaTestTimeToNextCur;
         private double _twintaniaTestTimeToNextMax;
@@ -95,26 +94,6 @@ namespace talis.xivplugin.twintania.Windows
             set
             {
                 _twintaniaEntity = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        public ActorEntity TwintaniaTestActor
-        {
-            get { return _twintaniaTestActor ?? (_twintaniaTestActor = new ActorEntity()); }
-            set
-            {
-                _twintaniaTestActor = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        public ActorEntity DreadknightTestActor
-        {
-            get { return _dreadknightTestActor ?? (_dreadknightTestActor = new ActorEntity()); }
-            set
-            {
-                _dreadknightTestActor = value;
                 RaisePropertyChanged();
             }
         }
@@ -260,8 +239,6 @@ namespace talis.xivplugin.twintania.Windows
                     {
                         TwintaniaTestTimeToNextCur -= 0.1;
 
-                        TwintaniaEntity = TwintaniaTestActor;
-
                         if (TwintaniaTestTimeToNextCur <= 0.00)
                         {
                             var next = TwintaniaTestList.Dequeue();
@@ -372,28 +349,28 @@ namespace talis.xivplugin.twintania.Windows
 
             TestMode = true;
 
-            TwintaniaTestActor.Name = "Twintania";
-            TwintaniaTestActor.HPMax = 514596;
-            TwintaniaTestActor.HPCurrent = 514596;
-
-            TwintaniaEntity = TwintaniaTestActor;
-
-            TwintaniaIsValid = true;
+            TwintaniaEntity = new ActorEntity
+            {
+                Name = "Twintania",
+                HPMax = 514596,
+                HPCurrent = 514596
+            };
             TwintaniaEngaged = true;
+            TwintaniaIsValid = true;
+            TwintaniaHPPercent = 1;
 
             EnrageTimerStart();
-
-            TwintaniaHPPercent = 1;
+            
             TwintaniaDivebombCount = 1;
             TwintaniaDivebombTimeToNextCur = 0;
             TwintaniaDivebombTimeToNextMax = 0;
 
-            DreadknightTestActor.Name = "Dreadknight";
-            DreadknightTestActor.HPMax = 11250;
-            DreadknightTestActor.HPCurrent = 11250;
-
-            DreadknightEntity = DreadknightTestActor;
-
+            DreadknightEntity = new ActorEntity
+            {
+                Name = "Dreadknight",
+                HPMax = 11250,
+                HPCurrent = 11250
+            };
             DreadknightIsValid = true;
             DreadknightHPPercent = 1;
 
@@ -422,6 +399,9 @@ namespace talis.xivplugin.twintania.Windows
             {
                 return;
             }
+
+            TwintaniaTestTimer.Stop();
+
             LogHelper.Log(Logger, "Test Mode Stopped", LogLevel.Trace);
             ForceTop = false;
 
@@ -431,19 +411,15 @@ namespace talis.xivplugin.twintania.Windows
             TwintaniaTestList.Clear();
 
             TwintaniaEntity = null;
-            TwintaniaTestActor = null;
-
-            TwintaniaIsValid = false;
             TwintaniaEngaged = false;
-
+            TwintaniaIsValid = false;
             TwintaniaHPPercent = 0;
+
             TwintaniaDivebombCount = 1;
             TwintaniaDivebombTimeToNextCur = 0;
             TwintaniaDivebombTimeToNextMax = 0;
 
             DreadknightEntity = null;
-            DreadknightTestActor = null;
-
             DreadknightIsValid = false;
             DreadknightHPPercent = 0;
 

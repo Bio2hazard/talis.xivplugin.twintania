@@ -100,10 +100,9 @@ namespace talis.xivplugin.twintania
             var monsterEntities = actorEntitiesEvent.ActorEntities;
 
             ActorEntity twintania = monsterEntities.SingleOrDefault(monster => (monster.NPCID1 == 4295027 && monster.NPCID2 == 2021));
-
-            TwintaniaWidgetViewModel.Instance.TwintaniaEntity = twintania;
-            if (twintania != null && twintania.IsValid)
+            if (twintania != null && twintania.IsValid && twintania.HPCurrent > 0)
             {
+                TwintaniaWidgetViewModel.Instance.TwintaniaEntity = twintania;
                 TwintaniaWidgetViewModel.Instance.TwintaniaIsValid = true;
                 TwintaniaWidgetViewModel.Instance.TwintaniaHPPercent = (double) twintania.HPPercent;
                 if(twintania.IsClaimed && !TwintaniaWidgetViewModel.Instance.TwintaniaEngaged)
@@ -112,8 +111,11 @@ namespace talis.xivplugin.twintania
                     TwintaniaWidgetViewModel.Instance.TwintaniaEngaged = true;
                 }
             }
-            else if(TwintaniaWidgetViewModel.Instance.TwintaniaIsValid && !TwintaniaWidgetViewModel.Instance.TestMode)
+            else if(TwintaniaWidgetViewModel.Instance.TwintaniaIsValid)
             {
+                TwintaniaWidgetViewModel.Instance.DivebombTimerStop();
+                TwintaniaWidgetViewModel.Instance.EnrageTimerStop();
+                TwintaniaWidgetViewModel.Instance.TwintaniaEntity = null;
                 TwintaniaWidgetViewModel.Instance.TwintaniaIsValid = false;
                 TwintaniaWidgetViewModel.Instance.TwintaniaEngaged = false;
                 TwintaniaWidgetViewModel.Instance.TwintaniaHPPercent = 0;
@@ -123,15 +125,15 @@ namespace talis.xivplugin.twintania
             }
 
             var dreadknight = monsterEntities.SingleOrDefault(monster => (monster.NPCID1 == 4295031 && monster.NPCID2 == 2026));
-
-            TwintaniaWidgetViewModel.Instance.DreadknightEntity = dreadknight;
-            if (dreadknight != null && dreadknight.IsValid)
+            if (dreadknight != null && dreadknight.IsValid && dreadknight.HPCurrent > 0)
             {
+                TwintaniaWidgetViewModel.Instance.DreadknightEntity = dreadknight;
                 TwintaniaWidgetViewModel.Instance.DreadknightIsValid = true;
                 TwintaniaWidgetViewModel.Instance.DreadknightHPPercent = (double) dreadknight.HPPercent;
             }
-            else if(TwintaniaWidgetViewModel.Instance.DreadknightIsValid && !TwintaniaWidgetViewModel.Instance.TestMode)
+            else if(TwintaniaWidgetViewModel.Instance.DreadknightIsValid)
             {
+                TwintaniaWidgetViewModel.Instance.DreadknightEntity = null;
                 TwintaniaWidgetViewModel.Instance.DreadknightIsValid = false;
                 TwintaniaWidgetViewModel.Instance.DreadknightHPPercent = 0;
             }

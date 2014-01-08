@@ -56,10 +56,11 @@ namespace talis.xivplugin.twintania.Utilities
                     var line = chatLogEntry.Line.Replace("  ", " ");
                     var name = TwintaniaWidgetViewModel.Instance.TwintaniaEntity.Name;
 
-                    if(Regex.IsMatch(line ,@"^\s*\b" + name + @"\b.*\b(" + string.Join("|", divebomb.Select(Regex.Escape).ToArray()) + @"\b)"))
+                    if (Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", divebomb.Select(Regex.Escape).ToArray()) + @"\b)"))
                     {
                         TwintaniaWidgetViewModel.Instance.TriggerDiveBomb();
-                    } else if(Regex.IsMatch(line ,@"^\s*\b" + name + @"\b.*\b(" + string.Join("|", twister.Select(Regex.Escape).ToArray()) + @"\b)"))
+                    }
+                    else if (Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", twister.Select(Regex.Escape).ToArray()) + @"\b)"))
                     {
                         SoundHelper.Play(@"\AlertSounds\aruba.wav", Settings.Default.TwintaniaWidgetTwisterVolume);
                         //DispatcherHelper.Invoke(() => SoundHelper.Play(@"\AlertSounds\aruba.wav", Settings.Default.TwintaniaWidgetTwisterVolume));
