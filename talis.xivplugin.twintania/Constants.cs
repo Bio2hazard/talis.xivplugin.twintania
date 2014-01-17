@@ -1,9 +1,11 @@
 ﻿// talis.xivplugin.twintania
 // Constants.cs
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Xml.Linq;
 using FFXIVAPP.Common.Helpers;
 
@@ -13,7 +15,14 @@ namespace talis.xivplugin.twintania
     {
         #region Declarations
 
-        public const string BaseDirectory = "./Plugins/talis.xivplugin.twintania/";
+        public static string BaseDirectory
+        {
+            get
+            {
+                return Path.GetDirectoryName(Assembly.GetExecutingAssembly()
+                                                     .Location);
+            }
+        }
 
         public const string LibraryPack = "pack://application:,,,/talis.xivplugin.twintania;component/";
 
@@ -33,11 +42,28 @@ namespace talis.xivplugin.twintania
         {
             get
             {
-                const string file = "./Plugins/talis.xivplugin.twintania/Settings.xml";
-                if (_xSettings == null)
+                var file = Path.Combine(FFXIVAPP.Common.Constants.PluginsSettingsPath, "talis.xivplugin.twintania.xml");
+                var legacyFile = "./Plugins/talis.xivplugin.twintania/Settings.xml";
+                if (_xSettings != null)
+                {
+                    return _xSettings;
+                }
+                try
                 {
                     var found = File.Exists(file);
-                    _xSettings = found ? XDocument.Load(file) : ResourceHelper.XDocResource(LibraryPack + "/Defaults/Settings.xml");
+                    if (found)
+                    {
+                        _xSettings = XDocument.Load(file);
+                    }
+                    else
+                    {
+                        found = File.Exists(legacyFile);
+                        _xSettings = found ? XDocument.Load(legacyFile) : ResourceHelper.XDocResource(LibraryPack + "/Defaults/Settings.xml");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _xSettings = ResourceHelper.XDocResource(LibraryPack + "/Defaults/Settings.xml");
                 }
                 return _xSettings;
             }

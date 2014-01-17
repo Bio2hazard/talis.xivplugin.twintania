@@ -2,6 +2,7 @@
 // LogPublisher.cs
 
 using FFXIVAPP.Common.Core.Memory;
+using FFXIVAPP.Common.Helpers;
 using FFXIVAPP.Common.Utilities;
 using NLog;
 using System;
@@ -62,8 +63,7 @@ namespace talis.xivplugin.twintania.Utilities
                     }
                     else if (Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", twister.Select(Regex.Escape).ToArray()) + @"\b)"))
                     {
-                        SoundHelper.Play(@"\AlertSounds\aruba.wav", Settings.Default.TwintaniaWidgetTwisterVolume);
-                        //DispatcherHelper.Invoke(() => SoundHelper.Play(@"\AlertSounds\aruba.wav", Settings.Default.TwintaniaWidgetTwisterVolume));
+                        SoundPlayerHelper.PlayCached("AlertSounds/aruba.wav", Settings.Default.TwintaniaWidgetTwisterVolume);
                     }
                 }
             }

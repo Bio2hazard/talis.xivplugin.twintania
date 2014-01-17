@@ -1,6 +1,7 @@
 ﻿// talis.xivplugin.twintania
 // Settings.cs
 
+using System.IO;
 using FFXIVAPP.Common.Helpers;
 using FFXIVAPP.Common.Models;
 using FFXIVAPP.Common.Utilities;
@@ -52,7 +53,7 @@ namespace talis.xivplugin.twintania.Properties
             // this call to default settings only ensures we keep the settings we want and delete the ones we don't (old)
             DefaultSettings();
             SaveSettingsNode();
-            Constants.XSettings.Save(Constants.BaseDirectory + "Settings.xml");
+            Constants.XSettings.Save(Path.Combine(FFXIVAPP.Common.Constants.PluginsSettingsPath, "talis.xivplugin.twintania.xml"));
         }
 
         private void DefaultSettings()
@@ -73,13 +74,13 @@ namespace talis.xivplugin.twintania.Properties
             Constants.Settings.Add("TwintaniaWidgetEnrageTime");
             Constants.Settings.Add("TwintaniaWidgetEnrageVolume");
             Constants.Settings.Add("TwintaniaWidgetEnrageCounting");
-            Constants.Settings.Add("TwintaniaWidgetEnrageAlertFile");
+            //Constants.Settings.Add("TwintaniaWidgetEnrageAlertFile");
 
             Constants.Settings.Add("TwintaniaWidgetDivebombTimeFast");
             Constants.Settings.Add("TwintaniaWidgetDivebombTimeSlow");
             Constants.Settings.Add("TwintaniaWidgetDivebombCounting");
             Constants.Settings.Add("TwintaniaWidgetDivebombVolume");
-            Constants.Settings.Add("TwintaniaWidgetDivebombAlertFile");
+            //Constants.Settings.Add("TwintaniaWidgetDivebombAlertFile");
 
             Constants.Settings.Add("TwintaniaWidgetTwisterVolume");
 
@@ -335,7 +336,7 @@ namespace talis.xivplugin.twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue(@"\AlertSounds\LowHealth.wav")]
+        [DefaultSettingValue("AlertSounds/LowHealth.wav")]
         public string TwintaniaWidgetEnrageAlertFile
         {
             get { return ((string)(this["TwintaniaWidgetEnrageAlertFile"])); }
@@ -426,7 +427,7 @@ namespace talis.xivplugin.twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue(@"\AlertSounds\LowHealth.wav")]
+        [DefaultSettingValue("AlertSounds/LowHealth.wav")]
         public string TwintaniaWidgetDivebombAlertFile
         {
             get { return ((string) (this["TwintaniaWidgetDivebombAlertFile"])); }
@@ -509,7 +510,6 @@ namespace talis.xivplugin.twintania.Properties
         }
 
         #endregion
-
 
         #region Iterative Settings Saving
 

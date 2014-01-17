@@ -148,7 +148,7 @@ namespace talis.xivplugin.twintania.Helpers
                 _timeToEventSeconds--;
                 if (_timeToEventSeconds <= 10)
                 {
-                    SoundHelper.Play(@"Counting/" + _timeToEventSeconds + @".mp3", Volume);
+                    SoundPlayerHelper.PlayCached("Counting/" + _timeToEventSeconds + @".mp3", Volume);
                 }
             }
             else if (_timeToEventCurrent <= 0.00)
@@ -162,7 +162,7 @@ namespace talis.xivplugin.twintania.Helpers
 
                 if(SoundWhenFinished.Length > 0 && Volume > 0)
                 {
-                    SoundHelper.Play(SoundWhenFinished, Volume);
+                    SoundPlayerHelper.PlayCached(SoundWhenFinished, Volume);
                 }
 
                 Stop();

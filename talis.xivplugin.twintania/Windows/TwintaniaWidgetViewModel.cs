@@ -3,6 +3,7 @@
 
 using FFXIVAPP.Common.Core.Memory;
 using FFXIVAPP.Common.Core.Memory.Enums;
+using FFXIVAPP.Common.Helpers;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -257,7 +258,7 @@ namespace talis.xivplugin.twintania.Windows
                                         break;
 
                                     case "Twister":
-                                        SoundHelper.Play(@"\AlertSounds\aruba.wav", Settings.Default.TwintaniaWidgetTwisterVolume);
+                                        SoundPlayerHelper.PlayCached("AlertSounds/aruba.wav", Settings.Default.TwintaniaWidgetTwisterVolume);
                                         break;
 
                                     case "End":
