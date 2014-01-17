@@ -2,10 +2,13 @@
 // Initializer.cs
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows;
 using System.Xml.Linq;
+using FFXIVAPP.Common.Helpers;
 using talis.xivplugin.twintania.Helpers;
 using talis.xivplugin.twintania.Properties;
 
@@ -23,6 +26,7 @@ namespace talis.xivplugin.twintania
         {
             if (Constants.XSettings != null)
             {
+                Settings.Default.Reset();
                 foreach (var xElement in Constants.XSettings.Descendants()
                                                   .Elements("Setting"))
                 {
@@ -32,8 +36,11 @@ namespace talis.xivplugin.twintania
                     {
                         return;
                     }
-                    Settings.SetValue(xKey, xValue);
-                    if (!Constants.Settings.Contains(xKey))
+                    if (Constants.Settings.Contains(xKey))
+                    {
+                        Settings.SetValue(xKey, xValue);
+                    }
+                    else
                     {
                         Constants.Settings.Add(xKey);
                     }
@@ -41,25 +48,52 @@ namespace talis.xivplugin.twintania
             }
         }
 
-        public static void LoadSounds()
+        public static void LoadAndCacheSounds()
         {
             PluginViewModel.Instance.SoundFiles.Clear();
             //do your gui stuff here
-
-            string regexString;
-
-            regexString = Settings.Default.TwintaniaWidgetUseNAudio ? @"^.+\.(wav|mp3)$" : @"^.+\.(wav)$";
-
-            var alertsDirectory = Path.Combine(Constants.BaseDirectory, "AlertSounds");
-            if (Directory.Exists(alertsDirectory))
+            var legacyFiles = new List<FileInfo>();
+            var filters = new List<string>
             {
-                var files = Directory.GetFiles(Constants.BaseDirectory + "AlertSounds")
-                                 .Where(file => Regex.IsMatch(file, regexString))
-                                 .Select(file => new FileInfo(file));
-                foreach (var file in files)
+                "*.wav",
+                "*.mp3"
+            };
+            foreach (var filter in filters)
+            {
+                var files = Directory.GetFiles(Constants.BaseDirectory, filter, SearchOption.AllDirectories)
+                                     .Select(file => new FileInfo(file));
+                legacyFiles.AddRange(files);
+            }
+            foreach (var legacyFile in legacyFiles)
+            {
+                if (legacyFile.DirectoryName == null)
                 {
-                    PluginViewModel.Instance.SoundFiles.Add(file.Name);
+                    continue;
                 }
+                var baseKey = legacyFile.DirectoryName.Replace(Constants.BaseDirectory, "");
+                var key = String.IsNullOrWhiteSpace(baseKey) ? legacyFile.Name : String.Format("{0}\\{1}", baseKey.Substring(1), legacyFile.Name);
+                if (File.Exists(Path.Combine(FFXIVAPP.Common.Constants.SoundsPath, key)))
+                {
+                    continue;
+                }
+                try
+                {
+                    var directoryKey = String.IsNullOrWhiteSpace(baseKey) ? "" : baseKey.Substring(1);
+                    var directory = Path.Combine(FFXIVAPP.Common.Constants.SoundsPath, directoryKey);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+                    File.Copy(legacyFile.FullName, Path.Combine(FFXIVAPP.Common.Constants.SoundsPath, key));
+                    SoundPlayerHelper.TryGetSetSoundFile(key);
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+            foreach (var cachedSoundFile in SoundPlayerHelper.SoundFileKeys())
+            {
+                PluginViewModel.Instance.SoundFiles.Add(cachedSoundFile);
             }
         }
 

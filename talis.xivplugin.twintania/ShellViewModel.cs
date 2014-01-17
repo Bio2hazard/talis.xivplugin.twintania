@@ -46,7 +46,7 @@ namespace talis.xivplugin.twintania
         public ShellViewModel()
         {
             Initializer.LoadSettings();
-            Initializer.LoadSounds();
+            Initializer.LoadAndCacheSounds();
             Initializer.SetupWidgetTopMost();
             Settings.Default.PropertyChanged += DefaultOnPropertyChanged;
         }

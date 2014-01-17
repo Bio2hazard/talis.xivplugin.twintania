@@ -75,7 +75,7 @@ namespace talis.xivplugin.twintania.ViewModels
 
         private static void RefreshSoundList()
         {
-            Initializer.LoadSounds();
+            Initializer.LoadAndCacheSounds();
         }
 
         public void SaveDivebombTimers()
