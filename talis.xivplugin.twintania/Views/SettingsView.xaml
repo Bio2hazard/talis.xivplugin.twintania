@@ -6,7 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:properties="clr-namespace:talis.xivplugin.twintania.Properties"
              xmlns:viewModels="clr-namespace:talis.xivplugin.twintania.ViewModels"
-             d:DesignHeight="500"
+             d:DesignHeight="700"
              d:DesignWidth="720"
              mc:Ignorable="d">
 
@@ -29,6 +29,12 @@
                      Header="Widget Settings">
                 <ScrollViewer>
                     <StackPanel>
+                        <GroupBox Header="Show Title On Twintania Widget">
+                            <StackPanel>
+                                <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetShowTitle,
+                                                                            Source={StaticResource Settings}}" />
+                            </StackPanel>
+                        </GroupBox>
                         <GroupBox Header="Enable Click-Through On Twintania Widget">
                             <StackPanel>
                                 <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetClickThroughEnabled,
@@ -55,40 +61,6 @@
                                                                   Source={StaticResource Settings}}" />
                             </StackPanel>
                         </GroupBox>
-                        <GroupBox Header="Use NAudio For Sound Output? ( Recommended )">
-                            <StackPanel>
-                                <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetUseNAudio,
-                                                                           Source={StaticResource Settings}}" />
-                            </StackPanel>
-                        </GroupBox>
-                        <GroupBox Header="Use Sound Caching?">
-                            <StackPanel>
-                                <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetUseSoundCaching,
-                                                                           Source={StaticResource Settings}}"
-                                                       IsEnabled="{Binding TwintaniaWidgetUseNAudio,
-                                                                           Source={StaticResource Settings}}" />
-                            </StackPanel>
-                        </GroupBox>
-                        <GroupBox Header="Twister Sounds">
-                            <StackPanel>
-                                <DockPanel LastChildFill="True">
-                                    <Label>Volume:</Label>
-                                    <TextBlock Width="50"
-                                               VerticalAlignment="Center"
-                                               Text="{Binding ElementName=TTVolume,
-                                                              Path=Value,
-                                                              StringFormat=\{0\}%}" />
-                                    <Slider x:Name="TTVolume"
-                                            IsSnapToTickEnabled="True"
-                                            Maximum="100"
-                                            Minimum="0"
-                                            TickFrequency="2"
-                                            TickPlacement="BottomRight"
-                                            Value="{Binding TwintaniaWidgetTwisterVolume,
-                                                            Source={StaticResource Settings}}" />
-                                </DockPanel>
-                            </StackPanel>
-                        </GroupBox>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
@@ -96,7 +68,7 @@
                      Header="Divebomb Settings">
                 <ScrollViewer>
                     <StackPanel>
-                        <GroupBox Header="Divebomb Timers">
+                        <GroupBox Header="Divebomb timer settings">
                             <StackPanel>
                                 <Grid Margin="0 2">
                                     <Label VerticalContentAlignment="Center"
@@ -159,14 +131,7 @@
                                 </Grid>
                             </StackPanel>
                         </GroupBox>
-                        <GroupBox Header="Counting?">
-                            <StackPanel>
-                                <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetDivebombCounting,
-                                                                           Source={StaticResource Settings}}" />
-
-                            </StackPanel>
-                        </GroupBox>
-                        <GroupBox Header="Divebomb Sounds">
+                        <GroupBox Header="Divebomb sound settings">
                             <StackPanel>
                                 <!--
                                     <Grid>
@@ -199,10 +164,10 @@
                                     <Label>Volume:</Label>
                                     <TextBlock Width="50"
                                                VerticalAlignment="Center"
-                                               Text="{Binding ElementName=TDBVolume,
+                                               Text="{Binding ElementName=TwintaniaDivebombVolume,
                                                               Path=Value,
                                                               StringFormat=\{0\}%}" />
-                                    <Slider x:Name="TDBVolume"
+                                    <Slider x:Name="TwintaniaDivebombVolume"
                                             IsSnapToTickEnabled="True"
                                             Maximum="100"
                                             Minimum="0"
@@ -211,8 +176,331 @@
                                             Value="{Binding TwintaniaWidgetDivebombVolume,
                                                             Source={StaticResource Settings}}" />
                                 </DockPanel>
+                                <GroupBox Header="Divebomb voiced countdown" Margin="0 5 0 0">
+                                    <StackPanel>
+                                        <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetDivebombCounting,
+                                                                           Source={StaticResource Settings}}" />
+
+                                    </StackPanel>
+                                </GroupBox>
                             </StackPanel>
                         </GroupBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem x:Name="SettingsWidgetsDeathSentence"
+                     Header="Death Sentence Settings">
+                <ScrollViewer>
+                    <StackPanel>
+                        <GroupBox Header="Death Sentence alert settings">
+                            <StackPanel>
+                                <GroupBox Header="Play Death Sentence alert" Margin="0 5">
+                                    <StackPanel>
+                                        <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetDeathSentenceAlertPlaySound,
+                                                               Source={StaticResource Settings}}" />
+
+                                    </StackPanel>
+                                </GroupBox>
+                                <DockPanel LastChildFill="True" IsEnabled="{Binding TwintaniaWidgetDeathSentenceAlertPlaySound,
+                                                                Source={StaticResource Settings}}">
+                                    <Label >Volume:</Label>
+                                    <TextBlock Width="50"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding ElementName=TwintaniaDeathSentenceAlertVolume,
+                                                              Path=Value,
+                                                              StringFormat=\{0\}%}" />
+                                    <Button Margin="10 0 0 0" 
+                                            Content="Test Alert" 
+                                            DockPanel.Dock="Right" 
+                                            Width="100"
+                                            Command="{Binding TestDeathSentenceAlertCommand,
+                                                              Source={StaticResource SettingsViewModel}}"/>
+                                    <Slider x:Name="TwintaniaDeathSentenceAlertVolume"
+                                            IsSnapToTickEnabled="True"
+                                            Maximum="100"
+                                            Minimum="0"
+                                            TickFrequency="2"
+                                            TickPlacement="BottomRight"
+                                            Value="{Binding TwintaniaWidgetDeathSentenceAlertVolume,
+                                                            Source={StaticResource Settings}}" />
+                                </DockPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Enable Death Sentence timed warnings" Margin="0 5">
+                            <StackPanel>
+                                <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetDeathSentenceWarningEnabled,
+                                                       Source={StaticResource Settings}}" />
+
+                            </StackPanel>
+                        </GroupBox>
+
+                        <StackPanel IsEnabled="{Binding TwintaniaWidgetDeathSentenceWarningEnabled,
+                                                        Source={StaticResource Settings}}">
+                            <GroupBox Header="Death Sentence warning timer settings">
+                                <StackPanel>
+                                    <Grid>
+                                        <GroupBox Header="Show Death Sentence timer in widget" Margin="0 5">
+                                            <StackPanel>
+                                                <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetDeathSentenceWarningShowTimer,
+                                                                   Source={StaticResource Settings}}" />
+
+                                            </StackPanel>
+                                        </GroupBox>
+                                    </Grid>
+                                    <Grid Margin="0 2">
+                                        <Label VerticalContentAlignment="Center"
+                                           Content="Wait time after Death Sentence:" />
+                                        <TextBox x:Name="TwintaniaWidgetDeathSentenceWarningTimeBox"
+                                             Width="45"
+                                             Margin="5 0"
+                                             HorizontalAlignment="Right"
+                                             HorizontalContentAlignment="Center"
+                                             VerticalContentAlignment="Center"
+                                             MaxLength="5"
+                                             Text="{Binding TwintaniaWidgetDeathSentenceWarningTime,
+                                                            Source={StaticResource Settings},
+                                                            Mode=OneWay}" />
+                                    </Grid>
+                                    <Grid Margin="3">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="27" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.33*" />
+                                            <ColumnDefinition Width="0.33*" />
+                                            <ColumnDefinition Width="0.33*" />
+                                        </Grid.ColumnDefinitions>
+                                        <DockPanel Grid.Column="0"
+                                               LastChildFill="True">
+                                            <Button Margin="0 0 3 0"
+                                                Command="{Binding SaveDeathSentenceWarningTimerCommand,
+                                                                  Source={StaticResource SettingsViewModel}}"
+                                                Content="Save" />
+                                        </DockPanel>
+                                        <DockPanel Grid.Column="1"
+                                               LastChildFill="True">
+                                            <Button Margin="3 0 3 0"
+                                                Command="{Binding LoadDeathSentenceWarningTimerCommand,
+                                                                  Source={StaticResource SettingsViewModel}}"
+                                                Content="Undo" />
+                                        </DockPanel>
+                                        <DockPanel Grid.Column="2"
+                                               LastChildFill="True">
+                                            <Button Margin="3 0 0 0"
+                                                Command="{Binding ResetDeathSentenceWarningTimerCommand,
+                                                                  Source={StaticResource SettingsViewModel}}"
+                                                Content="Reset" />
+                                        </DockPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox Header="Death Sentence warning sound settings">
+                                <StackPanel>
+                                    <GroupBox Header="Play Death Sentence prediction warning sound" Margin="0 5">
+                                        <StackPanel>
+                                            <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetDeathSentenceWarningPlaySound,
+                                                                   Source={StaticResource Settings}}" />
+
+                                        </StackPanel>
+                                    </GroupBox>
+                                    <GroupBox Header="Death Sentence voiced countdown" Margin="0 5">
+                                        <StackPanel>
+                                            <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetDeathSentenceWarningCounting,
+                                                                   Source={StaticResource Settings}}" />
+
+                                        </StackPanel>
+                                    </GroupBox>
+                                    <DockPanel LastChildFill="True">
+                                        <Label>Volume:</Label>
+                                        <TextBlock Width="50"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding ElementName=TwintaniaDeathSentenceWarningVolume,
+                                                              Path=Value,
+                                                              StringFormat=\{0\}%}" />
+                                        <Button Margin="10 0 0 0" 
+                                            Content="Test Warning" 
+                                            DockPanel.Dock="Right" 
+                                            Width="100"
+                                            Command="{Binding TestDeathSentenceWarningCommand,
+                                                              Source={StaticResource SettingsViewModel}}"/>
+                                        <Slider x:Name="TwintaniaDeathSentenceWarningVolume"
+                                            IsSnapToTickEnabled="True"
+                                            Maximum="100"
+                                            Minimum="0"
+                                            TickFrequency="2"
+                                            TickPlacement="BottomRight"
+                                            Value="{Binding TwintaniaWidgetDeathSentenceWarningVolume,
+                                                            Source={StaticResource Settings}}" />
+                                    </DockPanel>
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox>
+                                <Button Margin="0 10 0 0" 
+                                            Content="Test Death Sentence Warning Timer"
+                                            Width="300"
+                                            Command="{Binding TestDeathSentenceWarningTimerCommand,
+                                                              Source={StaticResource SettingsViewModel}}"/>
+                            </GroupBox>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem x:Name="SettingsWidgetsTwister"
+                     Header="Twister Settings">
+                <ScrollViewer>
+                    <StackPanel>
+                        <GroupBox Header="Twister alert settings">
+                            <StackPanel>
+                                <GroupBox Header="Play Twister alert" Margin="0 5">
+                                    <StackPanel>
+                                        <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetTwisterAlertPlaySound,
+                                                               Source={StaticResource Settings}}" />
+
+                                    </StackPanel>
+                                </GroupBox>
+                                <DockPanel LastChildFill="True" IsEnabled="{Binding TwintaniaWidgetTwisterAlertPlaySound,
+                                                                Source={StaticResource Settings}}">
+                                    <Label >Volume:</Label>
+                                    <TextBlock Width="50"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding ElementName=TwintaniaTwisterAlertVolume,
+                                                              Path=Value,
+                                                              StringFormat=\{0\}%}" />
+                                    <Button Margin="10 0 0 0" 
+                                            Content="Test Alert" 
+                                            DockPanel.Dock="Right" 
+                                            Width="100"
+                                            Command="{Binding TestTwisterAlertCommand,
+                                                              Source={StaticResource SettingsViewModel}}"/>
+                                    <Slider x:Name="TwintaniaTwisterAlertVolume"
+                                            IsSnapToTickEnabled="True"
+                                            Maximum="100"
+                                            Minimum="0"
+                                            TickFrequency="2"
+                                            TickPlacement="BottomRight"
+                                            Value="{Binding TwintaniaWidgetTwisterAlertVolume,
+                                                            Source={StaticResource Settings}}" />
+                                </DockPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Enable Twister timed warnings" Margin="0 5">
+                            <StackPanel>
+                                <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetTwisterWarningEnabled,
+                                                       Source={StaticResource Settings}}" />
+
+                            </StackPanel>
+                        </GroupBox>
+
+                        <StackPanel IsEnabled="{Binding TwintaniaWidgetTwisterWarningEnabled,
+                                                        Source={StaticResource Settings}}">
+                            <GroupBox Header="Twister warning timer settings">
+                                <StackPanel>
+                                    <Grid>
+                                        <GroupBox Header="Show Twister timer in widget" Margin="0 5">
+                                            <StackPanel>
+                                                <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetTwisterWarningShowTimer,
+                                                                   Source={StaticResource Settings}}" />
+
+                                            </StackPanel>
+                                        </GroupBox>
+                                    </Grid>
+                                    <Grid Margin="0 2">
+                                        <Label VerticalContentAlignment="Center"
+                                           Content="Wait time after Twister:" />
+                                        <TextBox x:Name="TwintaniaWidgetTwisterWarningTimeBox"
+                                             Width="45"
+                                             Margin="5 0"
+                                             HorizontalAlignment="Right"
+                                             HorizontalContentAlignment="Center"
+                                             VerticalContentAlignment="Center"
+                                             MaxLength="5"
+                                             Text="{Binding TwintaniaWidgetTwisterWarningTime,
+                                                            Source={StaticResource Settings},
+                                                            Mode=OneWay}" />
+                                    </Grid>
+                                    <Grid Margin="3">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="27" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.33*" />
+                                            <ColumnDefinition Width="0.33*" />
+                                            <ColumnDefinition Width="0.33*" />
+                                        </Grid.ColumnDefinitions>
+                                        <DockPanel Grid.Column="0"
+                                               LastChildFill="True">
+                                            <Button Margin="0 0 3 0"
+                                                Command="{Binding SaveTwisterWarningTimerCommand,
+                                                                  Source={StaticResource SettingsViewModel}}"
+                                                Content="Save" />
+                                        </DockPanel>
+                                        <DockPanel Grid.Column="1"
+                                               LastChildFill="True">
+                                            <Button Margin="3 0 3 0"
+                                                Command="{Binding LoadTwisterWarningTimerCommand,
+                                                                  Source={StaticResource SettingsViewModel}}"
+                                                Content="Undo" />
+                                        </DockPanel>
+                                        <DockPanel Grid.Column="2"
+                                               LastChildFill="True">
+                                            <Button Margin="3 0 0 0"
+                                                Command="{Binding ResetTwisterWarningTimerCommand,
+                                                                  Source={StaticResource SettingsViewModel}}"
+                                                Content="Reset" />
+                                        </DockPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox Header="Twister warning sound settings">
+                                <StackPanel>
+                                    <GroupBox Header="Play Twister prediction warning sound" Margin="0 5">
+                                        <StackPanel>
+                                            <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetTwisterWarningPlaySound,
+                                                                   Source={StaticResource Settings}}" />
+
+                                        </StackPanel>
+                                    </GroupBox>
+                                    <GroupBox Header="Twister voiced countdown" Margin="0 5">
+                                        <StackPanel>
+                                            <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetTwisterWarningCounting,
+                                                                   Source={StaticResource Settings}}" />
+
+                                        </StackPanel>
+                                    </GroupBox>
+                                    <DockPanel LastChildFill="True">
+                                        <Label>Volume:</Label>
+                                        <TextBlock Width="50"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding ElementName=TwintaniaTwisterWarningVolume,
+                                                              Path=Value,
+                                                              StringFormat=\{0\}%}" />
+                                        <Button Margin="10 0 0 0" 
+                                            Content="Test Warning" 
+                                            DockPanel.Dock="Right" 
+                                            Width="100"
+                                            Command="{Binding TestTwisterWarningCommand,
+                                                              Source={StaticResource SettingsViewModel}}"/>
+                                        <Slider x:Name="TwintaniaTwisterWarningVolume"
+                                            IsSnapToTickEnabled="True"
+                                            Maximum="100"
+                                            Minimum="0"
+                                            TickFrequency="2"
+                                            TickPlacement="BottomRight"
+                                            Value="{Binding TwintaniaWidgetTwisterWarningVolume,
+                                                            Source={StaticResource Settings}}" />
+                                    </DockPanel>
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox>
+                                <Button Margin="0 10 0 0" 
+                                            Content="Test Twister Warning Timer"
+                                            Width="300"
+                                            Command="{Binding TestTwisterWarningTimerCommand,
+                                                              Source={StaticResource SettingsViewModel}}"/>
+                            </GroupBox>
+                        </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

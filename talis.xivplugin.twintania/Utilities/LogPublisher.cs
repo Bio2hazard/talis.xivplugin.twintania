@@ -48,22 +48,34 @@ namespace talis.xivplugin.twintania.Utilities
             "ツイスター"
         };
 
+        private static List<string> deathsentence = new List<string>
+        {
+            "Death Sentence",
+            "Sentence de mort",
+            "Todesurteil",
+            "デスセンテンス"
+        };
+
         public static void Process(ChatLogEntry chatLogEntry)
         {
             try
             {
-                if(TwintaniaWidgetViewModel.Instance.TwintaniaIsValid && chatLogEntry.Code == "2AAB")
+                if(TwintaniaWidgetViewModel.Instance.TwintaniaIsValid)
                 {
                     var line = chatLogEntry.Line.Replace("  ", " ");
                     var name = TwintaniaWidgetViewModel.Instance.TwintaniaEntity.Name;
 
-                    if (Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", divebomb.Select(Regex.Escape).ToArray()) + @"\b)"))
+                    if (chatLogEntry.Code == "2AAB" && Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", divebomb.Select(Regex.Escape).ToArray()) + @"\b)"))
                     {
                         TwintaniaWidgetViewModel.Instance.TriggerDiveBomb();
                     }
-                    else if (Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", twister.Select(Regex.Escape).ToArray()) + @"\b)"))
+                    else if (chatLogEntry.Code == "2AAB" && Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", twister.Select(Regex.Escape).ToArray()) + @"\b)"))
                     {
-                        SoundPlayerHelper.PlayCached("AlertSounds/aruba.wav", Settings.Default.TwintaniaWidgetTwisterVolume);
+                        TwintaniaWidgetViewModel.Instance.TriggerTwister();                        
+                    }
+                    else if ( (chatLogEntry.Code == "292B" || chatLogEntry.Code == "312B") && Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", deathsentence.Select(Regex.Escape).ToArray()) + @"\b)"))
+                    {
+                        TwintaniaWidgetViewModel.Instance.TriggerDeathSentence();
                     }
                 }
             }

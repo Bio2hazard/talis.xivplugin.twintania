@@ -26,7 +26,8 @@
         Top="{Binding TwintaniaWidgetTop,
                       Mode=TwoWay,
                       Source={x:Static pluginProperties:Settings.Default}}"
-        WindowStyle="None">
+        WindowStyle="None"
+        ShowActivated="false">
     <Window.Resources>
         <ResourceDictionary>
             <x:Static x:Key="Settings"
@@ -49,7 +50,10 @@
                                              Source={StaticResource Settings}}" />
         </Grid.LayoutTransform>
         <StackPanel>
-            <DockPanel LastChildFill="True">
+            <DockPanel LastChildFill="True"
+                       Visibility="{Binding TwintaniaWidgetShowTitle,
+                                            Source={StaticResource Settings},
+                                            Converter={StaticResource VisibilityConverter}}">
                 <Border Margin="5"
                         Background="WhiteSmoke"
                         BorderBrush="Black"
@@ -225,7 +229,100 @@
                         Style="{StaticResource StatLabelStyle}" />
                 </Grid>
             </StackPanel>
+            <StackPanel x:Name="TwintaniaWidgetTwister"
+                        Visibility="{Binding TwintaniaWidgetTwisterWarningShowTimer,
+                                            Source={StaticResource Settings},
+                                            Converter={StaticResource VisibilityConverter}}">
+                <StackPanel x:Name="TwintaniaWidgetTwisterTimer"
+                    Margin="5 1"
+                    Visibility="{Binding TwintaniaTwisterTimer.Enabled,
+                                            Source={StaticResource TwintaniaWidgetViewModel},
+                                            Converter={StaticResource VisibilityConverter}}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <ProgressBar Grid.Row="0"
+                                        Grid.RowSpan="2"
+                                        Height="18"
+                                        VerticalAlignment="Top"
+                                        BorderBrush="Black"
+                                        Maximum="{Binding TwintaniaWidgetTwisterWarningTime,
+                                                        Source={StaticResource Settings}}"
+                                        Minimum="0"
+                                        Style="{StaticResource ProgressBarStyleStopAnimation}"
+                                        Value="{Binding TwintaniaTwisterTime,
+                                                        Source={StaticResource TwintaniaWidgetViewModel}}" />
+                        <Label Grid.Row="0"
+                            Margin="5 0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Content="Twister Timer"
+                            FontWeight="Bold"
+                            Foreground="Black"
+                            Style="{StaticResource StatLabelStyle}"/>
 
+                        <Label Grid.Row="0"
+                            Margin="5 0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Content="{Binding TwintaniaTwisterTime,
+                                                    Source={StaticResource TwintaniaWidgetViewModel},
+                                                    Converter={StaticResource TimerConverter}}"
+                            FontWeight="Bold"
+                            Foreground="Black"
+                            Style="{StaticResource StatLabelStyle}" />
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel x:Name="TwintaniaWidgetDeathSentence"
+                        Visibility="{Binding TwintaniaWidgetDeathSentenceWarningShowTimer,
+                                            Source={StaticResource Settings},
+                                            Converter={StaticResource VisibilityConverter}}">
+                <StackPanel x:Name="TwintaniaWidgetDeathSentenceTimer"
+                    Margin="5 1"
+                    Visibility="{Binding TwintaniaDeathSentenceTimer.Enabled,
+                                            Source={StaticResource TwintaniaWidgetViewModel},
+                                            Converter={StaticResource VisibilityConverter}}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <ProgressBar Grid.Row="0"
+                                        Grid.RowSpan="2"
+                                        Height="18"
+                                        VerticalAlignment="Top"
+                                        BorderBrush="Black"
+                                        Maximum="{Binding TwintaniaWidgetDeathSentenceWarningTime,
+                                                        Source={StaticResource Settings}}"
+                                        Minimum="0"
+                                        Style="{StaticResource ProgressBarStyleStopAnimation}"
+                                        Value="{Binding TwintaniaDeathSentenceTime,
+                                                        Source={StaticResource TwintaniaWidgetViewModel}}" />
+                        <Label Grid.Row="0"
+                            Margin="5 0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Content="Death Sentence Timer"
+                            FontWeight="Bold"
+                            Foreground="Black"
+                            Style="{StaticResource StatLabelStyle}"/>
+
+                        <Label Grid.Row="0"
+                            Margin="5 0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Content="{Binding TwintaniaDeathSentenceTime,
+                                                    Source={StaticResource TwintaniaWidgetViewModel},
+                                                    Converter={StaticResource TimerConverter}}"
+                            FontWeight="Bold"
+                            Foreground="Black"
+                            Style="{StaticResource StatLabelStyle}" />
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
             <StackPanel x:Name="TwintaniaWidgetTwintaniaDiveBomb"
                     Margin="5 1"
                     DataContext="{Binding TwintaniaEntity,

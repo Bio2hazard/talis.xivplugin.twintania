@@ -2,6 +2,7 @@
 // SettingsViewModel.cs
 
 using System.Globalization;
+using FFXIVAPP.Common.Helpers;
 using FFXIVAPP.Common.Models;
 using FFXIVAPP.Common.ViewModelBase;
 using NLog;
@@ -40,6 +41,24 @@ namespace talis.xivplugin.twintania.ViewModels
         public ICommand LoadEnrageTimersCommand { get; private set; }
         public ICommand ResetEnrageTimersCommand { get; private set; }
 
+        public ICommand SaveTwisterWarningTimerCommand { get; private set; }
+        public ICommand LoadTwisterWarningTimerCommand { get; private set; }
+        public ICommand ResetTwisterWarningTimerCommand { get; private set; }
+
+        public ICommand TestTwisterAlertCommand { get; private set; }
+        public ICommand TestTwisterWarningCommand { get; private set; }
+
+        public ICommand TestTwisterWarningTimerCommand { get; private set; }
+
+        public ICommand SaveDeathSentenceWarningTimerCommand { get; private set; }
+        public ICommand LoadDeathSentenceWarningTimerCommand { get; private set; }
+        public ICommand ResetDeathSentenceWarningTimerCommand { get; private set; }
+
+        public ICommand TestDeathSentenceAlertCommand { get; private set; }
+        public ICommand TestDeathSentenceWarningCommand { get; private set; }
+
+        public ICommand TestDeathSentenceWarningTimerCommand { get; private set; }
+
         public ICommand TwintaniaWidgetTestStartCommand { get; private set; }
         public ICommand TwintaniaWidgetTestStopCommand { get; private set; }
 
@@ -56,6 +75,24 @@ namespace talis.xivplugin.twintania.ViewModels
             SaveEnrageTimersCommand = new DelegateCommand(SaveEnrageTimers);
             LoadEnrageTimersCommand = new DelegateCommand(LoadEnrageTimers);
             ResetEnrageTimersCommand = new DelegateCommand(ResetEnrageTimers);
+
+            SaveTwisterWarningTimerCommand = new DelegateCommand(SaveTwisterWarningTimer);
+            LoadTwisterWarningTimerCommand = new DelegateCommand(LoadTwisterWarningTimer);
+            ResetTwisterWarningTimerCommand = new DelegateCommand(ResetTwisterWarningTimer);
+
+            TestTwisterAlertCommand = new DelegateCommand(TestTwisterAlert);
+            TestTwisterWarningCommand = new DelegateCommand(TestTwisterWarning);
+
+            TestTwisterWarningTimerCommand = new DelegateCommand(TestTwisterWarningTimer);
+
+            SaveDeathSentenceWarningTimerCommand = new DelegateCommand(SaveDeathSentenceWarningTimer);
+            LoadDeathSentenceWarningTimerCommand = new DelegateCommand(LoadDeathSentenceWarningTimer);
+            ResetDeathSentenceWarningTimerCommand = new DelegateCommand(ResetDeathSentenceWarningTimer);
+
+            TestDeathSentenceAlertCommand = new DelegateCommand(TestDeathSentenceAlert);
+            TestDeathSentenceWarningCommand = new DelegateCommand(TestDeathSentenceWarning);
+
+            TestDeathSentenceWarningTimerCommand = new DelegateCommand(TestDeathSentenceWarningTimer);
 
             TwintaniaWidgetTestStartCommand = new DelegateCommand(TwintaniaWidgetTestStart);
             TwintaniaWidgetTestStopCommand = new DelegateCommand(TwintaniaWidgetTestStop);
@@ -172,6 +209,114 @@ namespace talis.xivplugin.twintania.ViewModels
             {
                 SettingsView.View.TwintaniaWidgetEnrageTimeBox.Text = settingsProperty.DefaultValue.ToString();
             }
+        }
+
+        public void SaveTwisterWarningTimer()
+        {
+            double result;
+            string message = "";
+
+            if (Double.TryParse(SettingsView.View.TwintaniaWidgetTwisterWarningTimeBox.Text, out result))
+            {
+                Settings.Default.TwintaniaWidgetTwisterWarningTime = result;
+            }
+            else
+            {
+                message += "Time for Twister is invalid ( " + SettingsView.View.TwintaniaWidgetTwisterWarningTimeBox.Text + " )";
+                SettingsView.View.TwintaniaWidgetTwisterWarningTimeBox.Text = Settings.Default.TwintaniaWidgetTwisterWarningTime.ToString(CultureInfo.InvariantCulture);
+            }
+
+            if (message.Length > 0)
+            {
+                var popupContent = new PopupContent
+                {
+                    Title = PluginViewModel.Instance.Locale["app_WarningMessage"],
+                    Message = message
+                };
+                Plugin.PHost.PopupMessage(Plugin.PName, popupContent);
+            }
+        }
+
+        public void LoadTwisterWarningTimer()
+        {
+            SettingsView.View.TwintaniaWidgetTwisterWarningTimeBox.Text = Settings.Default.TwintaniaWidgetTwisterWarningTime.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public void ResetTwisterWarningTimer()
+        {
+            var settingsProperty = Settings.Default.Properties["TwintaniaWidgetTwisterWarningTime"];
+            if (settingsProperty != null)
+            {
+                SettingsView.View.TwintaniaWidgetTwisterWarningTimeBox.Text = settingsProperty.DefaultValue.ToString();
+            }
+        }
+
+        public void TestTwisterAlert()
+        {
+            SoundPlayerHelper.PlayCached(Settings.Default.TwintaniaWidgetTwisterAlertFile, Settings.Default.TwintaniaWidgetTwisterAlertVolume);
+        }
+        public void TestTwisterWarning()
+        {
+            SoundPlayerHelper.PlayCached(Settings.Default.TwintaniaWidgetTwisterWarningFile, Settings.Default.TwintaniaWidgetTwisterWarningVolume);
+        }
+
+        public void TestTwisterWarningTimer()
+        {
+            TwintaniaWidgetViewModel.Instance.TriggerTwister();
+        }
+
+        public void SaveDeathSentenceWarningTimer()
+        {
+            double result;
+            string message = "";
+
+            if (Double.TryParse(SettingsView.View.TwintaniaWidgetDeathSentenceWarningTimeBox.Text, out result))
+            {
+                Settings.Default.TwintaniaWidgetDeathSentenceWarningTime = result;
+            }
+            else
+            {
+                message += "Time for Death Sentence is invalid ( " + SettingsView.View.TwintaniaWidgetDeathSentenceWarningTimeBox.Text + " )";
+                SettingsView.View.TwintaniaWidgetDeathSentenceWarningTimeBox.Text = Settings.Default.TwintaniaWidgetDeathSentenceWarningTime.ToString(CultureInfo.InvariantCulture);
+            }
+
+            if (message.Length > 0)
+            {
+                var popupContent = new PopupContent
+                {
+                    Title = PluginViewModel.Instance.Locale["app_WarningMessage"],
+                    Message = message
+                };
+                Plugin.PHost.PopupMessage(Plugin.PName, popupContent);
+            }
+        }
+
+        public void LoadDeathSentenceWarningTimer()
+        {
+            SettingsView.View.TwintaniaWidgetDeathSentenceWarningTimeBox.Text = Settings.Default.TwintaniaWidgetDeathSentenceWarningTime.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public void ResetDeathSentenceWarningTimer()
+        {
+            var settingsProperty = Settings.Default.Properties["TwintaniaWidgetDeathSentenceWarningTime"];
+            if (settingsProperty != null)
+            {
+                SettingsView.View.TwintaniaWidgetDeathSentenceWarningTimeBox.Text = settingsProperty.DefaultValue.ToString();
+            }
+        }
+
+        public void TestDeathSentenceAlert()
+        {
+            SoundPlayerHelper.PlayCached(Settings.Default.TwintaniaWidgetDeathSentenceAlertFile, Settings.Default.TwintaniaWidgetDeathSentenceAlertVolume);
+        }
+        public void TestDeathSentenceWarning()
+        {
+            SoundPlayerHelper.PlayCached(Settings.Default.TwintaniaWidgetDeathSentenceWarningFile, Settings.Default.TwintaniaWidgetDeathSentenceWarningVolume);
+        }
+
+        public void TestDeathSentenceWarningTimer()
+        {
+            TwintaniaWidgetViewModel.Instance.TriggerDeathSentence();
         }
 
         public void TwintaniaWidgetTestStart()

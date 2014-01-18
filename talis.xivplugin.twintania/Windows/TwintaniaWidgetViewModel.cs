@@ -55,6 +55,13 @@ namespace talis.xivplugin.twintania.Windows
 
         private double _twintaniaEnrageTime;
         private TimerHelper _twintaniaEnrageTimer;
+
+        private double _twintaniaTwisterTime;
+        private TimerHelper _twintaniaTwisterTimer;
+
+        private double _twintaniaDeathSentenceTime;
+        private TimerHelper _twintaniaDeathSentenceTimer;
+
         private ActorEntity _twintaniaEntity;
         private double _twintaniaHPPercent;
         private bool _twintaniaIsValid;
@@ -169,16 +176,6 @@ namespace talis.xivplugin.twintania.Windows
             }
         }
 
-        public TimerHelper TwintaniaEnrageTimer
-        {
-            get { return _twintaniaEnrageTimer ?? (_twintaniaEnrageTimer = new TimerHelper(delegate(object sender, TimerUpdateEventArgs e) { TwintaniaEnrageTime = e.TimeToEvent; })); }
-            set
-            {
-                _twintaniaEnrageTimer = value;
-                RaisePropertyChanged();
-            }
-        }
-
         public int TwintaniaDivebombCount
         {
             get { return _twintaniaDivebombCount; }
@@ -229,6 +226,56 @@ namespace talis.xivplugin.twintania.Windows
             }
         }
 
+        public TimerHelper TwintaniaEnrageTimer
+        {
+            get { return _twintaniaEnrageTimer ?? (_twintaniaEnrageTimer = new TimerHelper(delegate(object sender, TimerUpdateEventArgs e) { TwintaniaEnrageTime = e.TimeToEvent; })); }
+            set
+            {
+                _twintaniaEnrageTimer = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public double TwintaniaTwisterTime
+        {
+            get { return _twintaniaTwisterTime; }
+            set
+            {
+                _twintaniaTwisterTime = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public TimerHelper TwintaniaTwisterTimer
+        {
+            get { return _twintaniaTwisterTimer ?? (_twintaniaTwisterTimer = new TimerHelper(delegate(object sender, TimerUpdateEventArgs e) { TwintaniaTwisterTime = e.TimeToEvent; })); }
+            set
+            {
+                _twintaniaTwisterTimer = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public double TwintaniaDeathSentenceTime
+        {
+            get { return _twintaniaDeathSentenceTime; }
+            set
+            {
+                _twintaniaDeathSentenceTime = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public TimerHelper TwintaniaDeathSentenceTimer
+        {
+            get { return _twintaniaDeathSentenceTimer ?? (_twintaniaDeathSentenceTimer = new TimerHelper(delegate(object sender, TimerUpdateEventArgs e) { TwintaniaDeathSentenceTime = e.TimeToEvent; })); }
+            set
+            {
+                _twintaniaDeathSentenceTimer = value;
+                RaisePropertyChanged();
+            }
+        }
+
         public Timer TwintaniaTestTimer
         {
             get
@@ -258,7 +305,7 @@ namespace talis.xivplugin.twintania.Windows
                                         break;
 
                                     case "Twister":
-                                        SoundPlayerHelper.PlayCached("AlertSounds/aruba.wav", Settings.Default.TwintaniaWidgetTwisterVolume);
+                                        SoundPlayerHelper.PlayCached("AlertSounds/aruba.wav", Settings.Default.TwintaniaWidgetTwisterAlertVolume);
                                         break;
 
                                     case "End":
@@ -334,6 +381,32 @@ namespace talis.xivplugin.twintania.Windows
                     TwintaniaDivebombTimeFull = (int) Math.Floor(Settings.Default.TwintaniaWidgetDivebombTimeFast) + 1;
                 }
                 DivebombTimerStart();
+            }
+        }
+
+        public void TriggerTwister()
+        {
+            if (Settings.Default.TwintaniaWidgetTwisterAlertPlaySound)
+            {
+                SoundPlayerHelper.PlayCached(Settings.Default.TwintaniaWidgetTwisterAlertFile, Settings.Default.TwintaniaWidgetTwisterAlertVolume);
+            }
+
+            if (Settings.Default.TwintaniaWidgetTwisterWarningEnabled)
+            {
+                TwisterTimerStart();
+            }
+        }
+
+        public void TriggerDeathSentence()
+        {
+            if (Settings.Default.TwintaniaWidgetDeathSentenceAlertPlaySound)
+            {
+                SoundPlayerHelper.PlayCached(Settings.Default.TwintaniaWidgetDeathSentenceAlertFile, Settings.Default.TwintaniaWidgetDeathSentenceAlertVolume);
+            }
+
+            if (Settings.Default.TwintaniaWidgetDeathSentenceWarningEnabled)
+            {
+                DeathSentenceTimerStart();
             }
         }
 
@@ -461,6 +534,44 @@ namespace talis.xivplugin.twintania.Windows
             TwintaniaEnrageTimer.Stop();
             // ReSharper disable once ExplicitCallerInfoArgument
             RaisePropertyChanged("TwintaniaEnrageTimer");
+        }
+
+        public void TwisterTimerStart()
+        {
+            TwintaniaTwisterTimer.SoundWhenFinished = Settings.Default.TwintaniaWidgetTwisterWarningPlaySound ? Settings.Default.TwintaniaWidgetTwisterWarningFile : "";
+
+            TwintaniaTwisterTimer.Volume = Settings.Default.TwintaniaWidgetTwisterWarningVolume;
+            TwintaniaTwisterTimer.Counting = Settings.Default.TwintaniaWidgetTwisterWarningCounting;
+
+            TwintaniaTwisterTimer.Start(Settings.Default.TwintaniaWidgetTwisterWarningTime, 25);
+            // ReSharper disable once ExplicitCallerInfoArgument
+            RaisePropertyChanged("TwintaniaTwisterTimer");
+        }
+
+        public void TwisterTimerStop()
+        {
+            TwintaniaTwisterTimer.Stop();
+            // ReSharper disable once ExplicitCallerInfoArgument
+            RaisePropertyChanged("TwintaniaTwisterTimer");
+        }
+
+        public void DeathSentenceTimerStart()
+        {
+            TwintaniaDeathSentenceTimer.SoundWhenFinished = Settings.Default.TwintaniaWidgetDeathSentenceWarningPlaySound ? Settings.Default.TwintaniaWidgetDeathSentenceWarningFile : "";
+
+            TwintaniaDeathSentenceTimer.Volume = Settings.Default.TwintaniaWidgetDeathSentenceWarningVolume;
+            TwintaniaDeathSentenceTimer.Counting = Settings.Default.TwintaniaWidgetDeathSentenceWarningCounting;
+
+            TwintaniaDeathSentenceTimer.Start(Settings.Default.TwintaniaWidgetDeathSentenceWarningTime, 25);
+            // ReSharper disable once ExplicitCallerInfoArgument
+            RaisePropertyChanged("TwintaniaDeathSentenceTimer");
+        }
+
+        public void DeathSentenceTimerStop()
+        {
+            TwintaniaDeathSentenceTimer.Stop();
+            // ReSharper disable once ExplicitCallerInfoArgument
+            RaisePropertyChanged("TwintaniaDeathSentenceTimer");
         }
 
         #endregion
