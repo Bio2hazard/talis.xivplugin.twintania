@@ -1,6 +1,7 @@
 ﻿// talis.xivplugin.twintania
 // Settings.cs
 
+using System.Globalization;
 using System.IO;
 using FFXIVAPP.Common.Helpers;
 using FFXIVAPP.Common.Models;
@@ -140,7 +141,7 @@ namespace talis.xivplugin.twintania.Properties
                         Default[key] = color ?? Colors.Black;
                         break;
                     case "Double":
-                        Default[key] = Convert.ToDouble(value);
+                        Default[key] = Convert.ToDouble(value,CultureInfo.InvariantCulture);
                         break;
                     case "Font":
                         var fc = new FontConverter();
