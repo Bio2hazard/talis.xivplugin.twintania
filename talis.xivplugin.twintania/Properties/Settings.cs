@@ -1,6 +1,7 @@
 ﻿// talis.xivplugin.twintania
 // Settings.cs
 
+using System.Globalization;
 using System.IO;
 using FFXIVAPP.Common.Helpers;
 using FFXIVAPP.Common.Models;
@@ -119,14 +120,19 @@ namespace talis.xivplugin.twintania.Properties
                     continue;
                 }
                 var value = settingsProperty.DefaultValue.ToString();
-                SetValue(key, value);
+                SetValue(key, value, CultureInfo.InvariantCulture);
             }
         }
 
-        public static void SetValue(string key, string value)
+        public static void SetValue(string key, string value, IFormatProvider format = null)
         {
             try
             {
+                if (format == null)
+                {
+                    format = CultureInfo.CurrentCulture;
+                }
+
                 var type = Default[key].GetType()
                                        .Name;
                 switch (type)
@@ -140,7 +146,7 @@ namespace talis.xivplugin.twintania.Properties
                         Default[key] = color ?? Colors.Black;
                         break;
                     case "Double":
-                        Default[key] = Convert.ToDouble(value);
+                        Default[key] = Double.Parse(value, NumberStyles.Any, format);
                         break;
                     case "Font":
                         var fc = new FontConverter();
@@ -148,7 +154,7 @@ namespace talis.xivplugin.twintania.Properties
                         Default[key] = font ?? new Font(new FontFamily("Microsoft Sans Serif"), 12);
                         break;
                     case "Int32":
-                        Default[key] = Convert.ToInt32(value);
+                        Default[key] = Int32.Parse(value, NumberStyles.Any, format);
                         break;
                     default:
                         Default[key] = value;
@@ -160,6 +166,10 @@ namespace talis.xivplugin.twintania.Properties
                 LogHelper.Log(Logger, ex, LogLevel.Error);
             }
             catch (SettingsPropertyWrongTypeException ex)
+            {
+                LogHelper.Log(Logger, ex, LogLevel.Error);
+            }
+            catch (FormatException ex)
             {
                 LogHelper.Log(Logger, ex, LogLevel.Error);
             }
