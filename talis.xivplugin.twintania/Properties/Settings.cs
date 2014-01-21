@@ -544,7 +544,7 @@ namespace talis.xivplugin.twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue("False")]
+        [DefaultSettingValue("True")]
         public bool TwintaniaWidgetDeathSentenceWarningEnabled
         {
             get { return ((bool)(this["TwintaniaWidgetDeathSentenceWarningEnabled"])); }
@@ -583,7 +583,7 @@ namespace talis.xivplugin.twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue("True")]
+        [DefaultSettingValue("False")]
         public bool TwintaniaWidgetDeathSentenceWarningPlaySound
         {
             get { return ((bool)(this["TwintaniaWidgetDeathSentenceWarningPlaySound"])); }
@@ -674,7 +674,7 @@ namespace talis.xivplugin.twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue("False")]
+        [DefaultSettingValue("True")]
         public bool TwintaniaWidgetTwisterWarningEnabled
         {
             get { return ((bool)(this["TwintaniaWidgetTwisterWarningEnabled"])); }
@@ -713,7 +713,7 @@ namespace talis.xivplugin.twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue("True")]
+        [DefaultSettingValue("False")]
         public bool TwintaniaWidgetTwisterWarningPlaySound
         {
             get { return ((bool)(this["TwintaniaWidgetTwisterWarningPlaySound"])); }
