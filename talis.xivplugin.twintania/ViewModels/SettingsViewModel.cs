@@ -19,6 +19,23 @@ namespace talis.xivplugin.twintania.ViewModels
 {
     internal sealed class SettingsViewModel : INotifyPropertyChanged
     {
+        #region Logger
+
+        private static Logger _logger;
+
+        private static Logger Logger
+        {
+            get
+            {
+                if (FFXIVAPP.Common.Constants.EnableNLog)
+                {
+                    return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
+                }
+                return null;
+            }
+        }
+
+        #endregion
 
         #region Property Bindings
 
@@ -37,9 +54,13 @@ namespace talis.xivplugin.twintania.ViewModels
         public ICommand LoadDivebombTimersCommand { get; private set; }
         public ICommand ResetDivebombTimersCommand { get; private set; }
 
+        public ICommand TestDiveBombAlertCommand { get; private set; }
+
         public ICommand SaveEnrageTimersCommand { get; private set; }
         public ICommand LoadEnrageTimersCommand { get; private set; }
         public ICommand ResetEnrageTimersCommand { get; private set; }
+
+        public ICommand TestEnrageAlertCommand { get; private set; }
 
         public ICommand SaveTwisterWarningTimerCommand { get; private set; }
         public ICommand LoadTwisterWarningTimerCommand { get; private set; }
@@ -72,9 +93,13 @@ namespace talis.xivplugin.twintania.ViewModels
             LoadDivebombTimersCommand = new DelegateCommand(LoadDivebombTimers);
             ResetDivebombTimersCommand = new DelegateCommand(ResetDivebombTimers);
 
+            TestDiveBombAlertCommand = new DelegateCommand(TestDivebombAlert);
+
             SaveEnrageTimersCommand = new DelegateCommand(SaveEnrageTimers);
             LoadEnrageTimersCommand = new DelegateCommand(LoadEnrageTimers);
             ResetEnrageTimersCommand = new DelegateCommand(ResetEnrageTimers);
+
+            TestEnrageAlertCommand = new DelegateCommand(TestEnrageAlert);
 
             SaveTwisterWarningTimerCommand = new DelegateCommand(SaveTwisterWarningTimer);
             LoadTwisterWarningTimerCommand = new DelegateCommand(LoadTwisterWarningTimer);
@@ -171,6 +196,11 @@ namespace talis.xivplugin.twintania.ViewModels
             }
         }
 
+        public void TestDivebombAlert()
+        {
+            SoundPlayerHelper.PlayCached(Settings.Default.TwintaniaWidgetDivebombAlertFile, Settings.Default.TwintaniaWidgetDivebombVolume);
+        }
+
         public void SaveEnrageTimers()
         {
             double result;
@@ -209,6 +239,11 @@ namespace talis.xivplugin.twintania.ViewModels
             {
                 SettingsView.View.TwintaniaWidgetEnrageTimeBox.Text = settingsProperty.DefaultValue.ToString();
             }
+        }
+
+        public void TestEnrageAlert()
+        {
+            SoundPlayerHelper.PlayCached(Settings.Default.TwintaniaWidgetEnrageAlertFile, Settings.Default.TwintaniaWidgetEnrageVolume);
         }
 
         public void SaveTwisterWarningTimer()

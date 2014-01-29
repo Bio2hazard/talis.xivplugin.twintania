@@ -50,7 +50,7 @@ namespace talis.xivplugin.twintania
 
         public static void LoadAndCacheSounds()
         {
-            PluginViewModel.Instance.SoundFiles.Clear();
+            //PluginViewModel.Instance.SoundFiles.Clear();
             //do your gui stuff here
             var legacyFiles = new List<FileInfo>();
             var filters = new List<string>
@@ -91,7 +91,9 @@ namespace talis.xivplugin.twintania
                 {
                 }
             }
-            foreach (var cachedSoundFile in SoundPlayerHelper.SoundFileKeys())
+
+            var cachedSoundFiles = SoundPlayerHelper.SoundFileKeys().Except(PluginViewModel.Instance.SoundFiles);
+            foreach (var cachedSoundFile in cachedSoundFiles)
             {
                 PluginViewModel.Instance.SoundFiles.Add(cachedSoundFile);
             }

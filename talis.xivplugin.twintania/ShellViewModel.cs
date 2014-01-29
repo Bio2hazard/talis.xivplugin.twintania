@@ -46,7 +46,6 @@ namespace talis.xivplugin.twintania
         public ShellViewModel()
         {
             Initializer.LoadSettings();
-            Initializer.LoadAndCacheSounds();
             Initializer.SetupWidgetTopMost();
             Settings.Default.PropertyChanged += DefaultOnPropertyChanged;
         }
@@ -54,6 +53,7 @@ namespace talis.xivplugin.twintania
         internal static void Loaded(object sender, RoutedEventArgs e)
         {
             ShellView.View.Loaded -= Loaded;
+            Initializer.LoadAndCacheSounds();
         }
 
         private static void DefaultOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)

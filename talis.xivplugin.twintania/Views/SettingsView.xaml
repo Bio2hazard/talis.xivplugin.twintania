@@ -4,6 +4,9 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:plugin="clr-namespace:talis.xivplugin.twintania"
              xmlns:properties="clr-namespace:talis.xivplugin.twintania.Properties"
              xmlns:viewModels="clr-namespace:talis.xivplugin.twintania.ViewModels"
              d:DesignHeight="700"
@@ -13,8 +16,18 @@
     <UserControl.Resources>
         <x:Static x:Key="SettingsViewModel"
                   Member="viewModels:SettingsViewModel.Instance" />
+        <x:Static x:Key="PluginViewModel"
+                  Member="plugin:PluginViewModel.Instance" />
         <x:Static x:Key="Settings"
                   Member="properties:Settings.Default" />
+
+        <CollectionViewSource x:Key="cvsSounds" Source="{Binding SoundFiles,
+                                                                    Source={StaticResource PluginViewModel}}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription Direction="Ascending"></scm:SortDescription>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        
     </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot"
@@ -133,33 +146,25 @@
                         </GroupBox>
                         <GroupBox Header="Divebomb sound settings">
                             <StackPanel>
-                                <!--
-                                    <Grid>
-                                    <Label VerticalContentAlignment="Center"
-                                    Content="Alert File:" />
-                                    
-                                    <ComboBox x:Name="DivebombAlert"
-                                    HorizontalAlignment="Center"
-                                    Width="100"
-                                    IsReadOnly="False"
-                                    SelectedItem="{Binding TwintaniaWidgetDivebombAlertFile,
-                                    Source={StaticResource Settings}}"
-                                    ItemsSource="{Binding SoundFiles,
-                                    Source={StaticResource PluginViewModel}}">
-                                    
-                                    
+                                <Grid>
+                                    <TextBlock Text="Divebomb Alert File:" VerticalAlignment="Center" Margin="5 0 0 0" />
+                                    <ComboBox x:Name="DiveBombAlertFile"
+                                                  Margin="0 5"
+                                                  DockPanel.Dock="Right"
+                                                  Width="250"
+                                                  IsReadOnly="False"
+                                                  IsSynchronizedWithCurrentItem="False"
+                                                  SelectedItem="{Binding TwintaniaWidgetDivebombAlertFile,
+                                                                         Source={StaticResource Settings}}"
+                                                  ItemsSource="{Binding Source={StaticResource cvsSounds}}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="DropDownOpened" >
+                                                <i:InvokeCommandAction Command="{Binding RefreshSoundListCommand,
+                                                                  Source={StaticResource SettingsViewModel}}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
                                     </ComboBox>
-                                    
-                                    <Button HorizontalAlignment="Right"
-                                    Margin="0 5"
-                                    Width="50"
-                                    Command="{Binding RefreshSoundListCommand,
-                                    Source={StaticResource SettingsViewModel}}"
-                                    Content="Re" />
-                                    MouseDown="{Binding RefreshSoundListCommand,
-                                    Source={StaticResource SettingsViewModel}}"
-                                    </Grid>
-                                -->
+                                </Grid>
                                 <DockPanel LastChildFill="True">
                                     <Label>Volume:</Label>
                                     <TextBlock Width="50"
@@ -167,6 +172,12 @@
                                                Text="{Binding ElementName=TwintaniaDivebombVolume,
                                                               Path=Value,
                                                               StringFormat=\{0\}%}" />
+                                    <Button Margin="10 0 0 0" 
+                                            Content="Test Alert" 
+                                            DockPanel.Dock="Right" 
+                                            Width="100"
+                                            Command="{Binding TestDiveBombAlertCommand,
+                                                              Source={StaticResource SettingsViewModel}}"/>
                                     <Slider x:Name="TwintaniaDivebombVolume"
                                             IsSnapToTickEnabled="True"
                                             Maximum="100"
@@ -201,6 +212,25 @@
 
                                     </StackPanel>
                                 </GroupBox>
+                                <Grid>
+                                    <TextBlock Text="Death Sentence Alert File:" VerticalAlignment="Center" Margin="5 0 0 0" />
+                                    <ComboBox x:Name="DeathSentenceAlertFile"
+                                                  Margin="0 5"
+                                                  DockPanel.Dock="Right"
+                                                  Width="250"
+                                                  IsReadOnly="False"
+                                                  IsSynchronizedWithCurrentItem="False"
+                                                  SelectedItem="{Binding TwintaniaWidgetDeathSentenceAlertFile,
+                                                                         Source={StaticResource Settings}}"
+                                                  ItemsSource="{Binding Source={StaticResource cvsSounds}}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="DropDownOpened" >
+                                                <i:InvokeCommandAction Command="{Binding RefreshSoundListCommand,
+                                                                  Source={StaticResource SettingsViewModel}}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </ComboBox>
+                                </Grid>
                                 <DockPanel LastChildFill="True" IsEnabled="{Binding TwintaniaWidgetDeathSentenceAlertPlaySound,
                                                                 Source={StaticResource Settings}}">
                                     <Label >Volume:</Label>
@@ -311,6 +341,25 @@
 
                                         </StackPanel>
                                     </GroupBox>
+                                    <Grid>
+                                        <TextBlock Text="Death Sentence Warning File:" VerticalAlignment="Center" Margin="5 0 0 0" />
+                                        <ComboBox x:Name="DeathSentenceWarningFile"
+                                                  Margin="0 5"
+                                                  DockPanel.Dock="Right"
+                                                  Width="250"
+                                                  IsReadOnly="False"
+                                                  IsSynchronizedWithCurrentItem="False"
+                                                  SelectedItem="{Binding TwintaniaWidgetDeathSentenceWarningFile,
+                                                                         Source={StaticResource Settings}}"
+                                                  ItemsSource="{Binding Source={StaticResource cvsSounds}}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="DropDownOpened" >
+                                                    <i:InvokeCommandAction Command="{Binding RefreshSoundListCommand,
+                                                                  Source={StaticResource SettingsViewModel}}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </ComboBox>
+                                    </Grid>
                                     <DockPanel LastChildFill="True">
                                         <Label>Volume:</Label>
                                         <TextBlock Width="50"
@@ -359,6 +408,25 @@
 
                                     </StackPanel>
                                 </GroupBox>
+                                <Grid>
+                                    <TextBlock Text="Twister Alert File:" VerticalAlignment="Center" Margin="5 0 0 0" />
+                                    <ComboBox x:Name="TwisterAlertFile"
+                                                  Margin="0 5"
+                                                  DockPanel.Dock="Right"
+                                                  Width="250"
+                                                  IsReadOnly="False"
+                                                  IsSynchronizedWithCurrentItem="False"
+                                                  SelectedItem="{Binding TwintaniaWidgetTwisterAlertFile,
+                                                                         Source={StaticResource Settings}}"
+                                                  ItemsSource="{Binding Source={StaticResource cvsSounds}}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="DropDownOpened" >
+                                                <i:InvokeCommandAction Command="{Binding RefreshSoundListCommand,
+                                                                  Source={StaticResource SettingsViewModel}}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </ComboBox>
+                                </Grid>
                                 <DockPanel LastChildFill="True" IsEnabled="{Binding TwintaniaWidgetTwisterAlertPlaySound,
                                                                 Source={StaticResource Settings}}">
                                     <Label >Volume:</Label>
@@ -469,6 +537,27 @@
 
                                         </StackPanel>
                                     </GroupBox>
+                                    <StackPanel>
+                                        <Grid>
+                                            <TextBlock Text="Twister Warning File:" VerticalAlignment="Center" Margin="5 0 0 0" />
+                                            <ComboBox x:Name="TwisterWarningFile"
+                                                  Margin="0 5"
+                                                  DockPanel.Dock="Right"
+                                                  Width="250"
+                                                  IsReadOnly="False"
+                                                  IsSynchronizedWithCurrentItem="False"
+                                                  SelectedItem="{Binding TwintaniaWidgetTwisterWarningFile,
+                                                                         Source={StaticResource Settings}}"
+                                                  ItemsSource="{Binding Source={StaticResource cvsSounds}}">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="DropDownOpened" >
+                                                        <i:InvokeCommandAction Command="{Binding RefreshSoundListCommand,
+                                                                  Source={StaticResource SettingsViewModel}}"/>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </ComboBox>
+                                        </Grid>
+                                    </StackPanel>
                                     <DockPanel LastChildFill="True">
                                         <Label>Volume:</Label>
                                         <TextBlock Width="50"
@@ -565,50 +654,51 @@
                         </GroupBox>
                         <GroupBox Header="Enrage Sounds">
                             <StackPanel>
-
-                                <!--
+                                <StackPanel>
                                     <Grid>
-                                    <Label VerticalContentAlignment="Center"
-                                    Content="Alert File:" />
-                                    
-                                    <ComboBox x:Name="EnrageAlert"
-                                    HorizontalAlignment="Center"
-                                    Width="100"
-                                    IsReadOnly="False"
-                                    SelectedItem="{Binding TwintaniaWidgetEnrageAlertFile,
-                                    Source={StaticResource Settings}}"
-                                    ItemsSource="{Binding SoundFiles,
-                                    Source={StaticResource PluginViewModel}}">
-                                    
-                                    
-                                    </ComboBox>
-                                    
-                                    <Button HorizontalAlignment="Right"
-                                    Margin="0 5"
-                                    Width="50"
-                                    Command="{Binding RefreshSoundListCommand,
-                                    Source={StaticResource SettingsViewModel}}"
-                                    Content="Re" />
-                                    MouseDown="{Binding RefreshSoundListCommand,
-                                    Source={StaticResource SettingsViewModel}}"
+                                        <TextBlock Text="Enrage Alert File:" VerticalAlignment="Center" Margin="5 0 0 0" />
+                                        <ComboBox x:Name="EnrageAlertFile"
+                                                  Margin="0 5"
+                                                  DockPanel.Dock="Right"
+                                                  Width="250"
+                                                  IsReadOnly="False"
+                                                  IsSynchronizedWithCurrentItem="False"
+                                                  SelectedItem="{Binding TwintaniaWidgetEnrageAlertFile,
+                                                                         Source={StaticResource Settings}}"
+                                                  ItemsSource="{Binding Source={StaticResource cvsSounds}}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="DropDownOpened" >
+                                                    <i:InvokeCommandAction Command="{Binding RefreshSoundListCommand,
+                                                                  Source={StaticResource SettingsViewModel}}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </ComboBox>
                                     </Grid>
-                                -->
-                                <DockPanel LastChildFill="True">
-                                    <Label>Volume:</Label>
-                                    <TextBlock Width="50"
-                                               VerticalAlignment="Center"
-                                               Text="{Binding ElementName=TEVolume,
-                                                              Path=Value,
-                                                              StringFormat=\{0\}%}" />
-                                    <Slider x:Name="TEVolume"
-                                            IsSnapToTickEnabled="True"
-                                            Maximum="100"
-                                            Minimum="0"
-                                            TickFrequency="2"
-                                            TickPlacement="BottomRight"
-                                            Value="{Binding TwintaniaWidgetEnrageVolume,
-                                                            Source={StaticResource Settings}}" />
-                                </DockPanel>
+                                </StackPanel>
+                                <StackPanel>
+                                    <DockPanel LastChildFill="True">
+                                        <Label>Volume:</Label>
+                                        <TextBlock Width="50"
+                                                   VerticalAlignment="Center"
+                                                   Text="{Binding ElementName=TEVolume,
+                                                                  Path=Value,
+                                                                  StringFormat=\{0\}%}" />
+                                        <Button Margin="10 0 0 0" 
+                                            Content="Test Alert" 
+                                            DockPanel.Dock="Right" 
+                                            Width="100"
+                                            Command="{Binding TestEnrageAlertCommand,
+                                                              Source={StaticResource SettingsViewModel}}"/>
+                                        <Slider x:Name="TEVolume"
+                                                IsSnapToTickEnabled="True"
+                                                Maximum="100"
+                                                Minimum="0"
+                                                TickFrequency="2"
+                                                TickPlacement="BottomRight"
+                                                Value="{Binding TwintaniaWidgetEnrageVolume,
+                                                                Source={StaticResource Settings}}" />
+                                    </DockPanel>
+                                </StackPanel>
                             </StackPanel>
                         </GroupBox>
                     </StackPanel>

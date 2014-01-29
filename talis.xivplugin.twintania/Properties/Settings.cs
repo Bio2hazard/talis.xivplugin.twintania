@@ -76,17 +76,17 @@ namespace talis.xivplugin.twintania.Properties
             Constants.Settings.Add("TwintaniaWidgetEnrageTime");
             Constants.Settings.Add("TwintaniaWidgetEnrageCounting");
             Constants.Settings.Add("TwintaniaWidgetEnrageVolume");
-            //Constants.Settings.Add("TwintaniaWidgetEnrageAlertFile");
+            Constants.Settings.Add("TwintaniaWidgetEnrageAlertFile");
 
             Constants.Settings.Add("TwintaniaWidgetDivebombTimeFast");
             Constants.Settings.Add("TwintaniaWidgetDivebombTimeSlow");
             Constants.Settings.Add("TwintaniaWidgetDivebombCounting");
             Constants.Settings.Add("TwintaniaWidgetDivebombVolume");
-            //Constants.Settings.Add("TwintaniaWidgetDivebombAlertFile");
+            Constants.Settings.Add("TwintaniaWidgetDivebombAlertFile");
 
             Constants.Settings.Add("TwintaniaWidgetDeathSentenceAlertPlaySound");
             Constants.Settings.Add("TwintaniaWidgetDeathSentenceAlertVolume");
-            //Constants.Settings.Add("TwintaniaWidgetDeathSentenceAlertFile");
+            Constants.Settings.Add("TwintaniaWidgetDeathSentenceAlertFile");
 
             Constants.Settings.Add("TwintaniaWidgetDeathSentenceWarningEnabled");
             Constants.Settings.Add("TwintaniaWidgetDeathSentenceWarningShowTimer");
@@ -94,11 +94,11 @@ namespace talis.xivplugin.twintania.Properties
             Constants.Settings.Add("TwintaniaWidgetDeathSentenceWarningPlaySound");
             Constants.Settings.Add("TwintaniaWidgetDeathSentenceWarningCounting");
             Constants.Settings.Add("TwintaniaWidgetDeathSentenceWarningVolume");
-            //Constants.Settings.Add("TwintaniaWidgetDeathSentenceWarningFile");
+            Constants.Settings.Add("TwintaniaWidgetDeathSentenceWarningFile");
 
             Constants.Settings.Add("TwintaniaWidgetTwisterAlertPlaySound");
             Constants.Settings.Add("TwintaniaWidgetTwisterAlertVolume");
-            //Constants.Settings.Add("TwintaniaWidgetTwisterAlertFile");
+            Constants.Settings.Add("TwintaniaWidgetTwisterAlertFile");
 
             Constants.Settings.Add("TwintaniaWidgetTwisterWarningEnabled");
             Constants.Settings.Add("TwintaniaWidgetTwisterWarningShowTimer");
@@ -106,7 +106,7 @@ namespace talis.xivplugin.twintania.Properties
             Constants.Settings.Add("TwintaniaWidgetTwisterWarningPlaySound");
             Constants.Settings.Add("TwintaniaWidgetTwisterWarningCounting");
             Constants.Settings.Add("TwintaniaWidgetTwisterWarningVolume");
-            //Constants.Settings.Add("TwintaniaWidgetTwisterWarningFile");
+            Constants.Settings.Add("TwintaniaWidgetTwisterWarningFile");
         }
 
         public new void Reset()
@@ -426,7 +426,7 @@ namespace talis.xivplugin.twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue("AlertSounds/LowHealth.wav")]
+        [DefaultSettingValue("AlertSounds\\LowHealth.wav")]
         public string TwintaniaWidgetEnrageAlertFile
         {
             get { return ((string)(this["TwintaniaWidgetEnrageAlertFile"])); }
@@ -491,7 +491,7 @@ namespace talis.xivplugin.twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue("AlertSounds/LowHealth.wav")]
+        [DefaultSettingValue("AlertSounds\\LowHealth.wav")]
         public string TwintaniaWidgetDivebombAlertFile
         {
             get { return ((string) (this["TwintaniaWidgetDivebombAlertFile"])); }
@@ -531,7 +531,7 @@ namespace talis.xivplugin.twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue("AlertSounds/LowHealth.wav")]
+        [DefaultSettingValue("AlertSounds\\LowHealth.wav")]
         public string TwintaniaWidgetDeathSentenceAlertFile
         {
             get { return ((string)(this["TwintaniaWidgetDeathSentenceAlertFile"])); }
@@ -622,7 +622,7 @@ namespace talis.xivplugin.twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue("AlertSounds/Gasp.wav")]
+        [DefaultSettingValue("AlertSounds\\Gasp.wav")]
         public string TwintaniaWidgetDeathSentenceWarningFile
         {
             get { return ((string)(this["TwintaniaWidgetDeathSentenceWarningFile"])); }
@@ -661,7 +661,7 @@ namespace talis.xivplugin.twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue("AlertSounds/aruba.wav")]
+        [DefaultSettingValue("AlertSounds\\aruba.wav")]
         public string TwintaniaWidgetTwisterAlertFile
         {
             get { return ((string)(this["TwintaniaWidgetTwisterAlertFile"])); }
@@ -752,7 +752,7 @@ namespace talis.xivplugin.twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue("AlertSounds/sonar.wav")]
+        [DefaultSettingValue("AlertSounds\\sonar.wav")]
         public string TwintaniaWidgetTwisterWarningFile
         {
             get { return ((string)(this["TwintaniaWidgetTwisterWarningFile"])); }

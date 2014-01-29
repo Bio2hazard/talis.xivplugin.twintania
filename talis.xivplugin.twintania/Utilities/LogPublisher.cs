@@ -73,7 +73,7 @@ namespace talis.xivplugin.twintania.Utilities
                     {
                         TwintaniaWidgetViewModel.Instance.TriggerTwister();                        
                     }
-                    else if ( (chatLogEntry.Code == "292B" || chatLogEntry.Code == "312B") && Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", deathsentence.Select(Regex.Escape).ToArray()) + @"\b)"))
+                    else if ((chatLogEntry.Code == "292B" || chatLogEntry.Code == "312B" || chatLogEntry.Code == "28AB") && Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", deathsentence.Select(Regex.Escape).ToArray()) + @"\b)"))
                     {
                         TwintaniaWidgetViewModel.Instance.TriggerDeathSentence();
                     }
