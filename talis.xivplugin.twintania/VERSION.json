@@ -1,0 +1,173 @@
+﻿{
+    "PluginInfo": {
+        "Name": "Talis.XIVPlugin.Twintania",
+        "Version": "3.0.5146.9313",
+        "Files": [
+            {
+                "Name": "Talis.XIVPlugin.Twintania.dll",
+                "Location": ""
+            },
+            {
+                "Name": "Logo.png",
+                "Location": ""
+            },
+            {
+                "Name": "PluginInfo.xml",
+                "Location": ""
+            },
+            {
+                "Name": "aruba.wav",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "Death Sentence Coming.wav",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "Death Sentence.wav",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "Dive Bomb.wav",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "Divebomb coming.wav",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "Gasp.wav",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "LowHealth.wav",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "se.1.mp3",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "se.2.mp3",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "se.3.mp3",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "se.4.mp3",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "se.5.mp3",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "se.6.mp3",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "se.7.mp3",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "se.8.mp3",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "se.9.mp3",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "se.10.mp3",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "se.11.mp3",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "se.12.mp3",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "se.13.mp3",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "se.14.mp3",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "se.15.mp3",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "se.16.mp3",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "sonar.wav",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "Twister.wav",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "Twisters Coming.wav",
+                "Location": "AlertSounds"
+            },
+            {
+                "Name": "1.mp3",
+                "Location": "Counting"
+            },
+            {
+                "Name": "2.mp3",
+                "Location": "Counting"
+            },
+            {
+                "Name": "3.mp3",
+                "Location": "Counting"
+            },
+            {
+                "Name": "4.mp3",
+                "Location": "Counting"
+            },
+            {
+                "Name": "5.mp3",
+                "Location": "Counting"
+            },
+            {
+                "Name": "6.mp3",
+                "Location": "Counting"
+            },
+            {
+                "Name": "7.mp3",
+                "Location": "Counting"
+            },
+            {
+                "Name": "8.mp3",
+                "Location": "Counting"
+            },
+            {
+                "Name": "9.mp3",
+                "Location": "Counting"
+            },
+            {
+                "Name": "10.mp3",
+                "Location": "Counting"
+            },
+            {
+                "Name": "Creative Commons Sampling Plus 1.0.txt",
+                "Location": "Counting"
+            },
+            {
+                "Name": "license.txt",
+                "Location": "Counting"
+            }
+        ],
+"SourceURI": "https://github.com/Bio2hazard/talis.xivplugin.twintania/raw/master/distribution/"
+    }
+}
