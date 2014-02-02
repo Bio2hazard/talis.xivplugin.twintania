@@ -32,7 +32,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\build\Plugins\Talis.XIVPlugin.Twintania\</OutputPath>
+    <OutputPath>..\distribution\</OutputPath>
     <DefineConstants>
     </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -145,6 +145,9 @@
     <Content Include="Logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="VERSION.JSON">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Resource Include="Media\Images\License.png" />
     <Resource Include="Media\Images\Refresh.png" />
     <Resource Include="Media\Images\About.png" />

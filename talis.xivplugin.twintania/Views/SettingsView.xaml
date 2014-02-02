@@ -150,7 +150,6 @@
                                     <TextBlock Text="Divebomb Alert File:" VerticalAlignment="Center" Margin="5 0 0 0" />
                                     <ComboBox x:Name="DiveBombAlertFile"
                                                   Margin="0 5"
-                                                  DockPanel.Dock="Right"
                                                   Width="250"
                                                   IsReadOnly="False"
                                                   IsSynchronizedWithCurrentItem="False"
@@ -216,7 +215,6 @@
                                     <TextBlock Text="Death Sentence Alert File:" VerticalAlignment="Center" Margin="5 0 0 0" />
                                     <ComboBox x:Name="DeathSentenceAlertFile"
                                                   Margin="0 5"
-                                                  DockPanel.Dock="Right"
                                                   Width="250"
                                                   IsReadOnly="False"
                                                   IsSynchronizedWithCurrentItem="False"
@@ -345,7 +343,6 @@
                                         <TextBlock Text="Death Sentence Warning File:" VerticalAlignment="Center" Margin="5 0 0 0" />
                                         <ComboBox x:Name="DeathSentenceWarningFile"
                                                   Margin="0 5"
-                                                  DockPanel.Dock="Right"
                                                   Width="250"
                                                   IsReadOnly="False"
                                                   IsSynchronizedWithCurrentItem="False"
@@ -412,7 +409,6 @@
                                     <TextBlock Text="Twister Alert File:" VerticalAlignment="Center" Margin="5 0 0 0" />
                                     <ComboBox x:Name="TwisterAlertFile"
                                                   Margin="0 5"
-                                                  DockPanel.Dock="Right"
                                                   Width="250"
                                                   IsReadOnly="False"
                                                   IsSynchronizedWithCurrentItem="False"
@@ -542,7 +538,6 @@
                                             <TextBlock Text="Twister Warning File:" VerticalAlignment="Center" Margin="5 0 0 0" />
                                             <ComboBox x:Name="TwisterWarningFile"
                                                   Margin="0 5"
-                                                  DockPanel.Dock="Right"
                                                   Width="250"
                                                   IsReadOnly="False"
                                                   IsSynchronizedWithCurrentItem="False"
@@ -659,7 +654,6 @@
                                         <TextBlock Text="Enrage Alert File:" VerticalAlignment="Center" Margin="5 0 0 0" />
                                         <ComboBox x:Name="EnrageAlertFile"
                                                   Margin="0 5"
-                                                  DockPanel.Dock="Right"
                                                   Width="250"
                                                   IsReadOnly="False"
                                                   IsSynchronizedWithCurrentItem="False"

@@ -216,3 +216,7 @@ pip-log.txt
 
 packages/
 talis.xivplugin.twintania/*.dll
+distribution/*.dll
+!distribution/talis.xivplugin.twintania.dll
+distribution/*.pdb
+distribution/*.config
