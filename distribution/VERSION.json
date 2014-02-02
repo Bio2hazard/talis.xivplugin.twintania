@@ -17,6 +17,10 @@
             },
             {
                 "Name": "aruba.wav",
+                "Location": "AlertSounds/Awesome"
+            },
+            {
+                "Name": "aruba.wav",
                 "Location": "AlertSounds"
             },
             {
