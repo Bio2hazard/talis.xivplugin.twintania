@@ -10,12 +10,12 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using talis.xivplugin.twintania.Helpers;
-using talis.xivplugin.twintania.Properties;
-using talis.xivplugin.twintania.Views;
-using talis.xivplugin.twintania.Windows;
+using Talis.XIVPlugin.Twintania.Helpers;
+using Talis.XIVPlugin.Twintania.Properties;
+using Talis.XIVPlugin.Twintania.Views;
+using Talis.XIVPlugin.Twintania.Windows;
 
-namespace talis.xivplugin.twintania.ViewModels
+namespace Talis.XIVPlugin.Twintania.ViewModels
 {
     internal sealed class SettingsViewModel : INotifyPropertyChanged
     {

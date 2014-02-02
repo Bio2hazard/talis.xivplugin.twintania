@@ -18,12 +18,12 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using System.Xml.Linq;
-using talis.xivplugin.twintania.Helpers;
+using Talis.XIVPlugin.Twintania.Helpers;
 using Color = System.Windows.Media.Color;
 using ColorConverter = System.Windows.Media.ColorConverter;
 using FontFamily = System.Drawing.FontFamily;
 
-namespace talis.xivplugin.twintania.Properties
+namespace Talis.XIVPlugin.Twintania.Properties
 {
     internal class Settings : ApplicationSettingsBase, INotifyPropertyChanged
     {
@@ -54,7 +54,7 @@ namespace talis.xivplugin.twintania.Properties
             // this call to default settings only ensures we keep the settings we want and delete the ones we don't (old)
             DefaultSettings();
             SaveSettingsNode();
-            Constants.XSettings.Save(Path.Combine(FFXIVAPP.Common.Constants.PluginsSettingsPath, "talis.xivplugin.twintania.xml"));
+            Constants.XSettings.Save(Path.Combine(FFXIVAPP.Common.Constants.PluginsSettingsPath, "Talis.XIVPlugin.Twintania.xml"));
         }
 
         private void DefaultSettings()

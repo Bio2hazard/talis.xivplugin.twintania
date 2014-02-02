@@ -9,10 +9,10 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Xml.Linq;
 using FFXIVAPP.Common.Helpers;
-using talis.xivplugin.twintania.Helpers;
-using talis.xivplugin.twintania.Properties;
+using Talis.XIVPlugin.Twintania.Helpers;
+using Talis.XIVPlugin.Twintania.Properties;
 
-namespace talis.xivplugin.twintania
+namespace Talis.XIVPlugin.Twintania
 {
     internal static class Initializer
     {

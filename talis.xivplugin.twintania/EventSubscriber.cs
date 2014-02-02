@@ -6,11 +6,11 @@ using FFXIVAPP.IPluginInterface.Events;
 using System;
 using System.Linq;
 using NLog;
-using talis.xivplugin.twintania.Helpers;
-using talis.xivplugin.twintania.Utilities;
-using talis.xivplugin.twintania.Windows;
+using Talis.XIVPlugin.Twintania.Helpers;
+using Talis.XIVPlugin.Twintania.Utilities;
+using Talis.XIVPlugin.Twintania.Windows;
 
-namespace talis.xivplugin.twintania
+namespace Talis.XIVPlugin.Twintania
 {
     public static class EventSubscriber
     {

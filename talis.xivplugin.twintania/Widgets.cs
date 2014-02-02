@@ -3,10 +3,10 @@
 
 using System;
 using NLog;
-using talis.xivplugin.twintania.Helpers;
-using talis.xivplugin.twintania.Windows;
+using Talis.XIVPlugin.Twintania.Helpers;
+using Talis.XIVPlugin.Twintania.Windows;
 
-namespace talis.xivplugin.twintania
+namespace Talis.XIVPlugin.Twintania
 {
     public class Widgets
     {

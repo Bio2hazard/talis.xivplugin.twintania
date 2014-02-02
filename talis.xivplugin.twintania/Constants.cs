@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using FFXIVAPP.Common.Helpers;
 
-namespace talis.xivplugin.twintania
+namespace Talis.XIVPlugin.Twintania
 {
     public static class Constants
     {
@@ -24,7 +24,7 @@ namespace talis.xivplugin.twintania
             }
         }
 
-        public const string LibraryPack = "pack://application:,,,/talis.xivplugin.twintania;component/";
+        public const string LibraryPack = "pack://application:,,,/Talis.XIVPlugin.Twintania;component/";
 
         public static readonly string[] Supported =
         {
@@ -42,8 +42,8 @@ namespace talis.xivplugin.twintania
         {
             get
             {
-                var file = Path.Combine(FFXIVAPP.Common.Constants.PluginsSettingsPath, "talis.xivplugin.twintania.xml");
-                var legacyFile = "./Plugins/talis.xivplugin.twintania/Settings.xml";
+                var file = Path.Combine(FFXIVAPP.Common.Constants.PluginsSettingsPath, "Talis.XIVPlugin.Twintania.xml");
+                var legacyFile = "./Plugins/Talis.XIVPlugin.Twintania/Settings.xml";
                 if (_xSettings != null)
                 {
                     return _xSettings;

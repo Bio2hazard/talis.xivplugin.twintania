@@ -4,10 +4,10 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using talis.xivplugin.twintania.Interop;
-using talis.xivplugin.twintania.Properties;
+using Talis.XIVPlugin.Twintania.Interop;
+using Talis.XIVPlugin.Twintania.Properties;
 
-namespace talis.xivplugin.twintania.Windows
+namespace Talis.XIVPlugin.Twintania.Windows
 {
     /// <summary>
     ///     Interaction logic for TwintaniaWidget.xaml

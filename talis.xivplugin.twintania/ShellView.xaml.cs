@@ -1,7 +1,7 @@
 ﻿// talis.xivplugin.twintania
 // ShellView.xaml.cs
 
-namespace talis.xivplugin.twintania
+namespace Talis.XIVPlugin.Twintania
 {
     /// <summary>
     ///     Interaction logic for ShellView.xaml

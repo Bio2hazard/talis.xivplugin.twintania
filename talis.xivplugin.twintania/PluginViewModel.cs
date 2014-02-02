@@ -9,7 +9,7 @@ using FFXIVAPP.Common.Events;
 using FFXIVAPP.Common.Helpers;
 using System.Collections.ObjectModel;
 
-namespace talis.xivplugin.twintania
+namespace Talis.XIVPlugin.Twintania
 {
     internal sealed class PluginViewModel : INotifyPropertyChanged
     {

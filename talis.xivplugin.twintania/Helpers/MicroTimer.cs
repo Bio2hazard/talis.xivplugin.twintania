@@ -5,7 +5,7 @@
 
 using System;
 
-namespace talis.xivplugin.twintania.Helpers
+namespace Talis.XIVPlugin.Twintania.Helpers
 {
     /// <summary>
     /// MicroStopwatch class

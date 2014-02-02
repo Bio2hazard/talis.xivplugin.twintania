@@ -1,5 +1,5 @@
 ﻿
-namespace talis.xivplugin.twintania.Events
+namespace Talis.XIVPlugin.Twintania.Events
 {
     public class TimerUpdateEventArgs
     {

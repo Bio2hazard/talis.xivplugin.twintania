@@ -13,11 +13,11 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using NLog;
-using talis.xivplugin.twintania.Interop;
-using talis.xivplugin.twintania.Properties;
-using talis.xivplugin.twintania.Windows;
+using Talis.XIVPlugin.Twintania.Interop;
+using Talis.XIVPlugin.Twintania.Properties;
+using Talis.XIVPlugin.Twintania.Windows;
 
-namespace talis.xivplugin.twintania.Helpers
+namespace Talis.XIVPlugin.Twintania.Helpers
 {
     public static class WidgetTopMostHelper
     {

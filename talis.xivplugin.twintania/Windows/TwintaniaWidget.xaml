@@ -1,9 +1,9 @@
-﻿<Window x:Class="talis.xivplugin.twintania.Windows.TwintaniaWidget"
+﻿<Window x:Class="Talis.XIVPlugin.Twintania.Windows.TwintaniaWidget"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:pluginProperties="clr-namespace:talis.xivplugin.twintania.Properties"
-        xmlns:viewModels="clr-namespace:talis.xivplugin.twintania.Windows"
-        xmlns:customConverters="clr-namespace:talis.xivplugin.twintania.Converters"
+        xmlns:pluginProperties="clr-namespace:Talis.XIVPlugin.Twintania.Properties"
+        xmlns:viewModels="clr-namespace:Talis.XIVPlugin.Twintania.Windows"
+        xmlns:customConverters="clr-namespace:Talis.XIVPlugin.Twintania.Converters"
         xmlns:converters="clr-namespace:FFXIVAPP.Common.Converters;assembly=FFXIVAPP.Common"
         Title="TwintaniaWidget"
         Width="{Binding TwintaniaWidgetWidth,
@@ -37,7 +37,7 @@
             <x:Static x:Key="TwintaniaWidgetViewModel"
                       Member="viewModels:TwintaniaWidgetViewModel.Instance" />
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/talis.xivplugin.twintania;component/Resources/WidgetStyle.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Talis.XIVPlugin.Twintania;component/Resources/WidgetStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>

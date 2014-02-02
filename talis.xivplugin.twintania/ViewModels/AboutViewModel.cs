@@ -8,7 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using NLog;
 
-namespace talis.xivplugin.twintania.ViewModels
+namespace Talis.XIVPlugin.Twintania.ViewModels
 {
     internal sealed class AboutViewModel : INotifyPropertyChanged
     {

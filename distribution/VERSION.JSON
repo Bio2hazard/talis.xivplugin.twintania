@@ -1,10 +1,10 @@
 ﻿{
     "PluginInfo": {
-        "Name": "talis.xivplugin.twintania",
-        "Version": "3.0.5146.7761",
+        "Name": "Talis.XIVPlugin.Twintania",
+        "Version": "3.0.5146.8966",
         "Files": [
             {
-                "Name": "talis.xivplugin.twintania.dll",
+                "Name": "Talis.XIVPlugin.Twintania.dll",
                 "Location": ""
             },
             {

@@ -3,7 +3,7 @@
 
 using System.Windows;
 
-namespace talis.xivplugin.twintania.Localization
+namespace Talis.XIVPlugin.Twintania.Localization
 {
     public abstract class German
     {

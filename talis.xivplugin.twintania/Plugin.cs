@@ -13,10 +13,10 @@ using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using talis.xivplugin.twintania.Helpers;
-using talis.xivplugin.twintania.Properties;
+using Talis.XIVPlugin.Twintania.Helpers;
+using Talis.XIVPlugin.Twintania.Properties;
 
-namespace talis.xivplugin.twintania
+namespace Talis.XIVPlugin.Twintania
 {
     [Export(typeof (IPlugin))]
     public class Plugin : IPlugin, INotifyPropertyChanged

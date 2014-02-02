@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
-using talis.xivplugin.twintania.Localization;
+using Talis.XIVPlugin.Twintania.Localization;
 
-namespace talis.xivplugin.twintania.Helpers
+namespace Talis.XIVPlugin.Twintania.Helpers
 {
     internal static class LocaleHelper
     {

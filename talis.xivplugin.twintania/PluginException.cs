@@ -4,7 +4,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace talis.xivplugin.twintania
+namespace Talis.XIVPlugin.Twintania
 {
     [Serializable]
     public class PluginException : Exception

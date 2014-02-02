@@ -5,9 +5,9 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using talis.xivplugin.twintania.Events;
+using Talis.XIVPlugin.Twintania.Events;
 
-namespace talis.xivplugin.twintania.Helpers
+namespace Talis.XIVPlugin.Twintania.Helpers
 {
     public class TimerHelper : INotifyPropertyChanged
     {

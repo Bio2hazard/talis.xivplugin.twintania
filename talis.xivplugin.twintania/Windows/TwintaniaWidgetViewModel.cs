@@ -10,11 +10,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Timers;
-using talis.xivplugin.twintania.Events;
-using talis.xivplugin.twintania.Helpers;
-using talis.xivplugin.twintania.Properties;
+using Talis.XIVPlugin.Twintania.Events;
+using Talis.XIVPlugin.Twintania.Helpers;
+using Talis.XIVPlugin.Twintania.Properties;
 
-namespace talis.xivplugin.twintania.Windows
+namespace Talis.XIVPlugin.Twintania.Windows
 {
     internal sealed class TwintaniaWidgetViewModel : INotifyPropertyChanged
     {

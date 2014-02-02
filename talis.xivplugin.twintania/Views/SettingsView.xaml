@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="talis.xivplugin.twintania.Views.SettingsView"
+﻿<UserControl x:Class="Talis.XIVPlugin.Twintania.Views.SettingsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
@@ -6,9 +6,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:plugin="clr-namespace:talis.xivplugin.twintania"
-             xmlns:properties="clr-namespace:talis.xivplugin.twintania.Properties"
-             xmlns:viewModels="clr-namespace:talis.xivplugin.twintania.ViewModels"
+             xmlns:plugin="clr-namespace:Talis.XIVPlugin.Twintania"
+             xmlns:properties="clr-namespace:Talis.XIVPlugin.Twintania.Properties"
+             xmlns:viewModels="clr-namespace:Talis.XIVPlugin.Twintania.ViewModels"
              d:DesignHeight="700"
              d:DesignWidth="720"
              mc:Ignorable="d">

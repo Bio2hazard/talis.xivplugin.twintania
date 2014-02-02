@@ -4,9 +4,9 @@
 using FFXIVAPP.Common.ViewModelBase;
 using System.ComponentModel;
 using System.Windows.Input;
-using talis.xivplugin.twintania.Properties;
+using Talis.XIVPlugin.Twintania.Properties;
 
-namespace talis.xivplugin.twintania.ViewModels
+namespace Talis.XIVPlugin.Twintania.ViewModels
 {
     internal sealed class MainViewModel : INotifyPropertyChanged
     {

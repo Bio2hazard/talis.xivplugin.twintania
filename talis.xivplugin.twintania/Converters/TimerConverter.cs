@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
 
-namespace talis.xivplugin.twintania.Converters
+namespace Talis.XIVPlugin.Twintania.Converters
 {
     [ValueConversion(typeof(object), typeof(string))]
     public class TimerConverter : IValueConverter

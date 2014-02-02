@@ -8,12 +8,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("talis.xivplugin.twintania")]
+[assembly: AssemblyTitle("Talis.XIVPlugin.Twintania")]
 [assembly: AssemblyDescription("FFXIV-APP Twintania Widget")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Talis")]
-[assembly: AssemblyProduct("talis.xivplugin.twintania")]
-[assembly: AssemblyCopyright("Copyright © 2013 Talis")]
+[assembly: AssemblyProduct("Talis.XIVPlugin.Twintania")]
+[assembly: AssemblyCopyright("Copyright © 2014 Talis")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -5,11 +5,11 @@ using NLog;
 using System;
 using System.ComponentModel;
 using System.Windows;
-using talis.xivplugin.twintania.Helpers;
-using talis.xivplugin.twintania.Interop;
-using talis.xivplugin.twintania.Properties;
+using Talis.XIVPlugin.Twintania.Helpers;
+using Talis.XIVPlugin.Twintania.Interop;
+using Talis.XIVPlugin.Twintania.Properties;
 
-namespace talis.xivplugin.twintania
+namespace Talis.XIVPlugin.Twintania
 {
     public sealed class ShellViewModel : INotifyPropertyChanged
     {

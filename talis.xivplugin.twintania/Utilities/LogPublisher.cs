@@ -9,11 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using talis.xivplugin.twintania.Helpers;
-using talis.xivplugin.twintania.Properties;
-using talis.xivplugin.twintania.Windows;
+using Talis.XIVPlugin.Twintania.Helpers;
+using Talis.XIVPlugin.Twintania.Properties;
+using Talis.XIVPlugin.Twintania.Windows;
 
-namespace talis.xivplugin.twintania.Utilities
+namespace Talis.XIVPlugin.Twintania.Utilities
 {
     public static class LogPublisher
     {

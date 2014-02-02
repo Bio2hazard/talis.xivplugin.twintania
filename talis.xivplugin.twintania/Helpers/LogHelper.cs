@@ -1,7 +1,7 @@
 ﻿using NLog;
 using System;
 
-namespace talis.xivplugin.twintania.Helpers
+namespace Talis.XIVPlugin.Twintania.Helpers
 {
     public static class LogHelper
     {

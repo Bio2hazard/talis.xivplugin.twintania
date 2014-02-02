@@ -3,7 +3,7 @@
 
 using System;
 
-namespace talis.xivplugin.twintania.Views
+namespace Talis.XIVPlugin.Twintania.Views
 {
     /// <summary>
     ///     Interaction logic for SettingsView.xaml

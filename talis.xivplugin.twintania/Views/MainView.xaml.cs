@@ -1,7 +1,7 @@
 ﻿// talis.xivplugin.twintania
 // MainView.xaml.cs
 
-namespace talis.xivplugin.twintania.Views
+namespace Talis.XIVPlugin.Twintania.Views
 {
     /// <summary>
     ///     Interaction logic for MainView.xaml

@@ -9,10 +9,10 @@ using System.Text;
 using System.Windows;
 using System.Windows.Interop;
 using NLog;
-using talis.xivplugin.twintania.Helpers;
-using talis.xivplugin.twintania.Properties;
+using Talis.XIVPlugin.Twintania.Helpers;
+using Talis.XIVPlugin.Twintania.Properties;
 
-namespace talis.xivplugin.twintania.Interop
+namespace Talis.XIVPlugin.Twintania.Interop
 {
     public static class WinAPI
     {
