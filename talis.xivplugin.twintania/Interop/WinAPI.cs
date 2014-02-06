@@ -18,6 +18,7 @@ namespace Talis.XIVPlugin.Twintania.Interop
     {
         #region Logger
         private static Logger _logger;
+
         private static Logger Logger
         {
             get

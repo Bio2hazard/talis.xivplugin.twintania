@@ -85,6 +85,8 @@ namespace Talis.XIVPlugin.Twintania.ViewModels
 
         public ICommand RefreshSoundListCommand { get; private set; }
 
+        public ICommand TwintaniaWidgetResetCommand { get; private set; }
+
         #endregion
 
         public SettingsViewModel()
@@ -123,6 +125,8 @@ namespace Talis.XIVPlugin.Twintania.ViewModels
             TwintaniaWidgetTestStopCommand = new DelegateCommand(TwintaniaWidgetTestStop);
 
             RefreshSoundListCommand = new DelegateCommand(RefreshSoundList);
+
+            TwintaniaWidgetResetCommand = new DelegateCommand(TwintaniaWidgetReset);
         }
 
         #region Loading Functions
@@ -362,6 +366,11 @@ namespace Talis.XIVPlugin.Twintania.ViewModels
         public void TwintaniaWidgetTestStop()
         {
             TwintaniaWidgetViewModel.Instance.TestModeStop();
+        }
+
+        public void TwintaniaWidgetReset()
+        {
+            Settings.Default.Reset();
         }
 
         #endregion

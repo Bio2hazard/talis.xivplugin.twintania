@@ -2,7 +2,6 @@
 // TwintaniaWidgetViewModel.cs
 
 using FFXIVAPP.Common.Core.Memory;
-using FFXIVAPP.Common.Core.Memory.Enums;
 using FFXIVAPP.Common.Helpers;
 using NLog;
 using System;
@@ -305,7 +304,7 @@ namespace Talis.XIVPlugin.Twintania.Windows
                                         break;
 
                                     case "Twister":
-                                        SoundPlayerHelper.PlayCached("AlertSounds/aruba.wav", Settings.Default.TwintaniaWidgetTwisterAlertVolume);
+                                        TriggerTwister();
                                         break;
 
                                     case "End":

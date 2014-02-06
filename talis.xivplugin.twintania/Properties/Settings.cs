@@ -124,7 +124,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
             }
         }
 
-        public static void SetValue(string key, string value, IFormatProvider format = null)
+        public void SetValue(string key, string value, IFormatProvider format = null)
         {
             try
             {
@@ -160,6 +160,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
                         Default[key] = value;
                         break;
                 }
+                RaisePropertyChanged(key);
             }
             catch (SettingsPropertyNotFoundException ex)
             {
@@ -426,7 +427,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue("AlertSounds\\LowHealth.wav")]
+        [DefaultSettingValue("Plugins\\Talis.XIVPlugin.Twintania\\AlertSounds\\LowHealth.wav")]
         public string TwintaniaWidgetEnrageAlertFile
         {
             get { return ((string)(this["TwintaniaWidgetEnrageAlertFile"])); }
@@ -491,7 +492,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue("AlertSounds\\LowHealth.wav")]
+        [DefaultSettingValue("Plugins\\Talis.XIVPlugin.Twintania\\AlertSounds\\LowHealth.wav")]
         public string TwintaniaWidgetDivebombAlertFile
         {
             get { return ((string) (this["TwintaniaWidgetDivebombAlertFile"])); }
@@ -531,7 +532,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue("AlertSounds\\LowHealth.wav")]
+        [DefaultSettingValue("Plugins\\Talis.XIVPlugin.Twintania\\AlertSounds\\LowHealth.wav")]
         public string TwintaniaWidgetDeathSentenceAlertFile
         {
             get { return ((string)(this["TwintaniaWidgetDeathSentenceAlertFile"])); }
@@ -622,7 +623,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue("AlertSounds\\Gasp.wav")]
+        [DefaultSettingValue("Plugins\\Talis.XIVPlugin.Twintania\\AlertSounds\\Gasp.wav")]
         public string TwintaniaWidgetDeathSentenceWarningFile
         {
             get { return ((string)(this["TwintaniaWidgetDeathSentenceWarningFile"])); }
@@ -661,7 +662,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue("AlertSounds\\aruba.wav")]
+        [DefaultSettingValue("Plugins\\Talis.XIVPlugin.Twintania\\AlertSounds\\aruba.wav")]
         public string TwintaniaWidgetTwisterAlertFile
         {
             get { return ((string)(this["TwintaniaWidgetTwisterAlertFile"])); }
@@ -752,7 +753,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
-        [DefaultSettingValue("AlertSounds\\sonar.wav")]
+        [DefaultSettingValue("Plugins\\Talis.XIVPlugin.Twintania\\AlertSounds\\sonar.wav")]
         public string TwintaniaWidgetTwisterWarningFile
         {
             get { return ((string)(this["TwintaniaWidgetTwisterWarningFile"])); }

@@ -38,7 +38,7 @@ namespace Talis.XIVPlugin.Twintania
                     }
                     if (Constants.Settings.Contains(xKey))
                     {
-                        Settings.SetValue(xKey, xValue);
+                        Settings.Default.SetValue(xKey, xValue);
                     }
                     else
                     {

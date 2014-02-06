@@ -74,6 +74,9 @@
                                                                   Source={StaticResource Settings}}" />
                             </StackPanel>
                         </GroupBox>
+                        <Button Margin="5" Command="{Binding TwintaniaWidgetResetCommand,
+                                          Source={StaticResource SettingsViewModel}}"
+                        Content="Reset all settings to their defaults" />
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

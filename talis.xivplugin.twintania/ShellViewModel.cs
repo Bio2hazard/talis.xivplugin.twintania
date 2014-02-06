@@ -5,6 +5,8 @@ using NLog;
 using System;
 using System.ComponentModel;
 using System.Windows;
+using NLog.Config;
+using NLog.Targets;
 using Talis.XIVPlugin.Twintania.Helpers;
 using Talis.XIVPlugin.Twintania.Interop;
 using Talis.XIVPlugin.Twintania.Properties;
@@ -54,6 +56,19 @@ namespace Talis.XIVPlugin.Twintania
         {
             ShellView.View.Loaded -= Loaded;
             Initializer.LoadAndCacheSounds();
+
+            // WIP: Debug Logging for Twintania Plugin
+            /*
+            FileTarget fileTarget = new FileTarget();
+            LogManager.Configuration.AddTarget("file", fileTarget);
+
+            fileTarget.FileName = "${basedir}/Logs/TwintaniaErrors/TwintaniaPlugin-${date:format=yyyy-MM-dd}.log";
+            fileTarget.Layout = "${longdate} ${level} ${logger} ${message} Ex:${exception:innerFormat=ToString:maxInnerExceptionLevel=15:format=ToString}";
+            LoggingRule fileRule = new LoggingRule("Talis.XIVPlugin.Twintania*", LogLevel.Debug, fileTarget);
+            LogManager.Configuration.LoggingRules.Add(fileRule);
+
+            LogManager.ReconfigExistingLoggers();
+             */
         }
 
         private static void DefaultOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)

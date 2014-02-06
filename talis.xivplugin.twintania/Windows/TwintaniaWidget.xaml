@@ -27,6 +27,7 @@
                       Mode=TwoWay,
                       Source={x:Static pluginProperties:Settings.Default}}"
         WindowStyle="None"
+        ResizeMode="NoResize"
         ShowActivated="false">
     <Window.Resources>
         <ResourceDictionary>
@@ -54,7 +55,7 @@
                        Visibility="{Binding TwintaniaWidgetShowTitle,
                                             Source={StaticResource Settings},
                                             Converter={StaticResource VisibilityConverter}}">
-                <Border Margin="5"
+                <Border Margin="5 0 5 5"
                         Background="WhiteSmoke"
                         BorderBrush="Black"
                         BorderThickness="1"
