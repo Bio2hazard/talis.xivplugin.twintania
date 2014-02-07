@@ -148,7 +148,7 @@ namespace Talis.XIVPlugin.Twintania.Helpers
                 _timeToEventSeconds--;
                 if (_timeToEventSeconds <= 10)
                 {
-                    SoundPlayerHelper.PlayCached("Plugins/Talis.XIVPlugin.Twintania/Counting/" + _timeToEventSeconds + @".mp3", Volume);
+                    SoundPlayerHelper.PlayCached("Plugins\\Talis.XIVPlugin.Twintania\\Counting\\" + _timeToEventSeconds + @".mp3", Volume);
                 }
             }
             else if (_timeToEventCurrent <= 0.00)
