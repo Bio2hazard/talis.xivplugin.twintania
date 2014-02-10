@@ -1,5 +1,7 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // German.cs
+// 
+// 	
 
 using System.Windows;
 

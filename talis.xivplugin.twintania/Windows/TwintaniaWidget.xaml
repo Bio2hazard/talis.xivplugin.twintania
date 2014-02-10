@@ -75,10 +75,10 @@
                         </Button>
                         <DockPanel Background="WhiteSmoke"
                                    PreviewMouseDown="TitleBar_OnPreviewMouseDown">
-                            <Label
+                            <TextBlock
                                 Margin="5 -1"
                                    HorizontalAlignment="Center"
-                                   Content="[ Twintania Tracker ]"
+                                   Text="[ Twintania Tracker ]"
                                    FontSize="14"
                                    FontWeight="Bold"
                                    Foreground="Black"
@@ -110,30 +110,30 @@
                                  Style="{StaticResource ProgressBarStyleStopAnimation}"
                                  Value="{Binding TwintaniaHPPercent,
                                                  Source={StaticResource TwintaniaWidgetViewModel}}" />
-                    <Label Grid.Row="0"
+                    <TextBlock Grid.Row="0"
                            Margin="5 0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
-                           Content="{Binding HPCurrent}"
-                           FontWeight="Bold"
-                           Foreground="Black"
-                           Style="{StaticResource CommaNumberStyle}" />
-                    <Label Grid.Row="0"
-                           Margin="5 0"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Content="{Binding Name}"
+                           Text="{Binding HPCurrent, StringFormat={}{0:N0}}"
                            FontWeight="Bold"
                            Foreground="Black"
                            Style="{StaticResource StatLabelStyle}" />
-                    <Label Grid.Row="0"
+                    <TextBlock Grid.Row="0"
+                           Margin="5 0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="{Binding Name}"
+                           FontWeight="Bold"
+                           Foreground="Black"
+                           Style="{StaticResource StatLabelStyle}" />
+                    <TextBlock Grid.Row="0"
                            Margin="5 0"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center"
-                           Content="{Binding HPPercent}"
+                           Text="{Binding HPPercent, StringFormat={}{0:P}}"
                            FontWeight="Bold"
                            Foreground="Black"
-                           Style="{StaticResource PercentStyle}" />
+                           Style="{StaticResource StatLabelStyle}" />
                 </Grid>
             </StackPanel>
             
@@ -159,30 +159,30 @@
                                  Style="{StaticResource ProgressBarStyleStopAnimation}"
                                  Value="{Binding DreadknightHPPercent,
                                                  Source={StaticResource TwintaniaWidgetViewModel}}" />
-                    <Label Grid.Row="0"
+                    <TextBlock Grid.Row="0"
                            Margin="5 0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
-                           Content="{Binding HPCurrent}"
-                           FontWeight="Bold"
-                           Foreground="Black"
-                           Style="{StaticResource CommaNumberStyle}" />
-                    <Label Grid.Row="0"
-                           Margin="5 0"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Content="{Binding Name}"
+                           Text="{Binding HPCurrent, StringFormat={}{0:N0}}"
                            FontWeight="Bold"
                            Foreground="Black"
                            Style="{StaticResource StatLabelStyle}" />
-                    <Label Grid.Row="0"
+                    <TextBlock Grid.Row="0"
+                           Margin="5 0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="{Binding Name}"
+                           FontWeight="Bold"
+                           Foreground="Black"
+                           Style="{StaticResource StatLabelStyle}" />
+                    <TextBlock Grid.Row="0"
                            Margin="5 0"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center"
-                           Content="{Binding HPPercent}"
+                           Text="{Binding HPPercent, StringFormat={}{0:P}}"
                            FontWeight="Bold"
                            Foreground="Black"
-                           Style="{StaticResource PercentStyle}" />
+                           Style="{StaticResource StatLabelStyle}" />
                 </Grid>
             </StackPanel>
 
@@ -209,20 +209,20 @@
                                     Style="{StaticResource ProgressBarStyleStopAnimation}"
                                     Value="{Binding TwintaniaEnrageTime,
                                                     Source={StaticResource TwintaniaWidgetViewModel}}" />
-                    <Label Grid.Row="0"
+                    <TextBlock Grid.Row="0"
                         Margin="5 0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Content="Enrage Timer"
+                        Text="Enrage Timer"
                         FontWeight="Bold"
                         Foreground="Black"
                         Style="{StaticResource StatLabelStyle}"/>
 
-                    <Label Grid.Row="0"
+                    <TextBlock Grid.Row="0"
                         Margin="5 0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Content="{Binding TwintaniaEnrageTime,
+                        Text="{Binding TwintaniaEnrageTime,
                                                 Source={StaticResource TwintaniaWidgetViewModel},
                                                 Converter={StaticResource TimerConverter}}"
                         FontWeight="Bold"
@@ -255,20 +255,20 @@
                                         Style="{StaticResource ProgressBarStyleStopAnimation}"
                                         Value="{Binding TwintaniaTwisterTime,
                                                         Source={StaticResource TwintaniaWidgetViewModel}}" />
-                        <Label Grid.Row="0"
+                        <TextBlock Grid.Row="0"
                             Margin="5 0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Content="Twister Timer"
+                            Text="Twister Timer"
                             FontWeight="Bold"
                             Foreground="Black"
                             Style="{StaticResource StatLabelStyle}"/>
 
-                        <Label Grid.Row="0"
+                        <TextBlock Grid.Row="0"
                             Margin="5 0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
-                            Content="{Binding TwintaniaTwisterTime,
+                            Text="{Binding TwintaniaTwisterTime,
                                                     Source={StaticResource TwintaniaWidgetViewModel},
                                                     Converter={StaticResource TimerConverter}}"
                             FontWeight="Bold"
@@ -302,20 +302,20 @@
                                         Style="{StaticResource ProgressBarStyleStopAnimation}"
                                         Value="{Binding TwintaniaDeathSentenceTime,
                                                         Source={StaticResource TwintaniaWidgetViewModel}}" />
-                        <Label Grid.Row="0"
+                        <TextBlock Grid.Row="0"
                             Margin="5 0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Content="Death Sentence Timer"
+                            Text="Death Sentence Timer"
                             FontWeight="Bold"
                             Foreground="Black"
                             Style="{StaticResource StatLabelStyle}"/>
 
-                        <Label Grid.Row="0"
+                        <TextBlock Grid.Row="0"
                             Margin="5 0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
-                            Content="{Binding TwintaniaDeathSentenceTime,
+                            Text="{Binding TwintaniaDeathSentenceTime,
                                                     Source={StaticResource TwintaniaWidgetViewModel},
                                                     Converter={StaticResource TimerConverter}}"
                             FontWeight="Bold"
@@ -347,21 +347,21 @@
                                     Style="{StaticResource ProgressBarStyleStopAnimation}"
                                     Value="{Binding TwintaniaDivebombTimeToNextCur,
                                                     Source={StaticResource TwintaniaWidgetViewModel}}" />
-                    <Label Grid.Row="0"
+                    <TextBlock Grid.Row="0"
                         Margin="5 0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Content="{Binding TwintaniaDivebombCount,
-                                                Source={StaticResource TwintaniaWidgetViewModel}}"
+                        Text="{Binding TwintaniaDivebombCount,
+                                                Source={StaticResource TwintaniaWidgetViewModel}, StringFormat={}Next Divebomb ({0})}"
                         FontWeight="Bold"
                         Foreground="Black"
-                        Style="{StaticResource DivebombLabelStyle}"/>
+                        Style="{StaticResource StatLabelStyle}"/>
 
-                    <Label Grid.Row="0"
+                    <TextBlock Grid.Row="0"
                         Margin="5 0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Content="{Binding TwintaniaDivebombTimeToNextCur,
+                        Text="{Binding TwintaniaDivebombTimeToNextCur,
                                                 Source={StaticResource TwintaniaWidgetViewModel},
                                                 Converter={StaticResource TimerConverter}}"
                         FontWeight="Bold"

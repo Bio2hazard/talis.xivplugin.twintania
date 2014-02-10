@@ -1,7 +1,7 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // SettingsView.xaml.cs
-
-using System;
+// 
+// 	
 
 namespace Talis.XIVPlugin.Twintania.Views
 {

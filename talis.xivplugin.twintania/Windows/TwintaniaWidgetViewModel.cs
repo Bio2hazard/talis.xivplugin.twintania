@@ -1,14 +1,15 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // TwintaniaWidgetViewModel.cs
+// 
+// 	
 
-using FFXIVAPP.Common.Core.Memory;
-using FFXIVAPP.Common.Helpers;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Timers;
+using FFXIVAPP.Common.Core.Memory;
+using NLog;
 using Talis.XIVPlugin.Twintania.Events;
 using Talis.XIVPlugin.Twintania.Helpers;
 using Talis.XIVPlugin.Twintania.Properties;
@@ -25,7 +26,7 @@ namespace Talis.XIVPlugin.Twintania.Windows
         {
             get
             {
-                if (FFXIVAPP.Common.Constants.EnableNLog)
+                if (FFXIVAPP.Common.Constants.EnableNLog || Settings.Default.TwintaniaWidgetAdvancedLogging)
                 {
                     return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
                 }
@@ -44,9 +45,10 @@ namespace Talis.XIVPlugin.Twintania.Windows
         private bool _dreadknightIsValid;
         private bool _forceTop;
         private bool _testMode;
+        private double _twintaniaDeathSentenceTime;
+        private TimerHelper _twintaniaDeathSentenceTimer;
 
         private int _twintaniaDivebombCount = 1;
-        private int _twintaniaDivebombTimeFull;
         private double _twintaniaDivebombTimeToNextCur;
         private double _twintaniaDivebombTimeToNextMax;
         private TimerHelper _twintaniaDivebombTimer;
@@ -54,12 +56,6 @@ namespace Talis.XIVPlugin.Twintania.Windows
 
         private double _twintaniaEnrageTime;
         private TimerHelper _twintaniaEnrageTimer;
-
-        private double _twintaniaTwisterTime;
-        private TimerHelper _twintaniaTwisterTimer;
-
-        private double _twintaniaDeathSentenceTime;
-        private TimerHelper _twintaniaDeathSentenceTimer;
 
         private ActorEntity _twintaniaEntity;
         private double _twintaniaHPPercent;
@@ -69,6 +65,8 @@ namespace Talis.XIVPlugin.Twintania.Windows
         private double _twintaniaTestTimeToNextCur;
         private double _twintaniaTestTimeToNextMax;
         private Timer _twintaniaTestTimer;
+        private double _twintaniaTwisterTime;
+        private TimerHelper _twintaniaTwisterTimer;
 
         public static TwintaniaWidgetViewModel Instance
         {
@@ -201,16 +199,6 @@ namespace Talis.XIVPlugin.Twintania.Windows
             set
             {
                 _twintaniaDivebombTimeToNextMax = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        public int TwintaniaDivebombTimeFull
-        {
-            get { return _twintaniaDivebombTimeFull; }
-            set
-            {
-                _twintaniaDivebombTimeFull = value;
                 RaisePropertyChanged();
             }
         }
@@ -364,20 +352,19 @@ namespace Talis.XIVPlugin.Twintania.Windows
 
         public void TriggerDiveBomb()
         {
+            LogHelper.Log(Logger, "Divebomb Triggered (" + TwintaniaDivebombCount + ")", LogLevel.Debug);
             TwintaniaDivebombCount++;
-            if (TwintaniaIsValid && TwintaniaDivebombCount <= 6)
+            if (TwintaniaDivebombCount <= 6)
             {
                 if (TwintaniaDivebombCount == 4)
                 {
                     TwintaniaDivebombTimeToNextCur = Settings.Default.TwintaniaWidgetDivebombTimeSlow;
                     TwintaniaDivebombTimeToNextMax = Settings.Default.TwintaniaWidgetDivebombTimeSlow;
-                    TwintaniaDivebombTimeFull = (int) Math.Floor(Settings.Default.TwintaniaWidgetDivebombTimeSlow) + 1;
                 }
                 else
                 {
                     TwintaniaDivebombTimeToNextCur = Settings.Default.TwintaniaWidgetDivebombTimeFast;
                     TwintaniaDivebombTimeToNextMax = Settings.Default.TwintaniaWidgetDivebombTimeFast;
-                    TwintaniaDivebombTimeFull = (int) Math.Floor(Settings.Default.TwintaniaWidgetDivebombTimeFast) + 1;
                 }
                 DivebombTimerStart();
             }
@@ -385,9 +372,10 @@ namespace Talis.XIVPlugin.Twintania.Windows
 
         public void TriggerTwister()
         {
+            LogHelper.Log(Logger, "Twister Triggered", LogLevel.Debug);
             if (Settings.Default.TwintaniaWidgetTwisterAlertPlaySound)
             {
-                SoundPlayerHelper.PlayCached(Settings.Default.TwintaniaWidgetTwisterAlertFile, Settings.Default.TwintaniaWidgetTwisterAlertVolume);
+                SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetTwisterAlertFile, Settings.Default.TwintaniaWidgetTwisterAlertVolume);
             }
 
             if (Settings.Default.TwintaniaWidgetTwisterWarningEnabled)
@@ -398,9 +386,10 @@ namespace Talis.XIVPlugin.Twintania.Windows
 
         public void TriggerDeathSentence()
         {
+            LogHelper.Log(Logger, "Death Sentence Triggered", LogLevel.Debug);
             if (Settings.Default.TwintaniaWidgetDeathSentenceAlertPlaySound)
             {
-                SoundPlayerHelper.PlayCached(Settings.Default.TwintaniaWidgetDeathSentenceAlertFile, Settings.Default.TwintaniaWidgetDeathSentenceAlertVolume);
+                SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetDeathSentenceAlertFile, Settings.Default.TwintaniaWidgetDeathSentenceAlertVolume);
             }
 
             if (Settings.Default.TwintaniaWidgetDeathSentenceWarningEnabled)
@@ -433,7 +422,7 @@ namespace Talis.XIVPlugin.Twintania.Windows
             TwintaniaHPPercent = 1;
 
             EnrageTimerStart();
-            
+
             TwintaniaDivebombCount = 1;
             TwintaniaDivebombTimeToNextCur = 0;
             TwintaniaDivebombTimeToNextMax = 0;
@@ -505,6 +494,8 @@ namespace Talis.XIVPlugin.Twintania.Windows
             TwintaniaDivebombTimer.Volume = Settings.Default.TwintaniaWidgetDivebombVolume;
             TwintaniaDivebombTimer.Counting = Settings.Default.TwintaniaWidgetDivebombCounting;
 
+            LogHelper.Log(Logger, "Starting Timer for Divebomb " + TwintaniaDivebombCount, LogLevel.Debug);
+
             TwintaniaDivebombTimer.Start(TwintaniaDivebombTimeToNextMax, 25);
             // ReSharper disable once ExplicitCallerInfoArgument
             RaisePropertyChanged("TwintaniaDivebombTimer");
@@ -512,6 +503,8 @@ namespace Talis.XIVPlugin.Twintania.Windows
 
         public void DivebombTimerStop()
         {
+            LogHelper.Log(Logger, "Stopping Timer for Divebomb " + TwintaniaDivebombCount, LogLevel.Debug);
+
             TwintaniaDivebombTimer.Stop();
             // ReSharper disable once ExplicitCallerInfoArgument
             RaisePropertyChanged("TwintaniaDivebombTimer");
@@ -523,6 +516,8 @@ namespace Talis.XIVPlugin.Twintania.Windows
             TwintaniaEnrageTimer.Volume = Settings.Default.TwintaniaWidgetEnrageVolume;
             TwintaniaEnrageTimer.Counting = Settings.Default.TwintaniaWidgetEnrageCounting;
 
+            LogHelper.Log(Logger, "Starting Enrage Timer", LogLevel.Debug);
+
             TwintaniaEnrageTimer.Start(Settings.Default.TwintaniaWidgetEnrageTime, 25);
             // ReSharper disable once ExplicitCallerInfoArgument
             RaisePropertyChanged("TwintaniaEnrageTimer");
@@ -530,6 +525,8 @@ namespace Talis.XIVPlugin.Twintania.Windows
 
         public void EnrageTimerStop()
         {
+            LogHelper.Log(Logger, "Stopping Enrage Timer", LogLevel.Debug);
+
             TwintaniaEnrageTimer.Stop();
             // ReSharper disable once ExplicitCallerInfoArgument
             RaisePropertyChanged("TwintaniaEnrageTimer");
@@ -542,6 +539,8 @@ namespace Talis.XIVPlugin.Twintania.Windows
             TwintaniaTwisterTimer.Volume = Settings.Default.TwintaniaWidgetTwisterWarningVolume;
             TwintaniaTwisterTimer.Counting = Settings.Default.TwintaniaWidgetTwisterWarningCounting;
 
+            LogHelper.Log(Logger, "Starting Twister Timer", LogLevel.Debug);
+
             TwintaniaTwisterTimer.Start(Settings.Default.TwintaniaWidgetTwisterWarningTime, 25);
             // ReSharper disable once ExplicitCallerInfoArgument
             RaisePropertyChanged("TwintaniaTwisterTimer");
@@ -549,6 +548,8 @@ namespace Talis.XIVPlugin.Twintania.Windows
 
         public void TwisterTimerStop()
         {
+            LogHelper.Log(Logger, "Stopping Twister Timer", LogLevel.Debug);
+
             TwintaniaTwisterTimer.Stop();
             // ReSharper disable once ExplicitCallerInfoArgument
             RaisePropertyChanged("TwintaniaTwisterTimer");
@@ -561,6 +562,8 @@ namespace Talis.XIVPlugin.Twintania.Windows
             TwintaniaDeathSentenceTimer.Volume = Settings.Default.TwintaniaWidgetDeathSentenceWarningVolume;
             TwintaniaDeathSentenceTimer.Counting = Settings.Default.TwintaniaWidgetDeathSentenceWarningCounting;
 
+            LogHelper.Log(Logger, "Starting Death Sentence Timer", LogLevel.Debug);
+
             TwintaniaDeathSentenceTimer.Start(Settings.Default.TwintaniaWidgetDeathSentenceWarningTime, 25);
             // ReSharper disable once ExplicitCallerInfoArgument
             RaisePropertyChanged("TwintaniaDeathSentenceTimer");
@@ -568,6 +571,8 @@ namespace Talis.XIVPlugin.Twintania.Windows
 
         public void DeathSentenceTimerStop()
         {
+            LogHelper.Log(Logger, "Stopping Death Sentence Timer", LogLevel.Debug);
+
             TwintaniaDeathSentenceTimer.Stop();
             // ReSharper disable once ExplicitCallerInfoArgument
             RaisePropertyChanged("TwintaniaDeathSentenceTimer");

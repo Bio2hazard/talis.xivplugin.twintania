@@ -1,12 +1,14 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // EventSubscriber.cs
+// 
+// 	
 
-using FFXIVAPP.Common.Core.Memory;
-using FFXIVAPP.IPluginInterface.Events;
 using System;
 using System.Linq;
+using FFXIVAPP.IPluginInterface.Events;
 using NLog;
 using Talis.XIVPlugin.Twintania.Helpers;
+using Talis.XIVPlugin.Twintania.Properties;
 using Talis.XIVPlugin.Twintania.Utilities;
 using Talis.XIVPlugin.Twintania.Windows;
 
@@ -15,18 +17,21 @@ namespace Talis.XIVPlugin.Twintania
     public static class EventSubscriber
     {
         #region Logger
+
         private static Logger _logger;
+
         private static Logger Logger
         {
             get
             {
-                if (FFXIVAPP.Common.Constants.EnableNLog)
+                if (FFXIVAPP.Common.Constants.EnableNLog || Settings.Default.TwintaniaWidgetAdvancedLogging)
                 {
                     return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
                 }
                 return null;
             }
         }
+
         #endregion
 
         public static void Subscribe()
@@ -99,20 +104,32 @@ namespace Talis.XIVPlugin.Twintania
             }
             var monsterEntities = actorEntitiesEvent.ActorEntities;
 
-            ActorEntity twintania = monsterEntities.SingleOrDefault(monster => (monster.NPCID1 == 4295027 && monster.NPCID2 == 2021));
+            var twintania = monsterEntities.SingleOrDefault(monster => (monster.NPCID1 == 4295027 && monster.NPCID2 == 2021));
             if (twintania != null && twintania.IsValid && twintania.HPCurrent > 0)
             {
                 TwintaniaWidgetViewModel.Instance.TwintaniaEntity = twintania;
                 TwintaniaWidgetViewModel.Instance.TwintaniaIsValid = true;
                 TwintaniaWidgetViewModel.Instance.TwintaniaHPPercent = (double) twintania.HPPercent;
-                if(twintania.IsClaimed && !TwintaniaWidgetViewModel.Instance.TwintaniaEngaged)
+                if (twintania.IsClaimed && !TwintaniaWidgetViewModel.Instance.TwintaniaEngaged)
                 {
+                    LogHelper.Log(Logger, "Twintania engaged in combat.", LogLevel.Debug);
                     TwintaniaWidgetViewModel.Instance.EnrageTimerStart();
                     TwintaniaWidgetViewModel.Instance.TwintaniaEngaged = true;
+                } 
+                else if (TwintaniaWidgetViewModel.Instance.TwintaniaEngaged && !twintania.IsClaimed)
+                {
+                    LogHelper.Log(Logger, "Twintania found, but not engaged in combat.", LogLevel.Debug);
+                    TwintaniaWidgetViewModel.Instance.EnrageTimerStop();
+                    TwintaniaWidgetViewModel.Instance.TwintaniaEngaged = false;
                 }
             }
-            else if(TwintaniaWidgetViewModel.Instance.TwintaniaIsValid)
+            else if (TwintaniaWidgetViewModel.Instance.TwintaniaIsValid)
             {
+                if (twintania != null)
+                    LogHelper.Log(Logger, "Twintania no longer tracked. ( IsValid:" + twintania.IsValid + " HPCurrent:" + twintania.HPCurrent + " )", LogLevel.Debug);
+                else
+                    LogHelper.Log(Logger, "Twintania no longer tracked. ( Not found in memory )", LogLevel.Debug);
+
                 TwintaniaWidgetViewModel.Instance.DivebombTimerStop();
                 TwintaniaWidgetViewModel.Instance.EnrageTimerStop();
                 TwintaniaWidgetViewModel.Instance.TwintaniaEntity = null;
@@ -131,8 +148,13 @@ namespace Talis.XIVPlugin.Twintania
                 TwintaniaWidgetViewModel.Instance.DreadknightIsValid = true;
                 TwintaniaWidgetViewModel.Instance.DreadknightHPPercent = (double) dreadknight.HPPercent;
             }
-            else if(TwintaniaWidgetViewModel.Instance.DreadknightIsValid)
+            else if (TwintaniaWidgetViewModel.Instance.DreadknightIsValid)
             {
+                if (dreadknight != null)
+                    LogHelper.Log(Logger, "Dread Knight no longer tracked. ( IsValid:" + dreadknight.IsValid + " HPCurrent:" + dreadknight.HPCurrent + " )", LogLevel.Debug);
+                else
+                    LogHelper.Log(Logger, "Dread Knight no longer tracked. ( Not found in memory )", LogLevel.Debug);
+
                 TwintaniaWidgetViewModel.Instance.DreadknightEntity = null;
                 TwintaniaWidgetViewModel.Instance.DreadknightIsValid = false;
                 TwintaniaWidgetViewModel.Instance.DreadknightHPPercent = 0;

@@ -1,5 +1,7 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // Japanese.cs
+// 
+// 	
 
 using System.Windows;
 

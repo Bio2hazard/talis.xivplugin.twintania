@@ -1,5 +1,7 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // ShellView.xaml.cs
+// 
+// 	
 
 namespace Talis.XIVPlugin.Twintania
 {

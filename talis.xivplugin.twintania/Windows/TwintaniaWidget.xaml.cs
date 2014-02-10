@@ -1,5 +1,7 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // TwintaniaWidget.xaml.cs
+// 
+// 	
 
 using System.ComponentModel;
 using System.Windows;

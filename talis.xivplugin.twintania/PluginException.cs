@@ -1,5 +1,7 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // PluginException.cs
+// 
+// 	
 
 using System;
 using System.Runtime.Serialization;

@@ -1,12 +1,12 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // Initializer.cs
+// 
+// 	
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Windows;
 using System.Xml.Linq;
 using FFXIVAPP.Common.Helpers;
 using Talis.XIVPlugin.Twintania.Helpers;
@@ -30,8 +30,8 @@ namespace Talis.XIVPlugin.Twintania
                 foreach (var xElement in Constants.XSettings.Descendants()
                                                   .Elements("Setting"))
                 {
-                    var xKey = (string)xElement.Attribute("Key");
-                    var xValue = (string)xElement.Element("Value");
+                    var xKey = (string) xElement.Attribute("Key");
+                    var xValue = (string) xElement.Element("Value");
                     if (String.IsNullOrWhiteSpace(xKey) || String.IsNullOrWhiteSpace(xValue))
                     {
                         return;
@@ -92,7 +92,8 @@ namespace Talis.XIVPlugin.Twintania
                 }
             }
 
-            var cachedSoundFiles = SoundPlayerHelper.SoundFileKeys().Except(PluginViewModel.Instance.SoundFiles);
+            var cachedSoundFiles = SoundPlayerHelper.SoundFileKeys()
+                                                    .Except(PluginViewModel.Instance.SoundFiles);
             foreach (var cachedSoundFile in cachedSoundFiles)
             {
                 PluginViewModel.Instance.SoundFiles.Add(cachedSoundFile);

@@ -31,7 +31,7 @@
                                Source="/Talis.XIVPlugin.Twintania;component/Media/Images/Main.png"
                                ToolTip="{Binding Locale[app_MainToolTip],
                                                  Source={StaticResource PluginViewModel}}" />
-                        <Label Content="{Binding Locale[app_MainToolTip],
+                        <TextBlock Text="{Binding Locale[app_MainToolTip],
                                                  Source={StaticResource PluginViewModel}}"
                                Padding="5"
                                Visibility="{Binding EnableHelpLabels,
@@ -50,7 +50,7 @@
                                Source="/Talis.XIVPlugin.Twintania;component/Media/Images/Settings.png"
                                ToolTip="{Binding Locale[app_SettingsToolTip],
                                                  Source={StaticResource PluginViewModel}}" />
-                        <Label Content="{Binding Locale[app_SettingsToolTip],
+                        <TextBlock Text="{Binding Locale[app_SettingsToolTip],
                                                  Source={StaticResource PluginViewModel}}"
                                Padding="5"
                                Visibility="{Binding EnableHelpLabels,
@@ -69,7 +69,7 @@
                                Source="/Talis.XIVPlugin.Twintania;component/Media/Images/About.png"
                                ToolTip="{Binding Locale[app_AboutToolTip],
                                                  Source={StaticResource PluginViewModel}}" />
-                        <Label Content="{Binding Locale[app_AboutToolTip],
+                        <TextBlock Text="{Binding Locale[app_AboutToolTip],
                                                  Source={StaticResource PluginViewModel}}"
                                Padding="5"
                                Visibility="{Binding EnableHelpLabels,

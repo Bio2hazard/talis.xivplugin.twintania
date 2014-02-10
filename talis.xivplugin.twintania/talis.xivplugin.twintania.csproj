@@ -97,6 +97,7 @@
     <Compile Include="Events\TimerUpdateEventArgs.cs" />
     <Compile Include="Helpers\LogHelper.cs" />
     <Compile Include="Helpers\MicroTimer.cs" />
+    <Compile Include="Helpers\SoundHelper.cs" />
     <Compile Include="Helpers\TimerHelper.cs" />
     <Compile Include="Helpers\WidgetTopMostHelper.cs" />
     <Compile Include="Initializer.cs" />

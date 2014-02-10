@@ -24,7 +24,7 @@
         <CollectionViewSource x:Key="cvsSounds" Source="{Binding SoundFiles,
                                                                     Source={StaticResource PluginViewModel}}">
             <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription Direction="Ascending"></scm:SortDescription>
+                <scm:SortDescription Direction="Ascending" />
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
         
@@ -74,9 +74,22 @@
                                                                   Source={StaticResource Settings}}" />
                             </StackPanel>
                         </GroupBox>
-                        <Button Margin="5" Command="{Binding TwintaniaWidgetResetCommand,
+                        <GroupBox Header="If you encounter issues...">
+                            <StackPanel>
+                                <GroupBox Header="Twintania Plugin Debug Output">
+                                    <StackPanel>
+                                        <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetAdvancedLogging,
+                                                                           Source={StaticResource Settings}}" />
+                                        <TextBlock Margin="0 5 0 0" TextWrapping="Wrap">
+                                            When turned on, verbose log files will be created in Logs\TwintaniaDebug
+                                        </TextBlock>
+                                    </StackPanel>
+                                </GroupBox>
+                                <Button Margin="5" Command="{Binding TwintaniaWidgetResetCommand,
                                           Source={StaticResource SettingsViewModel}}"
                         Content="Reset all settings to their defaults" />
+                            </StackPanel>
+                        </GroupBox>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
@@ -87,8 +100,8 @@
                         <GroupBox Header="Divebomb timer settings">
                             <StackPanel>
                                 <Grid Margin="0 2">
-                                    <Label VerticalContentAlignment="Center"
-                                           Content="Wait time on fast Divebombs:" />
+                                    <TextBlock VerticalAlignment="Center"
+                                           Text="Wait time on fast Divebombs:" />
                                     <TextBox x:Name="TwintaniaWidgetDivebombTimeFastBox"
                                              Width="45"
                                              Margin="5 0"
@@ -101,8 +114,8 @@
                                                             Mode=OneWay}" />
                                 </Grid>
                                 <Grid Margin="0 2">
-                                    <Label VerticalContentAlignment="Center"
-                                           Content="Wait time on slow Divebombs:" />
+                                    <TextBlock VerticalAlignment="Center"
+                                           Text="Wait time on slow Divebombs:" />
                                     <TextBox x:Name="TwintaniaWidgetDivebombTimeSlowBox"
                                              Width="45"
                                              Margin="5 0"
@@ -168,8 +181,9 @@
                                     </ComboBox>
                                 </Grid>
                                 <DockPanel LastChildFill="True">
-                                    <Label>Volume:</Label>
+                                    <TextBlock VerticalAlignment="Center">Volume:</TextBlock>
                                     <TextBlock Width="50"
+                                               TextAlignment="Center"
                                                VerticalAlignment="Center"
                                                Text="{Binding ElementName=TwintaniaDivebombVolume,
                                                               Path=Value,
@@ -234,8 +248,9 @@
                                 </Grid>
                                 <DockPanel LastChildFill="True" IsEnabled="{Binding TwintaniaWidgetDeathSentenceAlertPlaySound,
                                                                 Source={StaticResource Settings}}">
-                                    <Label >Volume:</Label>
+                                    <TextBlock VerticalAlignment="Center">Volume:</TextBlock>
                                     <TextBlock Width="50"
+                                               TextAlignment="Center"
                                                VerticalAlignment="Center"
                                                Text="{Binding ElementName=TwintaniaDeathSentenceAlertVolume,
                                                               Path=Value,
@@ -280,8 +295,8 @@
                                         </GroupBox>
                                     </Grid>
                                     <Grid Margin="0 2">
-                                        <Label VerticalContentAlignment="Center"
-                                           Content="Wait time after Death Sentence:" />
+                                        <TextBlock VerticalAlignment="Center"
+                                           Text="Wait time after Death Sentence:" />
                                         <TextBox x:Name="TwintaniaWidgetDeathSentenceWarningTimeBox"
                                              Width="45"
                                              Margin="5 0"
@@ -361,8 +376,9 @@
                                         </ComboBox>
                                     </Grid>
                                     <DockPanel LastChildFill="True">
-                                        <Label>Volume:</Label>
+                                        <TextBlock VerticalAlignment="Center">Volume:</TextBlock>
                                         <TextBlock Width="50"
+                                                   TextAlignment="Center"
                                                VerticalAlignment="Center"
                                                Text="{Binding ElementName=TwintaniaDeathSentenceWarningVolume,
                                                               Path=Value,
@@ -428,8 +444,9 @@
                                 </Grid>
                                 <DockPanel LastChildFill="True" IsEnabled="{Binding TwintaniaWidgetTwisterAlertPlaySound,
                                                                 Source={StaticResource Settings}}">
-                                    <Label >Volume:</Label>
+                                    <TextBlock VerticalAlignment="Center">Volume:</TextBlock>
                                     <TextBlock Width="50"
+                                               TextAlignment="Center"
                                                VerticalAlignment="Center"
                                                Text="{Binding ElementName=TwintaniaTwisterAlertVolume,
                                                               Path=Value,
@@ -474,8 +491,8 @@
                                         </GroupBox>
                                     </Grid>
                                     <Grid Margin="0 2">
-                                        <Label VerticalContentAlignment="Center"
-                                           Content="Wait time after Twister:" />
+                                        <TextBlock VerticalAlignment="Center"
+                                           Text="Wait time after Twister:" />
                                         <TextBox x:Name="TwintaniaWidgetTwisterWarningTimeBox"
                                              Width="45"
                                              Margin="5 0"
@@ -557,8 +574,9 @@
                                         </Grid>
                                     </StackPanel>
                                     <DockPanel LastChildFill="True">
-                                        <Label>Volume:</Label>
+                                        <TextBlock VerticalAlignment="Center">Volume:</TextBlock>
                                         <TextBlock Width="50"
+                                                   TextAlignment="Center"
                                                VerticalAlignment="Center"
                                                Text="{Binding ElementName=TwintaniaTwisterWarningVolume,
                                                               Path=Value,
@@ -598,8 +616,8 @@
                         <GroupBox Header="Enrage Timer">
                             <StackPanel>
                                 <Grid Margin="0 2">
-                                    <Label VerticalContentAlignment="Center"
-                                           Content="Boss enrages after:" />
+                                    <TextBlock VerticalAlignment="Center"
+                                           Text="Boss enrages after:" />
                                     <TextBox x:Name="TwintaniaWidgetEnrageTimeBox"
                                              Width="45"
                                              Margin="5 0"
@@ -674,8 +692,9 @@
                                 </StackPanel>
                                 <StackPanel>
                                     <DockPanel LastChildFill="True">
-                                        <Label>Volume:</Label>
+                                        <TextBlock VerticalAlignment="Center">Volume:</TextBlock>
                                         <TextBlock Width="50"
+                                                   TextAlignment="Center"
                                                    VerticalAlignment="Center"
                                                    Text="{Binding ElementName=TEVolume,
                                                                   Path=Value,

@@ -1,13 +1,15 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // PluginViewModel.cs
+// 
+// 	
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using FFXIVAPP.Common.Events;
 using FFXIVAPP.Common.Helpers;
-using System.Collections.ObjectModel;
 
 namespace Talis.XIVPlugin.Twintania
 {

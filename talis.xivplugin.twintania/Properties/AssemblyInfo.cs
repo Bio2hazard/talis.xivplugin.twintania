@@ -1,5 +1,7 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // AssemblyInfo.cs
+// 
+// 	
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -9,7 +11,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("Talis.XIVPlugin.Twintania")]
-[assembly: AssemblyDescription("FFXIV-APP Twintania Widget")]
+[assembly: AssemblyDescription("Trickplay Twintania Widget")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Talis")]
 [assembly: AssemblyProduct("Talis.XIVPlugin.Twintania")]

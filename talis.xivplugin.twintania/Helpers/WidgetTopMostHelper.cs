@@ -1,17 +1,17 @@
-﻿// FFXIVAPP.Plugin.Widgets
+﻿// Talis.XIVPlugin.Twintania
 // WidgetTopMostHelper.cs
-//
-// © 2013 ZAM Network LLC
+// 
+// 	
 
-using System.Linq;
-using FFXIVAPP.Common.RegularExpressions;
-using FFXIVAPP.Common.Helpers;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Timers;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
+using FFXIVAPP.Common.Helpers;
+using FFXIVAPP.Common.RegularExpressions;
 using NLog;
 using Talis.XIVPlugin.Twintania.Interop;
 using Talis.XIVPlugin.Twintania.Properties;
@@ -22,18 +22,21 @@ namespace Talis.XIVPlugin.Twintania.Helpers
     public static class WidgetTopMostHelper
     {
         #region Logger
+
         private static Logger _logger;
+
         private static Logger Logger
         {
             get
             {
-                if (FFXIVAPP.Common.Constants.EnableNLog)
+                if (FFXIVAPP.Common.Constants.EnableNLog || Settings.Default.TwintaniaWidgetAdvancedLogging)
                 {
                     return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
                 }
                 return null;
             }
         }
+
         #endregion
 
         private static WinAPI.WinEventDelegate _delegate;
@@ -81,8 +84,8 @@ namespace Talis.XIVPlugin.Twintania.Helpers
                 var handle = WinAPI.GetForegroundWindow();
                 var activeTitle = WinAPI.GetActiveWindowTitle();
 
-                bool stayOnTop = System.Windows.Application.Current.Windows.OfType<Window>().Any(w => w.Title == activeTitle) 
-                                 || Regex.IsMatch(activeTitle.ToUpper(), @"^(FINAL FANTASY XIV)", SharedRegEx.DefaultOptions);
+                var stayOnTop = Application.Current.Windows.OfType<Window>()
+                                           .Any(w => w.Title == activeTitle) || Regex.IsMatch(activeTitle.ToUpper(), @"^(FINAL FANTASY XIV)", SharedRegEx.DefaultOptions);
 
                 // If any of the widgets are focused, don't try to hide any of them, or it'll prevent us from moving/closing them
                 if (handle == TwintaniaInteropHelper.Handle)
@@ -93,7 +96,9 @@ namespace Talis.XIVPlugin.Twintania.Helpers
                 {
                     // Override to keep the Widget on top during test mode
                     if (TwintaniaWidgetViewModel.Instance.ForceTop)
+                    {
                         stayOnTop = true;
+                    }
 
                     ToggleTopMost(Widgets.Instance.TwintaniaWidget, stayOnTop, force);
                 }

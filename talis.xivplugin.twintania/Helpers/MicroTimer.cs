@@ -1,52 +1,46 @@
-﻿// talis.xivplugin.twintania
-// SoundHelper.cs
-//
-// Downloaded from http://www.codeproject.com/Articles/98346/Microsecond-and-Millisecond-NET-Timer
+﻿// Talis.XIVPlugin.Twintania
+// MicroTimer.cs
+// 
+// 	
 
 using System;
+using System.Diagnostics;
+using System.Threading;
 
 namespace Talis.XIVPlugin.Twintania.Helpers
 {
     /// <summary>
-    /// MicroStopwatch class
+    ///     MicroStopwatch class
     /// </summary>
-    public class MicroStopwatch : System.Diagnostics.Stopwatch
+    public class MicroStopwatch : Stopwatch
     {
-        readonly double _microSecPerTick =
-            1000000D / Frequency;
+        private readonly double _microSecPerTick = 1000000D / Frequency;
 
         public MicroStopwatch()
         {
             if (!IsHighResolution)
             {
-                throw new Exception("On this system the high-resolution " +
-                                    "performance counter is not available");
+                throw new Exception("On this system the high-resolution " + "performance counter is not available");
             }
         }
 
         public long ElapsedMicroseconds
         {
-            get
-            {
-                return (long)(ElapsedTicks * _microSecPerTick);
-            }
+            get { return (long) (ElapsedTicks * _microSecPerTick); }
         }
     }
 
     /// <summary>
-    /// MicroTimer class
+    ///     MicroTimer class
     /// </summary>
     public class MicroTimer
     {
-        public delegate void MicroTimerElapsedEventHandler(
-                             object sender,
-                             MicroTimerEventArgs timerEventArgs);
-        public event MicroTimerElapsedEventHandler MicroTimerElapsed;
+        public delegate void MicroTimerElapsedEventHandler(object sender, MicroTimerEventArgs timerEventArgs);
 
-        System.Threading.Thread _threadTimer;
-        long _ignoreEventIfLateBy = long.MaxValue;
-        long _timerIntervalInMicroSec;
-        bool _stopTimer = true;
+        private long _ignoreEventIfLateBy = long.MaxValue;
+        private bool _stopTimer = true;
+        private Thread _threadTimer;
+        private long _timerIntervalInMicroSec;
 
         public MicroTimer()
         {
@@ -59,30 +53,14 @@ namespace Talis.XIVPlugin.Twintania.Helpers
 
         public long Interval
         {
-            get
-            {
-                return System.Threading.Interlocked.Read(
-                    ref _timerIntervalInMicroSec);
-            }
-            set
-            {
-                System.Threading.Interlocked.Exchange(
-                    ref _timerIntervalInMicroSec, value);
-            }
+            get { return Interlocked.Read(ref _timerIntervalInMicroSec); }
+            set { Interlocked.Exchange(ref _timerIntervalInMicroSec, value); }
         }
 
         public long IgnoreEventIfLateBy
         {
-            get
-            {
-                return System.Threading.Interlocked.Read(
-                    ref _ignoreEventIfLateBy);
-            }
-            set
-            {
-                System.Threading.Interlocked.Exchange(
-                    ref _ignoreEventIfLateBy, value <= 0 ? long.MaxValue : value);
-            }
+            get { return Interlocked.Read(ref _ignoreEventIfLateBy); }
+            set { Interlocked.Exchange(ref _ignoreEventIfLateBy, value <= 0 ? long.MaxValue : value); }
         }
 
         public bool Enabled
@@ -98,11 +76,10 @@ namespace Talis.XIVPlugin.Twintania.Helpers
                     Stop();
                 }
             }
-            get
-            {
-                return (_threadTimer != null && _threadTimer.IsAlive);
-            }
+            get { return (_threadTimer != null && _threadTimer.IsAlive); }
         }
+
+        public event MicroTimerElapsedEventHandler MicroTimerElapsed;
 
         public void Start()
         {
@@ -113,11 +90,11 @@ namespace Talis.XIVPlugin.Twintania.Helpers
 
             _stopTimer = false;
 
-            System.Threading.ThreadStart threadStart = () => NotificationTimer(ref _timerIntervalInMicroSec, ref _ignoreEventIfLateBy, ref _stopTimer);
+            ThreadStart threadStart = () => NotificationTimer(ref _timerIntervalInMicroSec, ref _ignoreEventIfLateBy, ref _stopTimer);
 
-            _threadTimer = new System.Threading.Thread(threadStart)
+            _threadTimer = new Thread(threadStart)
             {
-                Priority = System.Threading.ThreadPriority.Highest
+                Priority = ThreadPriority.Highest
             };
             _threadTimer.Start();
         }
@@ -129,15 +106,14 @@ namespace Talis.XIVPlugin.Twintania.Helpers
 
         public void StopAndWait()
         {
-            StopAndWait(System.Threading.Timeout.Infinite);
+            StopAndWait(Timeout.Infinite);
         }
 
         public bool StopAndWait(int timeoutInMilliSec)
         {
             _stopTimer = true;
 
-            if (!Enabled || _threadTimer.ManagedThreadId ==
-                System.Threading.Thread.CurrentThread.ManagedThreadId)
+            if (!Enabled || _threadTimer.ManagedThreadId == Thread.CurrentThread.ManagedThreadId)
             {
                 return true;
             }
@@ -155,11 +131,9 @@ namespace Talis.XIVPlugin.Twintania.Helpers
             }
         }
 
-        void NotificationTimer(ref long timerIntervalInMicroSec,
-                               ref long ignoreEventIfLateBy,
-                               ref bool stopTimer)
+        private void NotificationTimer(ref long timerIntervalInMicroSec, ref long ignoreEventIfLateBy, ref bool stopTimer)
         {
-            int timerCount = 0;
+            var timerCount = 0;
             long nextNotification = 0;
 
             var microStopwatch = new MicroStopwatch();
@@ -167,36 +141,28 @@ namespace Talis.XIVPlugin.Twintania.Helpers
 
             while (!stopTimer)
             {
-                long callbackFunctionExecutionTime =
-                    microStopwatch.ElapsedMicroseconds - nextNotification;
+                var callbackFunctionExecutionTime = microStopwatch.ElapsedMicroseconds - nextNotification;
 
-                long timerIntervalInMicroSecCurrent =
-                    System.Threading.Interlocked.Read(ref timerIntervalInMicroSec);
-                long ignoreEventIfLateByCurrent =
-                    System.Threading.Interlocked.Read(ref ignoreEventIfLateBy);
+                var timerIntervalInMicroSecCurrent = Interlocked.Read(ref timerIntervalInMicroSec);
+                var ignoreEventIfLateByCurrent = Interlocked.Read(ref ignoreEventIfLateBy);
 
                 nextNotification += timerIntervalInMicroSecCurrent;
                 timerCount++;
                 long elapsedMicroseconds;
 
-                while ((elapsedMicroseconds = microStopwatch.ElapsedMicroseconds)
-                        < nextNotification)
+                while ((elapsedMicroseconds = microStopwatch.ElapsedMicroseconds) < nextNotification)
                 {
-                    System.Threading.Thread.SpinWait(10);
+                    Thread.SpinWait(10);
                 }
 
-                long timerLateBy = elapsedMicroseconds - nextNotification;
+                var timerLateBy = elapsedMicroseconds - nextNotification;
 
                 if (timerLateBy >= ignoreEventIfLateByCurrent)
                 {
                     continue;
                 }
 
-                var microTimerEventArgs =
-                     new MicroTimerEventArgs(timerCount,
-                                             elapsedMicroseconds,
-                                             timerLateBy,
-                                             callbackFunctionExecutionTime);
+                var microTimerEventArgs = new MicroTimerEventArgs(timerCount, elapsedMicroseconds, timerLateBy, callbackFunctionExecutionTime);
                 MicroTimerElapsed(this, microTimerEventArgs);
             }
 
@@ -205,11 +171,19 @@ namespace Talis.XIVPlugin.Twintania.Helpers
     }
 
     /// <summary>
-    /// MicroTimer Event Argument class
+    ///     MicroTimer Event Argument class
     /// </summary>
     public class MicroTimerEventArgs : EventArgs
     {
         // Simple counter, number times timed event (callback function) executed
+        public MicroTimerEventArgs(int timerCount, long elapsedMicroseconds, long timerLateBy, long callbackFunctionExecutionTime)
+        {
+            TimerCount = timerCount;
+            ElapsedMicroseconds = elapsedMicroseconds;
+            TimerLateBy = timerLateBy;
+            CallbackFunctionExecutionTime = callbackFunctionExecutionTime;
+        }
+
         public int TimerCount { get; private set; }
 
         // Time when timed event was called since timer started
@@ -220,17 +194,5 @@ namespace Talis.XIVPlugin.Twintania.Helpers
 
         // Time it took to execute previous call to callback function (OnTimedEvent)
         public long CallbackFunctionExecutionTime { get; private set; }
-
-        public MicroTimerEventArgs(int timerCount,
-                                   long elapsedMicroseconds,
-                                   long timerLateBy,
-                                   long callbackFunctionExecutionTime)
-        {
-            TimerCount = timerCount;
-            ElapsedMicroseconds = elapsedMicroseconds;
-            TimerLateBy = timerLateBy;
-            CallbackFunctionExecutionTime = callbackFunctionExecutionTime;
-        }
-
     }
 }

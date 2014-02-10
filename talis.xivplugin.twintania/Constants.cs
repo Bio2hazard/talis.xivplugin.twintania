@@ -1,5 +1,7 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // Constants.cs
+// 
+// 	
 
 using System;
 using System.Collections.Generic;
@@ -15,6 +17,13 @@ namespace Talis.XIVPlugin.Twintania
     {
         #region Declarations
 
+        public const string LibraryPack = "pack://application:,,,/Talis.XIVPlugin.Twintania;component/";
+
+        public static readonly string[] Supported =
+        {
+            "en"
+        };
+
         public static string BaseDirectory
         {
             get
@@ -23,13 +32,6 @@ namespace Talis.XIVPlugin.Twintania
                                                              .CodeBase).LocalPath);
             }
         }
-
-        public const string LibraryPack = "pack://application:,,,/Talis.XIVPlugin.Twintania;component/";
-
-        public static readonly string[] Supported =
-        {
-            "en"
-        };
 
         #endregion
 

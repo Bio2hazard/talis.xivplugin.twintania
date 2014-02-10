@@ -1,5 +1,7 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // MainView.xaml.cs
+// 
+// 	
 
 namespace Talis.XIVPlugin.Twintania.Views
 {

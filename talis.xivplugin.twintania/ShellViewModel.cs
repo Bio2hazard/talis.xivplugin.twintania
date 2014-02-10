@@ -1,12 +1,12 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // ShellViewModel.cs
+// 
+// 	
 
-using NLog;
 using System;
 using System.ComponentModel;
 using System.Windows;
-using NLog.Config;
-using NLog.Targets;
+using NLog;
 using Talis.XIVPlugin.Twintania.Helpers;
 using Talis.XIVPlugin.Twintania.Interop;
 using Talis.XIVPlugin.Twintania.Properties;
@@ -16,18 +16,21 @@ namespace Talis.XIVPlugin.Twintania
     public sealed class ShellViewModel : INotifyPropertyChanged
     {
         #region Logger
+
         private static Logger _logger;
+
         private static Logger Logger
         {
             get
             {
-                if (FFXIVAPP.Common.Constants.EnableNLog)
+                if (FFXIVAPP.Common.Constants.EnableNLog || Settings.Default.TwintaniaWidgetAdvancedLogging)
                 {
                     return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
                 }
                 return null;
             }
         }
+
         #endregion
 
         #region Property Bindings
@@ -55,20 +58,8 @@ namespace Talis.XIVPlugin.Twintania
         internal static void Loaded(object sender, RoutedEventArgs e)
         {
             ShellView.View.Loaded -= Loaded;
+            LogHelper.ToggleAdvancedLogging();
             Initializer.LoadAndCacheSounds();
-
-            // WIP: Debug Logging for Twintania Plugin
-            /*
-            FileTarget fileTarget = new FileTarget();
-            LogManager.Configuration.AddTarget("file", fileTarget);
-
-            fileTarget.FileName = "${basedir}/Logs/TwintaniaErrors/TwintaniaPlugin-${date:format=yyyy-MM-dd}.log";
-            fileTarget.Layout = "${longdate} ${level} ${logger} ${message} Ex:${exception:innerFormat=ToString:maxInnerExceptionLevel=15:format=ToString}";
-            LoggingRule fileRule = new LoggingRule("Talis.XIVPlugin.Twintania*", LogLevel.Debug, fileTarget);
-            LogManager.Configuration.LoggingRules.Add(fileRule);
-
-            LogManager.ReconfigExistingLoggers();
-             */
         }
 
         private static void DefaultOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -82,7 +73,7 @@ namespace Talis.XIVPlugin.Twintania
                         Settings.Default.TwintaniaWidgetWidth = (int) (250 * Double.Parse(Settings.Default.TwintaniaWidgetUIScale));
                         Settings.Default.TwintaniaWidgetHeight = (int) (450 * Double.Parse(Settings.Default.TwintaniaWidgetUIScale));
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         LogHelper.Log(Logger, ex, LogLevel.Error);
                         Settings.Default.TwintaniaWidgetWidth = 250;
@@ -92,6 +83,9 @@ namespace Talis.XIVPlugin.Twintania
 
                 case "TwintaniaWidgetClickThroughEnabled":
                     WinAPI.ToggleClickThrough(Widgets.Instance.TwintaniaWidget);
+                    break;
+                case "TwintaniaWidgetAdvancedLogging":
+                    LogHelper.ToggleAdvancedLogging();
                     break;
             }
         }

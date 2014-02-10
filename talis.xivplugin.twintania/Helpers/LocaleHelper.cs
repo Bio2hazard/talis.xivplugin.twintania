@@ -1,5 +1,7 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // LocaleHelper.cs
+// 
+// 	
 
 using System.Collections;
 using System.Collections.Generic;

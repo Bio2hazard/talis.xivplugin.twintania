@@ -1,12 +1,8 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // Settings.cs
+// 
+// 	
 
-using System.Globalization;
-using System.IO;
-using FFXIVAPP.Common.Helpers;
-using FFXIVAPP.Common.Models;
-using FFXIVAPP.Common.Utilities;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -14,10 +10,15 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using System.Xml.Linq;
+using FFXIVAPP.Common.Helpers;
+using FFXIVAPP.Common.Models;
+using NLog;
 using Talis.XIVPlugin.Twintania.Helpers;
 using Color = System.Windows.Media.Color;
 using ColorConverter = System.Windows.Media.ColorConverter;
@@ -28,18 +29,21 @@ namespace Talis.XIVPlugin.Twintania.Properties
     internal class Settings : ApplicationSettingsBase, INotifyPropertyChanged
     {
         #region Logger
+
         private static Logger _logger;
+
         private static Logger Logger
         {
             get
             {
-                if (FFXIVAPP.Common.Constants.EnableNLog)
+                if (FFXIVAPP.Common.Constants.EnableNLog || Default.TwintaniaWidgetAdvancedLogging)
                 {
                     return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
                 }
                 return null;
             }
         }
+
         #endregion
 
         private static Settings _default;
@@ -66,6 +70,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
             Constants.Settings.Add("TwintaniaWidgetShowTitle");
             Constants.Settings.Add("TwintaniaWidgetClickThroughEnabled");
             Constants.Settings.Add("TwintaniaWidgetOpacity");
+            Constants.Settings.Add("TwintaniaWidgetAdvancedLogging");
 
             Constants.Settings.Add("TwintaniaWidgetTop");
             Constants.Settings.Add("TwintaniaWidgetLeft");
@@ -248,7 +253,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("True")]
         public bool TwintaniaWidgetShowTitle
         {
-            get { return ((bool)(this["TwintaniaWidgetShowTitle"])); }
+            get { return ((bool) (this["TwintaniaWidgetShowTitle"])); }
             set
             {
                 this["TwintaniaWidgetShowTitle"] = value;
@@ -261,7 +266,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("0.7")]
         public string TwintaniaWidgetOpacity
         {
-            get { return ((string)(this["TwintaniaWidgetOpacity"])); }
+            get { return ((string) (this["TwintaniaWidgetOpacity"])); }
             set
             {
                 this["TwintaniaWidgetOpacity"] = value;
@@ -282,7 +287,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
 </ArrayOfString>")]
         public StringCollection TwintaniaWidgetOpacityList
         {
-            get { return ((StringCollection)(this["TwintaniaWidgetOpacityList"])); }
+            get { return ((StringCollection) (this["TwintaniaWidgetOpacityList"])); }
             set
             {
                 this["TwintaniaWidgetOpacityList"] = value;
@@ -293,9 +298,22 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue("False")]
+        public bool TwintaniaWidgetAdvancedLogging
+        {
+            get { return ((bool) (this["TwintaniaWidgetAdvancedLogging"])); }
+            set
+            {
+                this["TwintaniaWidgetAdvancedLogging"] = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        [DefaultSettingValue("False")]
         public bool TwintaniaWidgetClickThroughEnabled
         {
-            get { return ((bool)(this["TwintaniaWidgetClickThroughEnabled"])); }
+            get { return ((bool) (this["TwintaniaWidgetClickThroughEnabled"])); }
             set
             {
                 this["TwintaniaWidgetClickThroughEnabled"] = value;
@@ -404,7 +422,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("True")]
         public bool TwintaniaWidgetEnrageCounting
         {
-            get { return ((bool)(this["TwintaniaWidgetEnrageCounting"])); }
+            get { return ((bool) (this["TwintaniaWidgetEnrageCounting"])); }
             set
             {
                 this["TwintaniaWidgetEnrageCounting"] = value;
@@ -417,7 +435,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("100")]
         public int TwintaniaWidgetEnrageVolume
         {
-            get { return ((int)(this["TwintaniaWidgetEnrageVolume"])); }
+            get { return ((int) (this["TwintaniaWidgetEnrageVolume"])); }
             set
             {
                 this["TwintaniaWidgetEnrageVolume"] = value;
@@ -430,7 +448,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("Plugins\\Talis.XIVPlugin.Twintania\\AlertSounds\\LowHealth.wav")]
         public string TwintaniaWidgetEnrageAlertFile
         {
-            get { return ((string)(this["TwintaniaWidgetEnrageAlertFile"])); }
+            get { return ((string) (this["TwintaniaWidgetEnrageAlertFile"])); }
             set
             {
                 this["TwintaniaWidgetEnrageAlertFile"] = value;
@@ -509,7 +527,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("False")]
         public bool TwintaniaWidgetDeathSentenceAlertPlaySound
         {
-            get { return ((bool)(this["TwintaniaWidgetDeathSentenceAlertPlaySound"])); }
+            get { return ((bool) (this["TwintaniaWidgetDeathSentenceAlertPlaySound"])); }
             set
             {
                 this["TwintaniaWidgetDeathSentenceAlertPlaySound"] = value;
@@ -522,7 +540,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("100")]
         public int TwintaniaWidgetDeathSentenceAlertVolume
         {
-            get { return ((int)(this["TwintaniaWidgetDeathSentenceAlertVolume"])); }
+            get { return ((int) (this["TwintaniaWidgetDeathSentenceAlertVolume"])); }
             set
             {
                 this["TwintaniaWidgetDeathSentenceAlertVolume"] = value;
@@ -535,7 +553,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("Plugins\\Talis.XIVPlugin.Twintania\\AlertSounds\\LowHealth.wav")]
         public string TwintaniaWidgetDeathSentenceAlertFile
         {
-            get { return ((string)(this["TwintaniaWidgetDeathSentenceAlertFile"])); }
+            get { return ((string) (this["TwintaniaWidgetDeathSentenceAlertFile"])); }
             set
             {
                 this["TwintaniaWidgetDeathSentenceAlertFile"] = value;
@@ -548,7 +566,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("True")]
         public bool TwintaniaWidgetDeathSentenceWarningEnabled
         {
-            get { return ((bool)(this["TwintaniaWidgetDeathSentenceWarningEnabled"])); }
+            get { return ((bool) (this["TwintaniaWidgetDeathSentenceWarningEnabled"])); }
             set
             {
                 this["TwintaniaWidgetDeathSentenceWarningEnabled"] = value;
@@ -561,7 +579,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("True")]
         public bool TwintaniaWidgetDeathSentenceWarningShowTimer
         {
-            get { return ((bool)(this["TwintaniaWidgetDeathSentenceWarningShowTimer"])); }
+            get { return ((bool) (this["TwintaniaWidgetDeathSentenceWarningShowTimer"])); }
             set
             {
                 this["TwintaniaWidgetDeathSentenceWarningShowTimer"] = value;
@@ -574,7 +592,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("32")]
         public Double TwintaniaWidgetDeathSentenceWarningTime
         {
-            get { return ((Double)(this["TwintaniaWidgetDeathSentenceWarningTime"])); }
+            get { return ((Double) (this["TwintaniaWidgetDeathSentenceWarningTime"])); }
             set
             {
                 this["TwintaniaWidgetDeathSentenceWarningTime"] = value;
@@ -587,7 +605,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("False")]
         public bool TwintaniaWidgetDeathSentenceWarningPlaySound
         {
-            get { return ((bool)(this["TwintaniaWidgetDeathSentenceWarningPlaySound"])); }
+            get { return ((bool) (this["TwintaniaWidgetDeathSentenceWarningPlaySound"])); }
             set
             {
                 this["TwintaniaWidgetDeathSentenceWarningPlaySound"] = value;
@@ -600,7 +618,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("False")]
         public bool TwintaniaWidgetDeathSentenceWarningCounting
         {
-            get { return ((bool)(this["TwintaniaWidgetDeathSentenceWarningCounting"])); }
+            get { return ((bool) (this["TwintaniaWidgetDeathSentenceWarningCounting"])); }
             set
             {
                 this["TwintaniaWidgetDeathSentenceWarningCounting"] = value;
@@ -613,7 +631,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("100")]
         public int TwintaniaWidgetDeathSentenceWarningVolume
         {
-            get { return ((int)(this["TwintaniaWidgetDeathSentenceWarningVolume"])); }
+            get { return ((int) (this["TwintaniaWidgetDeathSentenceWarningVolume"])); }
             set
             {
                 this["TwintaniaWidgetDeathSentenceWarningVolume"] = value;
@@ -626,7 +644,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("Plugins\\Talis.XIVPlugin.Twintania\\AlertSounds\\Gasp.wav")]
         public string TwintaniaWidgetDeathSentenceWarningFile
         {
-            get { return ((string)(this["TwintaniaWidgetDeathSentenceWarningFile"])); }
+            get { return ((string) (this["TwintaniaWidgetDeathSentenceWarningFile"])); }
             set
             {
                 this["TwintaniaWidgetDeathSentenceWarningFile"] = value;
@@ -639,7 +657,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("True")]
         public bool TwintaniaWidgetTwisterAlertPlaySound
         {
-            get { return ((bool)(this["TwintaniaWidgetTwisterAlertPlaySound"])); }
+            get { return ((bool) (this["TwintaniaWidgetTwisterAlertPlaySound"])); }
             set
             {
                 this["TwintaniaWidgetTwisterAlertPlaySound"] = value;
@@ -652,7 +670,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("100")]
         public int TwintaniaWidgetTwisterAlertVolume
         {
-            get { return ((int)(this["TwintaniaWidgetTwisterAlertVolume"])); }
+            get { return ((int) (this["TwintaniaWidgetTwisterAlertVolume"])); }
             set
             {
                 this["TwintaniaWidgetTwisterAlertVolume"] = value;
@@ -665,7 +683,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("Plugins\\Talis.XIVPlugin.Twintania\\AlertSounds\\aruba.wav")]
         public string TwintaniaWidgetTwisterAlertFile
         {
-            get { return ((string)(this["TwintaniaWidgetTwisterAlertFile"])); }
+            get { return ((string) (this["TwintaniaWidgetTwisterAlertFile"])); }
             set
             {
                 this["TwintaniaWidgetTwisterAlertFile"] = value;
@@ -678,7 +696,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("True")]
         public bool TwintaniaWidgetTwisterWarningEnabled
         {
-            get { return ((bool)(this["TwintaniaWidgetTwisterWarningEnabled"])); }
+            get { return ((bool) (this["TwintaniaWidgetTwisterWarningEnabled"])); }
             set
             {
                 this["TwintaniaWidgetTwisterWarningEnabled"] = value;
@@ -691,7 +709,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("True")]
         public bool TwintaniaWidgetTwisterWarningShowTimer
         {
-            get { return ((bool)(this["TwintaniaWidgetTwisterWarningShowTimer"])); }
+            get { return ((bool) (this["TwintaniaWidgetTwisterWarningShowTimer"])); }
             set
             {
                 this["TwintaniaWidgetTwisterWarningShowTimer"] = value;
@@ -704,7 +722,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("21")]
         public Double TwintaniaWidgetTwisterWarningTime
         {
-            get { return ((Double)(this["TwintaniaWidgetTwisterWarningTime"])); }
+            get { return ((Double) (this["TwintaniaWidgetTwisterWarningTime"])); }
             set
             {
                 this["TwintaniaWidgetTwisterWarningTime"] = value;
@@ -717,7 +735,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("False")]
         public bool TwintaniaWidgetTwisterWarningPlaySound
         {
-            get { return ((bool)(this["TwintaniaWidgetTwisterWarningPlaySound"])); }
+            get { return ((bool) (this["TwintaniaWidgetTwisterWarningPlaySound"])); }
             set
             {
                 this["TwintaniaWidgetTwisterWarningPlaySound"] = value;
@@ -730,7 +748,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("False")]
         public bool TwintaniaWidgetTwisterWarningCounting
         {
-            get { return ((bool)(this["TwintaniaWidgetTwisterWarningCounting"])); }
+            get { return ((bool) (this["TwintaniaWidgetTwisterWarningCounting"])); }
             set
             {
                 this["TwintaniaWidgetTwisterWarningCounting"] = value;
@@ -743,7 +761,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("100")]
         public int TwintaniaWidgetTwisterWarningVolume
         {
-            get { return ((int)(this["TwintaniaWidgetTwisterWarningVolume"])); }
+            get { return ((int) (this["TwintaniaWidgetTwisterWarningVolume"])); }
             set
             {
                 this["TwintaniaWidgetTwisterWarningVolume"] = value;
@@ -756,7 +774,7 @@ namespace Talis.XIVPlugin.Twintania.Properties
         [DefaultSettingValue("Plugins\\Talis.XIVPlugin.Twintania\\AlertSounds\\sonar.wav")]
         public string TwintaniaWidgetTwisterWarningFile
         {
-            get { return ((string)(this["TwintaniaWidgetTwisterWarningFile"])); }
+            get { return ((string) (this["TwintaniaWidgetTwisterWarningFile"])); }
             set
             {
                 this["TwintaniaWidgetTwisterWarningFile"] = value;

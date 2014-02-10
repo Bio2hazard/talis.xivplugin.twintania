@@ -54,16 +54,16 @@
                         Background="{DynamicResource AccentColorBrush}"
                         BorderBrush="{DynamicResource AccentColorBrush}"
                         BorderThickness="1" />
-                <Label x:Name="PluginName"
+                <TextBlock x:Name="PluginName"
                        Grid.Row="0"
                        Grid.Column="0"
-                       Content="{Binding PluginInfo[Name],
+                       Text="{Binding PluginInfo[Name],
                                          Source={StaticResource PluginViewModel}}"
                        Visibility="Collapsed" />
-                <Label x:Name="PluginIcon"
+                <TextBlock x:Name="PluginIcon"
                        Grid.Row="0"
                        Grid.Column="0"
-                       Content="{Binding PluginInfo[Icon],
+                       Text="{Binding PluginInfo[Icon],
                                          Source={StaticResource PluginViewModel}}"
                        Visibility="Collapsed" />
                 <Image Grid.Row="1"
@@ -77,9 +77,9 @@
                             <MultiBinding.Bindings>
                                 <Binding Source="{StaticResource PluginViewModel}" />
                                 <Binding ElementName="PluginName"
-                                         Path="Content" />
+                                         Path="Text" />
                                 <Binding ElementName="PluginIcon"
-                                         Path="Content" />
+                                         Path="Text" />
                             </MultiBinding.Bindings>
                         </MultiBinding>
                     </Image.Source>
@@ -117,13 +117,13 @@
                     <DockPanel LastChildFill="True">
                         <DockPanel DockPanel.Dock="Left">
                             <StackPanel HorizontalAlignment="Left">
-                                <Label Content="{Binding Locale[app_DescriptionLabel],
+                                <TextBlock Text="{Binding Locale[app_DescriptionLabel],
                                                          Source={StaticResource PluginViewModel}}"
                                        Style="{StaticResource LabelStyle}" />
-                                <Label Content="{Binding Locale[app_CopyrightLabel],
+                                <TextBlock Text="{Binding Locale[app_CopyrightLabel],
                                                          Source={StaticResource PluginViewModel}}"
                                        Style="{StaticResource LabelStyle}" />
-                                <Label Content="{Binding Locale[app_VersionLabel],
+                                <TextBlock Text="{Binding Locale[app_VersionLabel],
                                                          Source={StaticResource PluginViewModel}}"
                                        Style="{StaticResource LabelStyle}" />
                             </StackPanel>
@@ -131,16 +131,16 @@
                         <DockPanel Margin="5 0">
                             <StackPanel Height="Auto"
                                         HorizontalAlignment="Left">
-                                <Label Content="{Binding PluginInfo[Description],
+                                <TextBlock Text="{Binding PluginInfo[Description],
                                                          Source={StaticResource PluginViewModel}}"
                                        Style="{StaticResource LabelStyle}" />
-                                <Label Content="{Binding PluginInfo[Copyright],
+                                <TextBlock Text="{Binding PluginInfo[Copyright],
                                                          Source={StaticResource PluginViewModel}}"
                                        Style="{StaticResource LabelStyle}" />
-                                <Label Content="{Binding PluginInfo[Version],
+                                <TextBlock Text="{Binding PluginInfo[Version],
                                                          Source={StaticResource PluginViewModel}}"
                                        Style="{StaticResource LabelStyle}" />
-                                <Label Content="FC: Trickplay @ Gilgamesh"
+                                <TextBlock Text="FC: Trickplay @ Gilgamesh"
                                        Style="{StaticResource LabelStyle}" />
                             </StackPanel>
                         </DockPanel>

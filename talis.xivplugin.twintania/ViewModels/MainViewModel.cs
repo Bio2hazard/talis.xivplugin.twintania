@@ -1,9 +1,11 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // MainViewModel.cs
+// 
+// 	
 
-using FFXIVAPP.Common.ViewModelBase;
 using System.ComponentModel;
 using System.Windows.Input;
+using FFXIVAPP.Common.ViewModelBase;
 using Talis.XIVPlugin.Twintania.Properties;
 
 namespace Talis.XIVPlugin.Twintania.ViewModels

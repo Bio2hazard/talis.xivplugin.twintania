@@ -1,14 +1,14 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // LogPublisher.cs
+// 
+// 	
 
-using FFXIVAPP.Common.Core.Memory;
-using FFXIVAPP.Common.Helpers;
-using FFXIVAPP.Common.Utilities;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using FFXIVAPP.Common.Core.Memory;
+using NLog;
 using Talis.XIVPlugin.Twintania.Helpers;
 using Talis.XIVPlugin.Twintania.Properties;
 using Talis.XIVPlugin.Twintania.Windows;
@@ -18,18 +18,21 @@ namespace Talis.XIVPlugin.Twintania.Utilities
     public static class LogPublisher
     {
         #region Logger
+
         private static Logger _logger;
+
         private static Logger Logger
         {
             get
             {
-                if (FFXIVAPP.Common.Constants.EnableNLog)
+                if (FFXIVAPP.Common.Constants.EnableNLog || Settings.Default.TwintaniaWidgetAdvancedLogging)
                 {
                     return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
                 }
                 return null;
             }
         }
+
         #endregion
 
         private static List<string> divebomb = new List<string>
@@ -60,22 +63,47 @@ namespace Talis.XIVPlugin.Twintania.Utilities
         {
             try
             {
-                if(TwintaniaWidgetViewModel.Instance.TwintaniaIsValid)
+                if (TwintaniaWidgetViewModel.Instance.TwintaniaIsValid)
                 {
                     var line = chatLogEntry.Line.Replace("  ", " ");
                     var name = TwintaniaWidgetViewModel.Instance.TwintaniaEntity.Name;
 
-                    if (chatLogEntry.Code == "2AAB" && Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", divebomb.Select(Regex.Escape).ToArray()) + @"\b)"))
+                    switch (chatLogEntry.Code)
                     {
-                        TwintaniaWidgetViewModel.Instance.TriggerDiveBomb();
-                    }
-                    else if (chatLogEntry.Code == "2AAB" && Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", twister.Select(Regex.Escape).ToArray()) + @"\b)"))
-                    {
-                        TwintaniaWidgetViewModel.Instance.TriggerTwister();                        
-                    }
-                    else if ((chatLogEntry.Code == "292B" || chatLogEntry.Code == "312B" || chatLogEntry.Code == "28AB") && Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", deathsentence.Select(Regex.Escape).ToArray()) + @"\b)"))
-                    {
-                        TwintaniaWidgetViewModel.Instance.TriggerDeathSentence();
+                        case "2AAB":
+
+                            if (Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", divebomb.Select(Regex.Escape)
+                                                                                                                   .ToArray()) + @"\b)"))
+                            {
+                                TwintaniaWidgetViewModel.Instance.TriggerDiveBomb();
+                            }
+                            else if (Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", twister.Select(Regex.Escape)
+                                                                                                                       .ToArray()) + @"\b)"))
+                            {
+                                TwintaniaWidgetViewModel.Instance.TriggerTwister();
+                            }
+                            else
+                            {
+                                LogHelper.Log(Logger, "Chat Code " + chatLogEntry.Code + " received - did not match twister or divebomb. Twintania's recorded name:" + name + " Message:" + line, LogLevel.Debug);
+                            }
+
+
+                            break;
+
+                        case "292B":
+                        case "312B":
+                        case "28AB":
+                            if (Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", deathsentence.Select(Regex.Escape)
+                                                                                                                        .ToArray()) + @"\b)"))
+                            {
+                                TwintaniaWidgetViewModel.Instance.TriggerDeathSentence();
+                            }
+                            else
+                            {
+                                LogHelper.Log(Logger, "Chat Code " + chatLogEntry.Code + " received - did not death sentence. Twintania's recorded name:" + name + " Message:" + line, LogLevel.Debug);
+                            }
+                            break;
+
                     }
                 }
             }

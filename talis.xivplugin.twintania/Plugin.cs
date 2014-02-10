@@ -1,11 +1,8 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // Plugin.cs
+// 
+// 	
 
-using FFXIVAPP.Common.Events;
-using FFXIVAPP.Common.Helpers;
-using FFXIVAPP.Common.Utilities;
-using FFXIVAPP.IPluginInterface;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +10,10 @@ using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using FFXIVAPP.Common.Events;
+using FFXIVAPP.Common.Helpers;
+using FFXIVAPP.IPluginInterface;
+using NLog;
 using Talis.XIVPlugin.Twintania.Helpers;
 using Talis.XIVPlugin.Twintania.Properties;
 
@@ -22,18 +23,21 @@ namespace Talis.XIVPlugin.Twintania
     public class Plugin : IPlugin, INotifyPropertyChanged
     {
         #region Logger
+
         private static Logger _logger;
+
         private static Logger Logger
         {
             get
             {
-                if (FFXIVAPP.Common.Constants.EnableNLog)
+                if (FFXIVAPP.Common.Constants.EnableNLog || Settings.Default.TwintaniaWidgetAdvancedLogging)
                 {
                     return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
                 }
                 return null;
             }
         }
+
         #endregion
 
         #region Property Bindings

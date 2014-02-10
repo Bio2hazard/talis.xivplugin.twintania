@@ -1,15 +1,15 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // SettingsViewModel.cs
+// 
+// 	
 
+using System;
+using System.ComponentModel;
 using System.Globalization;
-using FFXIVAPP.Common.Helpers;
+using System.Windows.Input;
 using FFXIVAPP.Common.Models;
 using FFXIVAPP.Common.ViewModelBase;
 using NLog;
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
 using Talis.XIVPlugin.Twintania.Helpers;
 using Talis.XIVPlugin.Twintania.Properties;
 using Talis.XIVPlugin.Twintania.Views;
@@ -27,7 +27,7 @@ namespace Talis.XIVPlugin.Twintania.ViewModels
         {
             get
             {
-                if (FFXIVAPP.Common.Constants.EnableNLog)
+                if (FFXIVAPP.Common.Constants.EnableNLog || Settings.Default.TwintaniaWidgetAdvancedLogging)
                 {
                     return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
                 }
@@ -147,9 +147,9 @@ namespace Talis.XIVPlugin.Twintania.ViewModels
         public void SaveDivebombTimers()
         {
             double result;
-            string message = "";
+            var message = "";
 
-            if(Double.TryParse(SettingsView.View.TwintaniaWidgetDivebombTimeFastBox.Text, out result))
+            if (Double.TryParse(SettingsView.View.TwintaniaWidgetDivebombTimeFastBox.Text, out result))
             {
                 Settings.Default.TwintaniaWidgetDivebombTimeFast = result;
             }
@@ -202,13 +202,13 @@ namespace Talis.XIVPlugin.Twintania.ViewModels
 
         public void TestDivebombAlert()
         {
-            SoundPlayerHelper.PlayCached(Settings.Default.TwintaniaWidgetDivebombAlertFile, Settings.Default.TwintaniaWidgetDivebombVolume);
+            SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetDivebombAlertFile, Settings.Default.TwintaniaWidgetDivebombVolume);
         }
 
         public void SaveEnrageTimers()
         {
             double result;
-            string message = "";
+            var message = "";
 
             if (Double.TryParse(SettingsView.View.TwintaniaWidgetEnrageTimeBox.Text, out result))
             {
@@ -247,13 +247,13 @@ namespace Talis.XIVPlugin.Twintania.ViewModels
 
         public void TestEnrageAlert()
         {
-            SoundPlayerHelper.PlayCached(Settings.Default.TwintaniaWidgetEnrageAlertFile, Settings.Default.TwintaniaWidgetEnrageVolume);
+            SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetEnrageAlertFile, Settings.Default.TwintaniaWidgetEnrageVolume);
         }
 
         public void SaveTwisterWarningTimer()
         {
             double result;
-            string message = "";
+            var message = "";
 
             if (Double.TryParse(SettingsView.View.TwintaniaWidgetTwisterWarningTimeBox.Text, out result))
             {
@@ -292,11 +292,12 @@ namespace Talis.XIVPlugin.Twintania.ViewModels
 
         public void TestTwisterAlert()
         {
-            SoundPlayerHelper.PlayCached(Settings.Default.TwintaniaWidgetTwisterAlertFile, Settings.Default.TwintaniaWidgetTwisterAlertVolume);
+            SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetTwisterAlertFile, Settings.Default.TwintaniaWidgetTwisterAlertVolume);
         }
+
         public void TestTwisterWarning()
         {
-            SoundPlayerHelper.PlayCached(Settings.Default.TwintaniaWidgetTwisterWarningFile, Settings.Default.TwintaniaWidgetTwisterWarningVolume);
+            SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetTwisterWarningFile, Settings.Default.TwintaniaWidgetTwisterWarningVolume);
         }
 
         public void TestTwisterWarningTimer()
@@ -307,7 +308,7 @@ namespace Talis.XIVPlugin.Twintania.ViewModels
         public void SaveDeathSentenceWarningTimer()
         {
             double result;
-            string message = "";
+            var message = "";
 
             if (Double.TryParse(SettingsView.View.TwintaniaWidgetDeathSentenceWarningTimeBox.Text, out result))
             {
@@ -346,11 +347,12 @@ namespace Talis.XIVPlugin.Twintania.ViewModels
 
         public void TestDeathSentenceAlert()
         {
-            SoundPlayerHelper.PlayCached(Settings.Default.TwintaniaWidgetDeathSentenceAlertFile, Settings.Default.TwintaniaWidgetDeathSentenceAlertVolume);
+            SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetDeathSentenceAlertFile, Settings.Default.TwintaniaWidgetDeathSentenceAlertVolume);
         }
+
         public void TestDeathSentenceWarning()
         {
-            SoundPlayerHelper.PlayCached(Settings.Default.TwintaniaWidgetDeathSentenceWarningFile, Settings.Default.TwintaniaWidgetDeathSentenceWarningVolume);
+            SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetDeathSentenceWarningFile, Settings.Default.TwintaniaWidgetDeathSentenceWarningVolume);
         }
 
         public void TestDeathSentenceWarningTimer()

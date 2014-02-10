@@ -1,9 +1,12 @@
-﻿// talis.xivplugin.twintania
+﻿// Talis.XIVPlugin.Twintania
 // Widgets.cs
+// 
+// 	
 
 using System;
 using NLog;
 using Talis.XIVPlugin.Twintania.Helpers;
+using Talis.XIVPlugin.Twintania.Properties;
 using Talis.XIVPlugin.Twintania.Windows;
 
 namespace Talis.XIVPlugin.Twintania
@@ -11,18 +14,21 @@ namespace Talis.XIVPlugin.Twintania
     public class Widgets
     {
         #region Logger
+
         private static Logger _logger;
+
         private static Logger Logger
         {
             get
             {
-                if (FFXIVAPP.Common.Constants.EnableNLog)
+                if (FFXIVAPP.Common.Constants.EnableNLog || Settings.Default.TwintaniaWidgetAdvancedLogging)
                 {
                     return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
                 }
                 return null;
             }
         }
+
         #endregion
 
         private static Widgets _instance;

@@ -1,7 +1,7 @@
-﻿// FFXIVAPP.Plugin.Widgets
+﻿// Talis.XIVPlugin.Twintania
 // WinAPI.cs
-//
-// © 2013 ZAM Network LLC
+// 
+// 	
 
 using System;
 using System.Runtime.InteropServices;
@@ -17,19 +17,21 @@ namespace Talis.XIVPlugin.Twintania.Interop
     public static class WinAPI
     {
         #region Logger
+
         private static Logger _logger;
 
         private static Logger Logger
         {
             get
             {
-                if (FFXIVAPP.Common.Constants.EnableNLog)
+                if (FFXIVAPP.Common.Constants.EnableNLog || Settings.Default.TwintaniaWidgetAdvancedLogging)
                 {
                     return _logger ?? (_logger = LogManager.GetCurrentClassLogger());
                 }
                 return null;
             }
         }
+
         #endregion
 
         public delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
@@ -58,7 +60,7 @@ namespace Talis.XIVPlugin.Twintania.Interop
         {
             const int nChars = 256;
             var buff = new StringBuilder(nChars);
-            IntPtr handle = GetForegroundWindow();
+            var handle = GetForegroundWindow();
             return GetWindowText(handle, buff, nChars) > 0 ? buff.ToString() : "";
         }
 
