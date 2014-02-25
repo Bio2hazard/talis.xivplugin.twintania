@@ -72,13 +72,13 @@ namespace Talis.XIVPlugin.Twintania.Utilities
                     {
                         case "2AAB":
 
-                            if (Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", divebomb.Select(Regex.Escape)
-                                                                                                                   .ToArray()) + @"\b)"))
+                            if (Regex.IsMatch(line, @"(?i)^\s*.*" + name + @".*(" + string.Join("|", divebomb.Select(Regex.Escape)
+                                                                                                                   .ToArray()) + @")"))
                             {
                                 TwintaniaWidgetViewModel.Instance.TriggerDiveBomb();
                             }
-                            else if (Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", twister.Select(Regex.Escape)
-                                                                                                                       .ToArray()) + @"\b)"))
+                            else if (Regex.IsMatch(line, @"(?i)^\s*.*" + name + @".*(" + string.Join("|", twister.Select(Regex.Escape)
+                                                                                                                       .ToArray()) + @")"))
                             {
                                 TwintaniaWidgetViewModel.Instance.TriggerTwister();
                             }
@@ -93,8 +93,8 @@ namespace Talis.XIVPlugin.Twintania.Utilities
                         case "292B":
                         case "312B":
                         case "28AB":
-                            if (Regex.IsMatch(line, @"(?i)^\s*.*\b" + name + @"\b.*\b(" + string.Join("|", deathsentence.Select(Regex.Escape)
-                                                                                                                        .ToArray()) + @"\b)"))
+                            if (Regex.IsMatch(line, @"(?i)^\s*.*" + name + @".*(" + string.Join("|", deathsentence.Select(Regex.Escape)
+                                                                                                                        .ToArray()) + @")"))
                             {
                                 TwintaniaWidgetViewModel.Instance.TriggerDeathSentence();
                             }

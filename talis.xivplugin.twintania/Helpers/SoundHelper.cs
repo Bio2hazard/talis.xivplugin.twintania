@@ -28,7 +28,6 @@ namespace Talis.XIVPlugin.Twintania.Helpers
         }
 
         #endregion
-
         public static bool PlayCached(string soundFile, int volume = 100)
         {
             var retval = SoundPlayerHelper.PlayCached(soundFile, volume);
