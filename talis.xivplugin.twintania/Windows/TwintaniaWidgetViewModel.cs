@@ -40,6 +40,8 @@ namespace Talis.XIVPlugin.Twintania.Windows
 
         private static TwintaniaWidgetViewModel _instance;
 
+        private static string _widgetTitle = "[ T5 Tracker ]";
+
         private ActorEntity _dreadknightEntity;
         private double _dreadknightHPPercent;
         private bool _dreadknightIsValid;
@@ -99,6 +101,16 @@ namespace Talis.XIVPlugin.Twintania.Windows
             set
             {
                 _twintaniaEntity = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public string WidgetTitle
+        {
+            get { return _widgetTitle; }
+            set
+            {
+                _widgetTitle = "[ T5 Tracker | " + value + " ]";
                 RaisePropertyChanged();
             }
         }
@@ -350,6 +362,51 @@ namespace Talis.XIVPlugin.Twintania.Windows
 
         #region Utility Functions
 
+        public void CheckCurrentPhase()
+        {
+            LogHelper.Log(Logger, TwintaniaHPPercent.ToString(), LogLevel.Debug);
+            //Since there is no real way of telling if twin has change phase ill check health
+            if (TwintaniaHPPercent <= 1.0 && TwintaniaHPPercent >= 0.85)
+            {
+                WidgetTitle = "P1";
+            }
+            else if (TwintaniaHPPercent <= 0.84 && TwintaniaHPPercent >= 0.55)
+            {
+                WidgetTitle = "P2";
+                if (Settings.Default.TwintaniaWidgetPhaseEnabled)
+                {
+                    SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetPhaseAlertFile, Settings.Default.TwintaniaWidgetPhaseVolume);
+                }
+            }
+            // Need to test her y position to check if in air or not.
+            // Ill fix this next time i do twin
+            // TwintaniaEntity.Y > 25???
+            else if (TwintaniaHPPercent <= 0.54 && !TwintaniaIsValid)
+            {
+                WidgetTitle = "P3";
+                if (Settings.Default.TwintaniaWidgetPhaseEnabled)
+                {
+                    SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetPhaseAlertFile, Settings.Default.TwintaniaWidgetPhaseVolume);
+                }
+            }
+            else if (TwintaniaHPPercent <= 0.54 && TwintaniaHPPercent >= 0.30)
+            {
+                WidgetTitle = "P4";
+                if (Settings.Default.TwintaniaWidgetPhaseEnabled)
+                {
+                    SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetPhaseAlertFile, Settings.Default.TwintaniaWidgetPhaseVolume);
+                }
+            }
+            else if (TwintaniaHPPercent <= 0.29)
+            {
+                WidgetTitle = "P5";
+                if (Settings.Default.TwintaniaWidgetPhaseEnabled)
+                {
+                    SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetPhaseAlertFile, Settings.Default.TwintaniaWidgetPhaseVolume);
+                }
+            }
+        }
+
         public void TriggerDiveBomb()
         {
             LogHelper.Log(Logger, "Divebomb Triggered (" + TwintaniaDivebombCount + ")", LogLevel.Debug);
@@ -421,6 +478,8 @@ namespace Talis.XIVPlugin.Twintania.Windows
             TwintaniaIsValid = true;
             TwintaniaHPPercent = 1;
 
+            CheckCurrentPhase();
+
             EnrageTimerStart();
 
             TwintaniaDivebombCount = 1;
@@ -450,7 +509,7 @@ namespace Talis.XIVPlugin.Twintania.Windows
 
             TwintaniaTestList.Enqueue(Tuple.Create("Twister", 1.0));
 
-            TwintaniaTestList.Enqueue(Tuple.Create("End", (double) 0));
+            TwintaniaTestList.Enqueue(Tuple.Create("End", (double)0));
 
             TwintaniaTestTimer.Start();
         }

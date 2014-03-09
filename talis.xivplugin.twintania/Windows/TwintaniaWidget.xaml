@@ -78,7 +78,8 @@
                             <TextBlock
                                 Margin="5 -1"
                                    HorizontalAlignment="Center"
-                                   Text="[ Twintania Tracker ]"
+                                   Text="{Binding WidgetTitle,
+                                                Source={StaticResource TwintaniaWidgetViewModel}}"
                                    FontSize="14"
                                    FontWeight="Bold"
                                    Foreground="Black"

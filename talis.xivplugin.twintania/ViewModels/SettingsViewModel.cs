@@ -84,7 +84,7 @@ namespace Talis.XIVPlugin.Twintania.ViewModels
         public ICommand TwintaniaWidgetTestStopCommand { get; private set; }
 
         public ICommand RefreshSoundListCommand { get; private set; }
-
+        public ICommand TestPhaseAlertCommand { get; private set; }
         public ICommand TwintaniaWidgetResetCommand { get; private set; }
 
         #endregion
@@ -123,6 +123,8 @@ namespace Talis.XIVPlugin.Twintania.ViewModels
 
             TwintaniaWidgetTestStartCommand = new DelegateCommand(TwintaniaWidgetTestStart);
             TwintaniaWidgetTestStopCommand = new DelegateCommand(TwintaniaWidgetTestStop);
+
+            TestPhaseAlertCommand = new DelegateCommand(TestPhaseAlert);
 
             RefreshSoundListCommand = new DelegateCommand(RefreshSoundList);
 
@@ -363,6 +365,11 @@ namespace Talis.XIVPlugin.Twintania.ViewModels
         public void TwintaniaWidgetTestStart()
         {
             TwintaniaWidgetViewModel.Instance.TestModeStart();
+        }
+
+        public void TestPhaseAlert()
+        {
+            SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetPhaseAlertFile, Settings.Default.TwintaniaWidgetPhaseVolume);
         }
 
         public void TwintaniaWidgetTestStop()

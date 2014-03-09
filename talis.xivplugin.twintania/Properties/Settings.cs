@@ -112,6 +112,10 @@ namespace Talis.XIVPlugin.Twintania.Properties
             Constants.Settings.Add("TwintaniaWidgetTwisterWarningCounting");
             Constants.Settings.Add("TwintaniaWidgetTwisterWarningVolume");
             Constants.Settings.Add("TwintaniaWidgetTwisterWarningFile");
+
+            Constants.Settings.Add("TwintaniaWidgetPhaseAlertFile");
+            Constants.Settings.Add("TwintaniaWidgetPhaseVolume");
+            Constants.Settings.Add("TwintaniaWidgetPhaseEnabled");
         }
 
         public new void Reset()
@@ -778,6 +782,45 @@ namespace Talis.XIVPlugin.Twintania.Properties
             set
             {
                 this["TwintaniaWidgetTwisterWarningFile"] = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        [DefaultSettingValue("True")]
+        public bool TwintaniaWidgetPhaseEnabled
+        {
+            get { return ((bool)(this["TwintaniaWidgetPhaseEnabled"])); }
+            set
+            {
+                this["TwintaniaWidgetPhaseEnabled"] = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        [DefaultSettingValue("100")]
+        public int TwintaniaWidgetPhaseVolume
+        {
+            get { return ((int)(this["TwintaniaWidgetPhaseVolume"])); }
+            set
+            {
+                this["TwintaniaWidgetPhaseVolume"] = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        [DefaultSettingValue("Plugins\\Talis.XIVPlugin.Twintania\\AlertSounds\\phase.mp3")]
+        public string TwintaniaWidgetPhaseAlertFile
+        {
+            get { return ((string)(this["TwintaniaWidgetPhaseAlertFile"])); }
+            set
+            {
+                this["TwintaniaWidgetPhaseAlertFile"] = value;
                 RaisePropertyChanged();
             }
         }

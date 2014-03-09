@@ -27,7 +27,7 @@
                 <scm:SortDescription Direction="Ascending" />
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-        
+
     </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot"
@@ -712,6 +712,68 @@
                                                 TickFrequency="2"
                                                 TickPlacement="BottomRight"
                                                 Value="{Binding TwintaniaWidgetEnrageVolume,
+                                                                Source={StaticResource Settings}}" />
+                                    </DockPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem x:Name="SettingsWidgetsPhase"
+                     Header="Phase Settings">
+                <ScrollViewer>
+                    <StackPanel>
+                        <GroupBox Header="Phase Alert">
+                            <StackPanel>
+                                <controls:ToggleSwitch IsChecked="{Binding TwintaniaWidgetPhaseEnabled,
+                                                                           Source={StaticResource Settings}}" />
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Phase Sounds">
+                            <StackPanel>
+                                <StackPanel>
+                                    <Grid>
+                                        <TextBlock Text="Phase Alert File:" VerticalAlignment="Center" Margin="5 0 0 0" />
+                                        <ComboBox x:Name="PhaseAlertFile"
+                                                  Margin="0 5"
+                                                  Width="250"
+                                                  IsReadOnly="False"
+                                                  IsSynchronizedWithCurrentItem="False"
+                                                  SelectedItem="{Binding TwintaniaWidgetPhaseAlertFile,
+                                                                         Source={StaticResource Settings}}"
+                                                  ItemsSource="{Binding Source={StaticResource cvsSounds}}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="DropDownOpened" >
+                                                    <i:InvokeCommandAction Command="{Binding RefreshSoundListCommand,
+                                                                  Source={StaticResource SettingsViewModel}}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </ComboBox>
+                                    </Grid>
+                                </StackPanel>
+                                <StackPanel>
+                                    <DockPanel LastChildFill="True">
+                                        <TextBlock VerticalAlignment="Center">Volume:</TextBlock>
+                                        <TextBlock Width="50"
+                                                   TextAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Text="{Binding ElementName=PHVolume,
+                                                                  Path=Value,
+                                                                  StringFormat=\{0\}%}" />
+                                        <Button Margin="10 0 0 0" 
+                                            Content="Test Alert" 
+                                            DockPanel.Dock="Right" 
+                                            Width="100"
+                                            Command="{Binding TestPhaseAlertCommand,
+                                                              Source={StaticResource SettingsViewModel}}"/>
+                                        <Slider x:Name="PHVolume"
+                                                IsSnapToTickEnabled="True"
+                                                Maximum="100"
+                                                Minimum="0"
+                                                TickFrequency="2"
+                                                TickPlacement="BottomRight"
+                                                Value="{Binding TwintaniaWidgetPhaseVolume,
                                                                 Source={StaticResource Settings}}" />
                                     </DockPanel>
                                 </StackPanel>

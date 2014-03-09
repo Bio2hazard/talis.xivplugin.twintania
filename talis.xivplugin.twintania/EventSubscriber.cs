@@ -107,6 +107,7 @@ namespace Talis.XIVPlugin.Twintania
             var twintania = monsterEntities.SingleOrDefault(monster => (monster.NPCID1 == 4295027 && monster.NPCID2 == 2021));
             if (twintania != null && twintania.IsValid && twintania.HPCurrent > 0)
             {
+
                 TwintaniaWidgetViewModel.Instance.TwintaniaEntity = twintania;
                 TwintaniaWidgetViewModel.Instance.TwintaniaIsValid = true;
                 TwintaniaWidgetViewModel.Instance.TwintaniaHPPercent = (double) twintania.HPPercent;
@@ -122,6 +123,7 @@ namespace Talis.XIVPlugin.Twintania
                     TwintaniaWidgetViewModel.Instance.EnrageTimerStop();
                     TwintaniaWidgetViewModel.Instance.TwintaniaEngaged = false;
                 }
+                TwintaniaWidgetViewModel.Instance.CheckCurrentPhase();
             }
             else if (TwintaniaWidgetViewModel.Instance.TwintaniaIsValid)
             {
@@ -139,6 +141,7 @@ namespace Talis.XIVPlugin.Twintania
                 TwintaniaWidgetViewModel.Instance.TwintaniaDivebombCount = 1;
                 TwintaniaWidgetViewModel.Instance.TwintaniaDivebombTimeToNextCur = 0;
                 TwintaniaWidgetViewModel.Instance.TwintaniaDivebombTimeToNextMax = 0;
+                TwintaniaWidgetViewModel.Instance.CheckCurrentPhase();
             }
 
             var dreadknight = monsterEntities.SingleOrDefault(monster => (monster.NPCID1 == 4295031 && monster.NPCID2 == 2026));
