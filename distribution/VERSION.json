@@ -1,7 +1,7 @@
 ﻿{
     "PluginInfo": {
         "Name": "Talis.XIVPlugin.Twintania",
-        "Version": "3.0.5180.0903014",
+        "Version": "3.0.5182.16938",
         "Files": [
             {
                 "Name": "Talis.XIVPlugin.Twintania.dll",
@@ -41,10 +41,6 @@
             },
             {
                 "Name": "LowHealth.wav",
-                "Location": "AlertSounds"
-            },
-			{
-                "Name": "phase.mp3",
                 "Location": "AlertSounds"
             },
             {
@@ -172,6 +168,6 @@
                 "Location": "Counting"
             }
         ],
-"SourceURI": "https://github.com/benjiro/talis.xivplugin.twintania/raw/master/distribution/"
+"SourceURI": "https://github.com/Bio2hazard/talis.xivplugin.twintania/raw/master/distribution/"
     }
 }

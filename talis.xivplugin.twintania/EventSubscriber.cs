@@ -141,7 +141,9 @@ namespace Talis.XIVPlugin.Twintania
                 TwintaniaWidgetViewModel.Instance.TwintaniaDivebombCount = 1;
                 TwintaniaWidgetViewModel.Instance.TwintaniaDivebombTimeToNextCur = 0;
                 TwintaniaWidgetViewModel.Instance.TwintaniaDivebombTimeToNextMax = 0;
-                TwintaniaWidgetViewModel.Instance.CheckCurrentPhase();
+                TwintaniaWidgetViewModel.Instance.WidgetTitle = "P1";
+                TwintaniaWidgetViewModel.Instance.CurrentPhase = 1;
+                TwintaniaWidgetViewModel.Instance.hasPhaseAlertPlayed = false;
             }
 
             var dreadknight = monsterEntities.SingleOrDefault(monster => (monster.NPCID1 == 4295031 && monster.NPCID2 == 2026));

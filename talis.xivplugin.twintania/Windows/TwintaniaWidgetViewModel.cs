@@ -40,7 +40,9 @@ namespace Talis.XIVPlugin.Twintania.Windows
 
         private static TwintaniaWidgetViewModel _instance;
 
-        private static string _widgetTitle = "[ T5 Tracker ]";
+        private string _widgetTitle = "[ T5 Tracker ]";
+        private bool _hasPlayed;
+        private byte _currentPhase;
 
         private ActorEntity _dreadknightEntity;
         private double _dreadknightHPPercent;
@@ -112,6 +114,24 @@ namespace Talis.XIVPlugin.Twintania.Windows
             {
                 _widgetTitle = "[ T5 Tracker | " + value + " ]";
                 RaisePropertyChanged();
+            }
+        }
+
+        public bool hasPhaseAlertPlayed
+        {
+            get { return _hasPlayed; }
+            set 
+            {
+                _hasPlayed = value;
+            }
+        }
+
+        public byte CurrentPhase
+        {
+            get { return _currentPhase; }
+            set
+            {
+                _currentPhase = value;
             }
         }
 
@@ -364,44 +384,52 @@ namespace Talis.XIVPlugin.Twintania.Windows
 
         public void CheckCurrentPhase()
         {
-            LogHelper.Log(Logger, TwintaniaHPPercent.ToString(), LogLevel.Debug);
             //Since there is no real way of telling if twin has change phase ill check health
             if (TwintaniaHPPercent <= 1.0 && TwintaniaHPPercent >= 0.85)
             {
                 WidgetTitle = "P1";
+                CurrentPhase = 1;
             }
-            else if (TwintaniaHPPercent <= 0.84 && TwintaniaHPPercent >= 0.55)
+            else if (TwintaniaHPPercent <= 0.849 && CurrentPhase == 1)
             {
+                
                 WidgetTitle = "P2";
-                if (Settings.Default.TwintaniaWidgetPhaseEnabled)
+                CurrentPhase = 2;
+                if (Settings.Default.TwintaniaWidgetPhaseEnabled && !hasPhaseAlertPlayed)
                 {
+                    hasPhaseAlertPlayed = true;
                     SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetPhaseAlertFile, Settings.Default.TwintaniaWidgetPhaseVolume);
                 }
             }
-            // Need to test her y position to check if in air or not.
-            // Ill fix this next time i do twin
-            // TwintaniaEntity.Y > 25???
-            else if (TwintaniaHPPercent <= 0.54 && !TwintaniaIsValid)
+            // While twin goes up in the air, shes not shown in memory scans,
+            // lets just wait till she engages back in comeback to trigger phase 4 change
+            else if (TwintaniaHPPercent <= 0.55 && CurrentPhase == 2)
             {
                 WidgetTitle = "P3";
-                if (Settings.Default.TwintaniaWidgetPhaseEnabled)
+                CurrentPhase = 3;
+                if (Settings.Default.TwintaniaWidgetPhaseEnabled && hasPhaseAlertPlayed)
                 {
+                    hasPhaseAlertPlayed = false;
                     SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetPhaseAlertFile, Settings.Default.TwintaniaWidgetPhaseVolume);
                 }
             }
-            else if (TwintaniaHPPercent <= 0.54 && TwintaniaHPPercent >= 0.30)
+            else if (TwintaniaHPPercent <= 0.55 && CurrentPhase == 3 && TwintaniaEngaged) 
             {
                 WidgetTitle = "P4";
-                if (Settings.Default.TwintaniaWidgetPhaseEnabled)
+                CurrentPhase = 4;
+                if (Settings.Default.TwintaniaWidgetPhaseEnabled && !hasPhaseAlertPlayed)
                 {
+                    hasPhaseAlertPlayed = true;
                     SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetPhaseAlertFile, Settings.Default.TwintaniaWidgetPhaseVolume);
                 }
             }
-            else if (TwintaniaHPPercent <= 0.29)
+            else if (TwintaniaHPPercent <= 0.30 && CurrentPhase == 4)
             {
                 WidgetTitle = "P5";
-                if (Settings.Default.TwintaniaWidgetPhaseEnabled)
+                CurrentPhase = 5;
+                if (Settings.Default.TwintaniaWidgetPhaseEnabled && hasPhaseAlertPlayed)
                 {
+                    hasPhaseAlertPlayed = false;
                     SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetPhaseAlertFile, Settings.Default.TwintaniaWidgetPhaseVolume);
                 }
             }
