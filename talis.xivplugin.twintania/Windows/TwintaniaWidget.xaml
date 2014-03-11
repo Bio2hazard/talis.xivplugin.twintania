@@ -187,6 +187,55 @@
                 </Grid>
             </StackPanel>
 
+            <StackPanel x:Name="TwintaniaWidgetAsclepiusInfo"
+                        Margin="5 1"
+                        DataContext="{Binding AsclepiusEntity,
+                                              Source={StaticResource TwintaniaWidgetViewModel}}"
+                        Visibility="{Binding AsclepiusIsValid,
+                                             Source={StaticResource TwintaniaWidgetViewModel},
+                                             Converter={StaticResource VisibilityConverter}}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <ProgressBar Grid.Row="0"
+                                 Grid.RowSpan="2"
+                                 Height="18"
+                                 VerticalAlignment="Top"
+                                 BorderBrush="Black"
+                                 Maximum="1"
+                                 Minimum="0"
+                                 Style="{StaticResource ProgressBarStyleStopAnimation}"
+                                 Value="{Binding  AsclepiusHPPercent,
+                                                 Source={StaticResource TwintaniaWidgetViewModel}}" />
+                    <TextBlock Grid.Row="0"
+                           Margin="5 0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Text="{Binding HPCurrent, StringFormat={}{0:N0}}"
+                           FontWeight="Bold"
+                           Foreground="Black"
+                           Style="{StaticResource StatLabelStyle}" />
+                    <TextBlock Grid.Row="0"
+                           Margin="5 0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="{Binding Name}"
+                           FontWeight="Bold"
+                           Foreground="Black"
+                           Style="{StaticResource StatLabelStyle}" />
+                    <TextBlock Grid.Row="0"
+                           Margin="5 0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Text="{Binding HPPercent, StringFormat={}{0:P}}"
+                           FontWeight="Bold"
+                           Foreground="Black"
+                           Style="{StaticResource StatLabelStyle}" />
+                </Grid>
+            </StackPanel>
+
             <StackPanel x:Name="TwintaniaWidgetTwintaniaEnrage"
                     Margin="5 1"
                     DataContext="{Binding TwintaniaEntity,

@@ -164,6 +164,26 @@ namespace Talis.XIVPlugin.Twintania
                 TwintaniaWidgetViewModel.Instance.DreadknightIsValid = false;
                 TwintaniaWidgetViewModel.Instance.DreadknightHPPercent = 0;
             }
+
+            // Get NPCID next run
+            var asclepius = monsterEntities.SingleOrDefault(monster => (monster.Name == "Asclepius"));
+            if (asclepius != null && asclepius.IsValid && dreadknight.HPCurrent >= 0)
+            {
+                TwintaniaWidgetViewModel.Instance.AsclepiusEntity = asclepius;
+                TwintaniaWidgetViewModel.Instance.AsclepiusHPPercent = (double)asclepius.HPPercent;
+                TwintaniaWidgetViewModel.Instance.AsclepiusIsValid = true;
+            }
+            else if (TwintaniaWidgetViewModel.Instance.AsclepiusIsValid)
+            {
+                if (asclepius != null)
+                    LogHelper.Log(Logger, "Asclepius no longer tracked. ( IsValid:" + asclepius.IsValid + " HPCurrent:" + asclepius.HPCurrent + " )", LogLevel.Debug);
+                else
+                    LogHelper.Log(Logger, "Asclepius no longer tracked. ( Not found in memory )", LogLevel.Debug);
+
+                TwintaniaWidgetViewModel.Instance.AsclepiusIsValid = false;
+                TwintaniaWidgetViewModel.Instance.AsclepiusHPPercent = 0;
+                TwintaniaWidgetViewModel.Instance.AsclepiusEntity = null;
+            }
         }
 
         #endregion

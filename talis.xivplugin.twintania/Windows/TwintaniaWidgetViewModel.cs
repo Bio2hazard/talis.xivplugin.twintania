@@ -44,6 +44,10 @@ namespace Talis.XIVPlugin.Twintania.Windows
         private bool _hasPlayed;
         private byte _currentPhase;
 
+        private ActorEntity _asclepiusEntity;
+        private double _asclepiusHPPercent;
+        private bool _asclepiusIsValid;
+
         private ActorEntity _dreadknightEntity;
         private double _dreadknightHPPercent;
         private bool _dreadknightIsValid;
@@ -93,6 +97,36 @@ namespace Talis.XIVPlugin.Twintania.Windows
             set
             {
                 _forceTop = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public ActorEntity AsclepiusEntity
+        {
+            get { return _asclepiusEntity ?? (_asclepiusEntity = new ActorEntity()); }
+            set
+            {
+                _asclepiusEntity = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public double AsclepiusHPPercent
+        {
+            get { return _asclepiusHPPercent; }
+            set
+            {
+                _asclepiusHPPercent = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public bool AsclepiusIsValid
+        {
+            get { return _asclepiusIsValid; }
+            set
+            {
+                _asclepiusIsValid = value;
                 RaisePropertyChanged();
             }
         }
@@ -413,7 +447,7 @@ namespace Talis.XIVPlugin.Twintania.Windows
                     SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetPhaseAlertFile, Settings.Default.TwintaniaWidgetPhaseVolume);
                 }
             }
-            else if (TwintaniaHPPercent <= 0.55 && CurrentPhase == 3 && TwintaniaEngaged) 
+            else if (TwintaniaHPPercent <= 0.55 && CurrentPhase == 3 && AsclepiusHPPercent <= 0 && AsclepiusEntity.IsClaimed) 
             {
                 WidgetTitle = "P4";
                 CurrentPhase = 4;
@@ -523,6 +557,15 @@ namespace Talis.XIVPlugin.Twintania.Windows
             DreadknightIsValid = true;
             DreadknightHPPercent = 1;
 
+            AsclepiusEntity = new ActorEntity
+            {
+                Name = "Asclepius",
+                HPMax = 20000,
+                HPCurrent = 20000
+            };
+            AsclepiusHPPercent = 1;
+            AsclepiusIsValid = true;
+
             TwintaniaTestTimeToNextCur = 0.3;
 
             TwintaniaTestList.Enqueue(Tuple.Create("Divebomb", Settings.Default.TwintaniaWidgetDivebombTimeFast + 0.5));
@@ -571,6 +614,10 @@ namespace Talis.XIVPlugin.Twintania.Windows
             DreadknightEntity = null;
             DreadknightIsValid = false;
             DreadknightHPPercent = 0;
+
+            AsclepiusIsValid = false;
+            AsclepiusHPPercent = 0;
+            AsclepiusEntity = null;
 
             TestMode = false;
         }
