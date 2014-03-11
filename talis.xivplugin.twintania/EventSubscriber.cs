@@ -167,7 +167,7 @@ namespace Talis.XIVPlugin.Twintania
 
             // Get NPCID next run
             var asclepius = monsterEntities.SingleOrDefault(monster => (monster.Name == "Asclepius"));
-            if (asclepius != null && asclepius.IsValid && dreadknight.HPCurrent >= 0)
+            if (asclepius != null && asclepius.IsValid && asclepius.HPCurrent >= 0)
             {
                 TwintaniaWidgetViewModel.Instance.AsclepiusEntity = asclepius;
                 TwintaniaWidgetViewModel.Instance.AsclepiusHPPercent = (double)asclepius.HPPercent;
