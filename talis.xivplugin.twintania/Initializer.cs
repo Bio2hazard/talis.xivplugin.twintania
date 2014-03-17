@@ -87,7 +87,7 @@ namespace Talis.XIVPlugin.Twintania
                     File.Copy(legacyFile.FullName, Path.Combine(FFXIVAPP.Common.Constants.SoundsPath, key));
                     SoundPlayerHelper.TryGetSetSoundFile(key);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }

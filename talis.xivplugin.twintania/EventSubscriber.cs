@@ -107,16 +107,19 @@ namespace Talis.XIVPlugin.Twintania
             var twintania = monsterEntities.SingleOrDefault(monster => (monster.NPCID1 == 4295027 && monster.NPCID2 == 2021));
             if (twintania != null && twintania.IsValid && twintania.HPCurrent > 0)
             {
-
+                if (twintania.IsCasting)
+                {
+                    LogHelper.Log(Logger, "Twin is casting: " + twintania.CastingID + " " + twintania.CastingTargetID, LogLevel.Debug);
+                }
                 TwintaniaWidgetViewModel.Instance.TwintaniaEntity = twintania;
                 TwintaniaWidgetViewModel.Instance.TwintaniaIsValid = true;
-                TwintaniaWidgetViewModel.Instance.TwintaniaHPPercent = (double) twintania.HPPercent;
+                TwintaniaWidgetViewModel.Instance.TwintaniaHpPercent = (double)twintania.HPPercent;
                 if (twintania.IsClaimed && !TwintaniaWidgetViewModel.Instance.TwintaniaEngaged)
                 {
                     LogHelper.Log(Logger, "Twintania engaged in combat.", LogLevel.Debug);
                     TwintaniaWidgetViewModel.Instance.EnrageTimerStart();
                     TwintaniaWidgetViewModel.Instance.TwintaniaEngaged = true;
-                } 
+                }
                 else if (TwintaniaWidgetViewModel.Instance.TwintaniaEngaged && !twintania.IsClaimed)
                 {
                     LogHelper.Log(Logger, "Twintania found, but not engaged in combat.", LogLevel.Debug);
@@ -137,13 +140,13 @@ namespace Talis.XIVPlugin.Twintania
                 TwintaniaWidgetViewModel.Instance.TwintaniaEntity = null;
                 TwintaniaWidgetViewModel.Instance.TwintaniaIsValid = false;
                 TwintaniaWidgetViewModel.Instance.TwintaniaEngaged = false;
-                TwintaniaWidgetViewModel.Instance.TwintaniaHPPercent = 0;
+                TwintaniaWidgetViewModel.Instance.TwintaniaHpPercent = 0;
                 TwintaniaWidgetViewModel.Instance.TwintaniaDivebombCount = 1;
                 TwintaniaWidgetViewModel.Instance.TwintaniaDivebombTimeToNextCur = 0;
                 TwintaniaWidgetViewModel.Instance.TwintaniaDivebombTimeToNextMax = 0;
                 TwintaniaWidgetViewModel.Instance.WidgetTitle = "P1";
                 TwintaniaWidgetViewModel.Instance.CurrentPhase = 1;
-                TwintaniaWidgetViewModel.Instance.hasPhaseAlertPlayed = false;
+                TwintaniaWidgetViewModel.Instance.HasPhaseAlertPlayed = false;
             }
 
             var dreadknight = monsterEntities.SingleOrDefault(monster => (monster.NPCID1 == 4295031 && monster.NPCID2 == 2026));
@@ -151,7 +154,7 @@ namespace Talis.XIVPlugin.Twintania
             {
                 TwintaniaWidgetViewModel.Instance.DreadknightEntity = dreadknight;
                 TwintaniaWidgetViewModel.Instance.DreadknightIsValid = true;
-                TwintaniaWidgetViewModel.Instance.DreadknightHPPercent = (double) dreadknight.HPPercent;
+                TwintaniaWidgetViewModel.Instance.DreadknightHpPercent = (double)dreadknight.HPPercent;
             }
             else if (TwintaniaWidgetViewModel.Instance.DreadknightIsValid)
             {
@@ -162,15 +165,14 @@ namespace Talis.XIVPlugin.Twintania
 
                 TwintaniaWidgetViewModel.Instance.DreadknightEntity = null;
                 TwintaniaWidgetViewModel.Instance.DreadknightIsValid = false;
-                TwintaniaWidgetViewModel.Instance.DreadknightHPPercent = 0;
+                TwintaniaWidgetViewModel.Instance.DreadknightHpPercent = 0;
             }
 
-            // Get NPCID next run
-            var asclepius = monsterEntities.SingleOrDefault(monster => (monster.Name == "Asclepius"));
-            if (asclepius != null && asclepius.IsValid && asclepius.HPCurrent >= 0)
+            var asclepius = monsterEntities.SingleOrDefault(monster => (monster.NPCID1 == 4295030 && monster.NPCID2 == 2025));
+            if (asclepius != null && asclepius.IsValid && asclepius.HPCurrent > 0)
             {
                 TwintaniaWidgetViewModel.Instance.AsclepiusEntity = asclepius;
-                TwintaniaWidgetViewModel.Instance.AsclepiusHPPercent = (double)asclepius.HPPercent;
+                TwintaniaWidgetViewModel.Instance.AsclepiusHpPercent = (double)asclepius.HPPercent;
                 TwintaniaWidgetViewModel.Instance.AsclepiusIsValid = true;
             }
             else if (TwintaniaWidgetViewModel.Instance.AsclepiusIsValid)
@@ -181,7 +183,7 @@ namespace Talis.XIVPlugin.Twintania
                     LogHelper.Log(Logger, "Asclepius no longer tracked. ( Not found in memory )", LogLevel.Debug);
 
                 TwintaniaWidgetViewModel.Instance.AsclepiusIsValid = false;
-                TwintaniaWidgetViewModel.Instance.AsclepiusHPPercent = 0;
+                TwintaniaWidgetViewModel.Instance.AsclepiusHpPercent = -1.0f;
                 TwintaniaWidgetViewModel.Instance.AsclepiusEntity = null;
             }
         }

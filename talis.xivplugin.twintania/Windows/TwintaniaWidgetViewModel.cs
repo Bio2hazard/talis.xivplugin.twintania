@@ -41,15 +41,13 @@ namespace Talis.XIVPlugin.Twintania.Windows
         private static TwintaniaWidgetViewModel _instance;
 
         private string _widgetTitle = "[ T5 Tracker ]";
-        private bool _hasPlayed;
-        private byte _currentPhase;
 
         private ActorEntity _asclepiusEntity;
-        private double _asclepiusHPPercent;
+        private double _asclepiusHpPercent;
         private bool _asclepiusIsValid;
 
         private ActorEntity _dreadknightEntity;
-        private double _dreadknightHPPercent;
+        private double _dreadknightHpPercent;
         private bool _dreadknightIsValid;
         private bool _forceTop;
         private bool _testMode;
@@ -66,7 +64,7 @@ namespace Talis.XIVPlugin.Twintania.Windows
         private TimerHelper _twintaniaEnrageTimer;
 
         private ActorEntity _twintaniaEntity;
-        private double _twintaniaHPPercent;
+        private double _twintaniaHpPercent;
         private bool _twintaniaIsValid;
 
         private Queue<Tuple<string, double>> _twintaniaTestList;
@@ -111,12 +109,12 @@ namespace Talis.XIVPlugin.Twintania.Windows
             }
         }
 
-        public double AsclepiusHPPercent
+        public double AsclepiusHpPercent
         {
-            get { return _asclepiusHPPercent; }
+            get { return _asclepiusHpPercent; }
             set
             {
-                _asclepiusHPPercent = value;
+                _asclepiusHpPercent = value;
                 RaisePropertyChanged();
             }
         }
@@ -151,23 +149,9 @@ namespace Talis.XIVPlugin.Twintania.Windows
             }
         }
 
-        public bool hasPhaseAlertPlayed
-        {
-            get { return _hasPlayed; }
-            set 
-            {
-                _hasPlayed = value;
-            }
-        }
+        public bool HasPhaseAlertPlayed { get; set; }
 
-        public byte CurrentPhase
-        {
-            get { return _currentPhase; }
-            set
-            {
-                _currentPhase = value;
-            }
-        }
+        public byte CurrentPhase { get; set; }
 
         public bool TwintaniaIsValid
         {
@@ -189,12 +173,12 @@ namespace Talis.XIVPlugin.Twintania.Windows
             }
         }
 
-        public double TwintaniaHPPercent
+        public double TwintaniaHpPercent
         {
-            get { return _twintaniaHPPercent; }
+            get { return _twintaniaHpPercent; }
             set
             {
-                _twintaniaHPPercent = value;
+                _twintaniaHpPercent = value;
                 RaisePropertyChanged();
             }
         }
@@ -219,12 +203,12 @@ namespace Talis.XIVPlugin.Twintania.Windows
             }
         }
 
-        public double DreadknightHPPercent
+        public double DreadknightHpPercent
         {
-            get { return _dreadknightHPPercent; }
+            get { return _dreadknightHpPercent; }
             set
             {
-                _dreadknightHPPercent = value;
+                _dreadknightHpPercent = value;
                 RaisePropertyChanged();
             }
         }
@@ -419,51 +403,51 @@ namespace Talis.XIVPlugin.Twintania.Windows
         public void CheckCurrentPhase()
         {
             //Since there is no real way of telling if twin has change phase ill check health
-            if (TwintaniaHPPercent <= 1.0 && TwintaniaHPPercent >= 0.85)
+            if (TwintaniaHpPercent <= 1.0 && TwintaniaHpPercent >= 0.85)
             {
                 WidgetTitle = "P1";
                 CurrentPhase = 1;
             }
-            else if (TwintaniaHPPercent <= 0.849 && CurrentPhase == 1)
+            else if (TwintaniaHpPercent <= 0.849 && CurrentPhase == 1)
             {
-                
+
                 WidgetTitle = "P2";
                 CurrentPhase = 2;
-                if (Settings.Default.TwintaniaWidgetPhaseEnabled && !hasPhaseAlertPlayed)
+                if (Settings.Default.TwintaniaWidgetPhaseEnabled && !HasPhaseAlertPlayed)
                 {
-                    hasPhaseAlertPlayed = true;
+                    HasPhaseAlertPlayed = true;
                     SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetPhaseAlertFile, Settings.Default.TwintaniaWidgetPhaseVolume);
                 }
             }
             // While twin goes up in the air, shes not shown in memory scans,
             // lets just wait till she engages back in comeback to trigger phase 4 change
-            else if (TwintaniaHPPercent <= 0.55 && CurrentPhase == 2)
+            else if (TwintaniaHpPercent <= 0.55 && CurrentPhase == 2)
             {
                 WidgetTitle = "P3";
                 CurrentPhase = 3;
-                if (Settings.Default.TwintaniaWidgetPhaseEnabled && hasPhaseAlertPlayed)
+                if (Settings.Default.TwintaniaWidgetPhaseEnabled && HasPhaseAlertPlayed)
                 {
-                    hasPhaseAlertPlayed = false;
+                    HasPhaseAlertPlayed = false;
                     SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetPhaseAlertFile, Settings.Default.TwintaniaWidgetPhaseVolume);
                 }
             }
-            else if (TwintaniaHPPercent <= 0.55 && CurrentPhase == 3 && AsclepiusHPPercent <= 0 && AsclepiusEntity.IsClaimed) 
+            else if (TwintaniaHpPercent <= 0.55 && CurrentPhase == 3 && AsclepiusHpPercent <= -1.0f)
             {
                 WidgetTitle = "P4";
                 CurrentPhase = 4;
-                if (Settings.Default.TwintaniaWidgetPhaseEnabled && !hasPhaseAlertPlayed)
+                if (Settings.Default.TwintaniaWidgetPhaseEnabled && !HasPhaseAlertPlayed)
                 {
-                    hasPhaseAlertPlayed = true;
+                    HasPhaseAlertPlayed = true;
                     SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetPhaseAlertFile, Settings.Default.TwintaniaWidgetPhaseVolume);
                 }
             }
-            else if (TwintaniaHPPercent <= 0.30 && CurrentPhase == 4)
+            else if (TwintaniaHpPercent <= 0.30 && CurrentPhase == 4)
             {
                 WidgetTitle = "P5";
                 CurrentPhase = 5;
-                if (Settings.Default.TwintaniaWidgetPhaseEnabled && hasPhaseAlertPlayed)
+                if (Settings.Default.TwintaniaWidgetPhaseEnabled && HasPhaseAlertPlayed)
                 {
-                    hasPhaseAlertPlayed = false;
+                    HasPhaseAlertPlayed = false;
                     SoundHelper.PlayCached(Settings.Default.TwintaniaWidgetPhaseAlertFile, Settings.Default.TwintaniaWidgetPhaseVolume);
                 }
             }
@@ -538,7 +522,7 @@ namespace Talis.XIVPlugin.Twintania.Windows
             };
             TwintaniaEngaged = true;
             TwintaniaIsValid = true;
-            TwintaniaHPPercent = 1;
+            TwintaniaHpPercent = 1;
 
             CheckCurrentPhase();
 
@@ -555,7 +539,7 @@ namespace Talis.XIVPlugin.Twintania.Windows
                 HPCurrent = 11250
             };
             DreadknightIsValid = true;
-            DreadknightHPPercent = 1;
+            DreadknightHpPercent = 1;
 
             AsclepiusEntity = new ActorEntity
             {
@@ -563,7 +547,7 @@ namespace Talis.XIVPlugin.Twintania.Windows
                 HPMax = 20000,
                 HPCurrent = 20000
             };
-            AsclepiusHPPercent = 1;
+            AsclepiusHpPercent = 1;
             AsclepiusIsValid = true;
 
             TwintaniaTestTimeToNextCur = 0.3;
@@ -605,7 +589,7 @@ namespace Talis.XIVPlugin.Twintania.Windows
             TwintaniaEntity = null;
             TwintaniaEngaged = false;
             TwintaniaIsValid = false;
-            TwintaniaHPPercent = 0;
+            TwintaniaHpPercent = 0;
 
             TwintaniaDivebombCount = 1;
             TwintaniaDivebombTimeToNextCur = 0;
@@ -613,10 +597,10 @@ namespace Talis.XIVPlugin.Twintania.Windows
 
             DreadknightEntity = null;
             DreadknightIsValid = false;
-            DreadknightHPPercent = 0;
+            DreadknightHpPercent = 0;
 
             AsclepiusIsValid = false;
-            AsclepiusHPPercent = 0;
+            AsclepiusHpPercent = 0;
             AsclepiusEntity = null;
 
             TestMode = false;

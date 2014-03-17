@@ -1,7 +1,7 @@
 ﻿{
     "PluginInfo": {
         "Name": "Talis.XIVPlugin.Twintania",
-        "Version": "3.0.5184.15720",
+        "Version": "3.0.5190.15294",
         "Files": [
             {
                 "Name": "Talis.XIVPlugin.Twintania.dll",
@@ -43,6 +43,10 @@
                 "Name": "LowHealth.wav",
                 "Location": "AlertSounds"
             },
+			{
+				"Name": "phase.mp3",
+				"Location": "AlertSounds"
+			},
             {
                 "Name": "se.1.mp3",
                 "Location": "AlertSounds"

@@ -88,7 +88,7 @@
                     </DockPanel>
                 </Border>
             </DockPanel>
-            
+
             <StackPanel x:Name="TwintaniaWidgetTwintaniaInfo"
                         Margin="5 1"
                         DataContext="{Binding TwintaniaEntity,
@@ -109,7 +109,7 @@
                                  Maximum="1"
                                  Minimum="0"
                                  Style="{StaticResource ProgressBarStyleStopAnimation}"
-                                 Value="{Binding TwintaniaHPPercent,
+                                 Value="{Binding TwintaniaHpPercent,
                                                  Source={StaticResource TwintaniaWidgetViewModel}}" />
                     <TextBlock Grid.Row="0"
                            Margin="5 0"
@@ -137,7 +137,7 @@
                            Style="{StaticResource StatLabelStyle}" />
                 </Grid>
             </StackPanel>
-            
+
             <StackPanel x:Name="TwintaniaWidgetDreadknightInfo"
                         Margin="5 1"
                         DataContext="{Binding DreadknightEntity,
@@ -158,7 +158,7 @@
                                  Maximum="1"
                                  Minimum="0"
                                  Style="{StaticResource ProgressBarStyleStopAnimation}"
-                                 Value="{Binding DreadknightHPPercent,
+                                 Value="{Binding DreadknightHpPercent,
                                                  Source={StaticResource TwintaniaWidgetViewModel}}" />
                     <TextBlock Grid.Row="0"
                            Margin="5 0"
@@ -207,7 +207,7 @@
                                  Maximum="1"
                                  Minimum="0"
                                  Style="{StaticResource ProgressBarStyleStopAnimation}"
-                                 Value="{Binding  AsclepiusHPPercent,
+                                 Value="{Binding  AsclepiusHpPercent,
                                                  Source={StaticResource TwintaniaWidgetViewModel}}" />
                     <TextBlock Grid.Row="0"
                            Margin="5 0"
